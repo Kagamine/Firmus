@@ -5,7 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./controllers/index');
+GLOBAL.enums = require('./models/enums');
+GLOBAL.db = require('./models');
+var routes = require('./controllers');
 
 var app = express();
 
