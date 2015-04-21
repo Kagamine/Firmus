@@ -1,0 +1,33 @@
+var mongodb = require('../models/mongodb');
+var Schema = mongodb.mongoose.Schema;
+
+var giftDeliverSchema = new Schema({
+    time: {
+        type: Date,
+        index: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    },
+    gift: {
+        type: Schema.Types.ObjectId,
+        ref: 'gifts'
+    },
+    hint: String,
+    giveBackFlag: {
+        type: Boolean,
+        index: true
+    },
+    feedBackFlag: {
+        type: Boolean,
+        index: true
+    },
+    order: {
+        type: Schema.Types.ObjectId,
+        ref: 'orders'
+    }
+});
+
+var giftDeliver = mongodb.mongoose.model('giftDelivers', giftDeliverSchema);
+module.exports = giftDeliver;
