@@ -36,6 +36,10 @@ var addressSchema = new Schema({
     distributor: {
         type: Schema.Types.ObjectId,
         ref: 'users'
+    },
+    blankOut: {
+        type: Boolean,
+        index: true
     }
 });
 

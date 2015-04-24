@@ -18,6 +18,7 @@ var callSchema = new Schema({
     },
     needFeedback: Boolean,
     isFeedbacked: Boolean,
+    feedbackResult: String,
     hint: String,
     content: String,
     type: {

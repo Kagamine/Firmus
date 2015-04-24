@@ -21,6 +21,10 @@ var depositSchema = new Schema({
     giveBackTime: {
         type: Date,
         index: true
+    },
+    giveBackDone: {
+        type: Boolean,
+        index: true
     }
 });
 

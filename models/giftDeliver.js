@@ -23,9 +23,14 @@ var giftDeliverSchema = new Schema({
         type: Boolean,
         index: true
     },
+    feedBackResult: String,
     order: {
         type: Schema.Types.ObjectId,
         ref: 'orders'
+    },
+    count: {
+        type: Number,
+        index: true
     }
 });
 

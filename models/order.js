@@ -14,7 +14,10 @@ var orderSchema = new Schema({
         index: true
     },
     price: Number,
-    balance: Number,
+    balance: {
+        type: Number,
+        default 0
+    },
     milkType: {
         type: String,
         index: true
