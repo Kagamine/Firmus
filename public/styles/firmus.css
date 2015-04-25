@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    font: 14px "Microsoft YaHei", "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url(/images/bg.jpg);
+}
+
+a {
+    color: #00B7FF;
+}
+
+.container {
+    width: 1080px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
