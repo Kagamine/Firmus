@@ -18,5 +18,5 @@ var freeDrinkSchema = new Schema({
     }
 });
 
-var freeDrink = mongodb.mongoose.model('freeDrinks', freeDrinksSchema);
+var freeDrink = mongodb.mongoose.model('freeDrinks', freeDrinkSchema);
 module.exports = freeDrink;

@@ -20,4 +20,4 @@ var billSchema = new Schema({
 });
 
 var bill = mongodb.mongoose.model('bills', billSchema);
-module.exports = car;
+module.exports = bill;

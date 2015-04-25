@@ -16,7 +16,7 @@ var orderSchema = new Schema({
     price: Number,
     balance: {
         type: Number,
-        default 0
+        default: 0
     },
     milkType: {
         type: String,
