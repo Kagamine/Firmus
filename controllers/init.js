@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var csrf = GLOBAL.csrf = require('csurf');
 var xss = GLOBAL.xss = require('../middlewares/xss');
-var _ = GLOBAL._ = require('underscore');
 
 GLOBAL.auth = require('../middlewares/auth');
 
