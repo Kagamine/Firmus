@@ -13,3 +13,14 @@ a {
     padding: 0 20px;
     margin: 0 auto;
 }
+
+.login-outer {
+    width: 570px;
+    margin: 0 auto;
+    margin-top: 160px;
+    padding: 35px;
+    -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    background-color: rbga(255,255,255,0.9);
+}
