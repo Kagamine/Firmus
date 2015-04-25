@@ -9,20 +9,23 @@
 </head>
 <body>
     <div class="login-outer">
-        <p style="text-align: center"><img class="login-logo" src="/images/logo-login.png" /></p>
-        <p>
-            用户名
-            <br />
-            <input type="text" class="textbox login-textbox" />
-        </p>
-        <p>
-            密码
-            <br />
-            <input type="password" class="textbox login-textbox" />
-        </p>
-        <p>
-            <input type="submit" value="登录" class="button blue" />
-        </p>
+        <form action="/login" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrf %>" />
+            <p style="text-align: center"><img class="login-logo" src="/images/logo-login.png" /></p>
+            <p>
+                用户名
+                <br />
+                <input type="text" class="textbox login-textbox" />
+            </p>
+            <p>
+                密码
+                <br />
+                <input type="password" class="textbox login-textbox" />
+            </p>
+            <p>
+                <input type="submit" value="登录" class="button blue" />
+            </p>
+        </form>
     </div>
     <div class="footer">
         Copyright © 2015 Snowlight Software. All rights reserved.

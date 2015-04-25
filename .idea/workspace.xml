@@ -34,13 +34,33 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="shared.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/shared.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="308">
+              <caret line="3" column="28" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="oauth.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/oauth.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="220">
+              <caret line="1" column="30" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="login.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/shared/login.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.548388" vertical-offset="19" max-vertical-offset="792">
-              <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
+            <state vertical-scroll-proportion="-8.5161295" vertical-offset="0" max-vertical-offset="858">
+              <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
               <folding>
-                <element signature="n#style#0;n#p#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="firmus.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="firmus.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9403794" vertical-offset="3860" max-vertical-offset="4708">
-              <caret line="207" column="13" selection-start-line="207" selection-start-column="13" selection-end-line="207" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="4906">
+              <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -69,18 +89,18 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="814">
-              <caret line="28" column="3" selection-start-line="28" selection-start-column="3" selection-end-line="28" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="836">
+              <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="init.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="init.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/init.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="638">
-              <caret line="0" column="25" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.6856369" vertical-offset="0" max-vertical-offset="738">
+              <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -110,17 +130,18 @@
         <option value="$PROJECT_DIR$/middlewares/auth.js" />
         <option value="$PROJECT_DIR$/libs/xss.js" />
         <option value="$PROJECT_DIR$/middlewares/xss.js" />
-        <option value="$PROJECT_DIR$/controllers/init.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/models/bill.js" />
         <option value="$PROJECT_DIR$/models/freeDrink.js" />
         <option value="$PROJECT_DIR$/models/order.js" />
-        <option value="$PROJECT_DIR$/controllers/index.js" />
-        <option value="$PROJECT_DIR$/controllers/shared.js" />
         <option value="$PROJECT_DIR$/public/scripts/jquery-1.10.2.min.js" />
         <option value="$PROJECT_DIR$/public/scripts/firmus.js" />
-        <option value="$PROJECT_DIR$/views/shared/login.ejs" />
         <option value="$PROJECT_DIR$/public/styles/firmus.css" />
+        <option value="$PROJECT_DIR$/controllers/shared.js" />
+        <option value="$PROJECT_DIR$/controllers/oauth.js" />
+        <option value="$PROJECT_DIR$/controllers/index.js" />
+        <option value="$PROJECT_DIR$/views/shared/login.ejs" />
+        <option value="$PROJECT_DIR$/controllers/init.js" />
       </list>
     </option>
   </component>
@@ -427,13 +448,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/models/enums.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="176" max-vertical-offset="352">
-          <caret line="8" column="21" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="550" max-vertical-offset="704">
@@ -741,10 +755,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/init.js">
+    <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="638">
-          <caret line="0" column="25" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="4906">
+          <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/scripts/firmus.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="154">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -752,7 +774,7 @@
     <entry file="file://$PROJECT_DIR$/controllers/shared.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="308">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <caret line="3" column="28" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -765,36 +787,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/index.js">
+    <entry file="file://$PROJECT_DIR$/controllers/oauth.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="814">
-          <caret line="28" column="3" selection-start-line="28" selection-start-column="3" selection-end-line="28" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="220">
+          <caret line="1" column="30" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/shared/login.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.548388" vertical-offset="19" max-vertical-offset="792">
-          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
+        <state vertical-scroll-proportion="-8.5161295" vertical-offset="0" max-vertical-offset="858">
+          <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
           <folding>
-            <element signature="n#style#0;n#p#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/scripts/firmus.js">
+    <entry file="file://$PROJECT_DIR$/controllers/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="154">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="836">
+          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
+    <entry file="file://$PROJECT_DIR$/controllers/init.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9403794" vertical-offset="3860" max-vertical-offset="4708">
-          <caret line="207" column="13" selection-start-line="207" selection-start-column="13" selection-end-line="207" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.6856369" vertical-offset="0" max-vertical-offset="738">
+          <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
           <folding />
         </state>
       </provider>

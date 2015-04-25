@@ -18,13 +18,15 @@ a {
 .login-outer {
     width: 400px;
     margin: 0 auto;
-    margin-top: 160px;
+    margin-top: 130px;
     padding: 45px 70px;
     -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.2);
     -moz-box-shadow: 0 0 15px rgba(0,0,0,0.2);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255,255,255,0.65);
     color: #555;
+    border-radius: 25px;
+    behavior:url(/styles/PIE.htc);
 }
 
 .login-logo {
@@ -42,6 +44,7 @@ a {
     border-radius: 8px;
     outline: 0;
     transition: all 0.2s linear;
+    behavior:url(/styles/PIE.htc);
 }
 
 .button.small{
@@ -49,6 +52,7 @@ a {
     margin: 2px 5px 0 0;
     padding: 2px 5px;
     border-radius: 4px;
+    behavior:url(/styles/PIE.htc);
 }
 
 @-webkit-keyframes greenPulse {
@@ -75,6 +79,7 @@ a {
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
     transition: all 0.2s linear;
+    behavior:url(/styles/PIE.htc);
 }
 
 @-webkit-keyframes bluePulse {
@@ -101,6 +106,7 @@ a {
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
     transition: all 0.2s linear;
+    behavior:url(/styles/PIE.htc);
 }
 
 @-webkit-keyframes redPulse {
@@ -127,6 +133,7 @@ a {
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
     transition: all 0.2s linear;
+    behavior:url(/styles/PIE.htc);
 }
 
 @-webkit-keyframes yellowPulse {
@@ -153,6 +160,7 @@ a {
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
     transition: all 0.2s linear;
+    behavior:url(/styles/PIE.htc);
 }
 
 .textbox {
@@ -170,6 +178,7 @@ a {
     max-width:100%;
     _width:120px;
     *width:120px;
+    behavior:url(/styles/PIE.htc);
 }
 
 .textbox:hover {
