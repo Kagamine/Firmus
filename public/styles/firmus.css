@@ -2,6 +2,7 @@ body {
     margin: 0;
     font: 14px "Microsoft YaHei", "Lucida Grande", Helvetica, Arial, sans-serif;
     background-image: url(/images/bg.jpg);
+    color: #333;
 }
 
 a {
@@ -15,12 +16,194 @@ a {
 }
 
 .login-outer {
-    width: 570px;
+    width: 400px;
     margin: 0 auto;
     margin-top: 160px;
-    padding: 35px;
+    padding: 45px 70px;
     -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.2);
     -moz-box-shadow: 0 0 15px rgba(0,0,0,0.2);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    background-color: rbga(255,255,255,0.9);
+    background-color: rgba(255,255,255,0.9);
+    color: #555;
+}
+
+.login-logo {
+    height: 100px;
+}
+
+.button {
+    text-transform: none;
+    margin: 5px 10px 0 0;
+    line-height: normal;
+    border: 0;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    outline: 0;
+    transition: all 0.2s linear;
+}
+
+.button.small{
+    font-size: 12px;
+    margin: 2px 5px 0 0;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+@-webkit-keyframes greenPulse {
+    from {
+        background-color: #749a02;
+        -webkit-box-shadow: 0 0 9px #fff
+    }
+
+    50% {
+        background-color: #91bd09;
+        -webkit-box-shadow: 0 0 18px #91bd09
+    }
+
+    to {
+        background-color: #749a02;
+        -webkit-box-shadow: 0 0 9px #fff
+    }
+}
+
+.button.green {
+    color: #fff;
+    background-color: #91bd09;
+    -webkit-animation-name: greenPulse;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    transition: all 0.2s linear;
+}
+
+@-webkit-keyframes bluePulse {
+    from {
+        background-color: #007d9a;
+        -webkit-box-shadow: 0 0 9px #fff
+    }
+
+    50% {
+        background-color: #2daebf;
+        -webkit-box-shadow: 0 0 18px #2daebf
+    }
+
+    to {
+        background-color: #007d9a;
+        -webkit-box-shadow: 0 0 9px #fff
+    }
+}
+
+.button.blue {
+    color: #fff;
+    background-color: #2daebf;
+    -webkit-animation-name: bluePulse;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    transition: all 0.2s linear;
+}
+
+@-webkit-keyframes redPulse {
+    from {
+        background-color: #bc330d;
+        -webkit-box-shadow: 0 0 9px #fff
+    }
+
+    50% {
+        background-color: #e33100;
+        -webkit-box-shadow: 0 0 18px #e33100
+    }
+
+    to {
+        background-color: #bc330d;
+        -webkit-box-shadow: 0 0 9px #fff
+    }
+}
+
+.button.red {
+    color: #fff;
+    background-color: #e33100;
+    -webkit-animation-name: redPulse;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    transition: all 0.2s linear;
+}
+
+@-webkit-keyframes yellowPulse {
+    from {
+        background-color: #fc9200;
+        -webkit-box-shadow: 0 0 9px #fff;
+    }
+
+    50% {
+        background-color: #ffb515;
+        -webkit-box-shadow: 0 0 18px #ffb515;
+    }
+
+    to {
+        background-color: #fc9200;
+        -webkit-box-shadow: 0 0 9px #fff;
+    }
+}
+
+.button.yellow {
+    color: #fff;
+    background-color: #ff5c00;
+    -webkit-animation-name: yellowPulse;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    transition: all 0.2s linear;
+}
+
+.textbox {
+    margin: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 20px;
+    line-height: 20px;
+    outline: 0;
+    padding: 4px;
+    border: 1px solid #ccc;
+    transition: box-shadow .2s linear,background .2s linear;
+    background: #f2f2f2;
+    max-width:100%;
+    _width:120px;
+    *width:120px;
+}
+
+.textbox:hover {
+    border-color: #b8b8b8;
+    background: #fcfcfc;
+}
+
+.textbox:focus {
+    border-color: #ffdf00;
+    background: #fcfcfc;
+    -webkit-box-shadow: 0 0 10px #ffdf00;
+    box-shadow: 0 0 10px #ffdf00;
+    behavior:url(/styles/PIE.htc);
+}
+
+.textbox.error {
+    border-color: #ff696d;
+    background: #fcfcfc;
+    -webkit-box-shadow: 0 0 10px rgb(255, 128, 128);
+    box-shadow: 0 0 10px rgb(255, 128, 128);
+    behavior:url(/styles/PIE.htc);
+}
+
+.login-textbox {
+    margin: 5px 0;
+    width: 390px;
+    *width: 250px;
+    height: 36px;
+    font-size: 20px;
+}
+
+.footer {
+    color: #888;
+    font-size: 12px;
+    text-align: center;
+    margin: 40px 0;
 }
