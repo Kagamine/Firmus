@@ -1,18 +1,80 @@
 body {
     margin: 0;
     font: 14px "Microsoft YaHei", "Lucida Grande", Helvetica, Arial, sans-serif;
-    background-image: url(/images/bg.jpg);
+    background-image: url(/images/bg-light.png);
     color: #333;
 }
 
-a {
-    color: #00B7FF;
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+    margin: 0 0 20px;
+    color: #111;
+    line-height: 1.5em;
 }
 
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+    color: #333;
+    transition: color 0.2s linear;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+h2 {
+    font-size: 36px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 18px;
+}
+
+h6 {
+    font-size: 16px;
+}
+
+img {
+    outline: 0;
+    border: none;
+}
+
+a, a:visited {
+    color: #119eea;
+    text-decoration: none;
+    outline: 0;
+    transition: color 0.2s linear;
+}
+
+a:hover {
+    color: #3eb2f1;
+    text-decoration: none;
+}
+
+a.dark, a.dark:visited {
+    color: #0dc6fb;
+    text-decoration: none;
+}
+
+a.dark:focus, a.dark:hover {
+    color: #25ccfb;
+    text-decoration: none;
+}
+
+
 .container {
-    width: 1080px;
+    width: 100%;
     padding: 0 20px;
     margin: 0 auto;
+    min-width: 960px;
 }
 
 .login-outer {
@@ -215,4 +277,143 @@ a {
     font-size: 12px;
     text-align: center;
     margin: 40px 0;
+}
+
+.nav {
+    background-color: rgb(253,217,0);
+    height: 100px;
+    position: fixed;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    top: 0;
+    _position: absolute;
+    _top: expression(eval(document.documentElement.scrollTop));
+}
+
+.nav-logo {
+    height: 36px;
+    margin: 32px 0;
+}
+
+.functions {
+    top: 0;
+    width: 200px;
+    padding: 20px;
+    height: 100%;
+    background-color: rgb(66,66,66);
+    position: fixed;
+    margin-top: 100px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    _position: absolute;
+    _top: expression(eval(document.documentElement.scrollTop));
+}
+
+.main {
+    padding: 20px;
+    margin-top: 100px;
+    margin-left: 240px;
+}
+
+.functions ul {
+    list-style: circle;
+    padding-left: 20px;
+    margin: 0;
+    color: #fff;
+}
+
+.functions ul a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 42px;
+    transition: color 0.2s linear;
+}
+
+.functions ul a:hover {
+    color: rgb(0,191,224);
+}
+
+.nav img, .nav a {
+    float: left;
+    margin-right: 20px;
+}
+
+.nav a {
+    padding: 8px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #555;
+    margin: 33px 4px;
+    border-radius: 30px;
+    transition: color 0.2s linear, background 0.2s linear;
+}
+
+.nav a:hover, .nav a.active {
+    background-color: #2daebf;
+    color: #fff;
+}
+
+select {
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    margin: 0;
+    min-width: 150px;
+}
+
+.search {
+    padding: 12px 20px;
+    border-left: 10px solid #ffe6b0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.block {
+    padding: 20px;
+    border-top: 5px solid #56a5eb;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+table {
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table {
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.table th, .table td {
+    padding: 8px;
+}
+
+.table th {
+    background-color: rgb(253,217,0);
+    color: rgb(8,47,143);
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.65);
+    font-size: 14px;
+}
+
+.tl {
+    text-align: left;
+}
+
+.tc {
+    text-align: center;
+}
+
+.table tr {
+    border-bottom: 1px solid #ccc;
+}
+
+.table tr:nth-child(odd) {
+    background-color: rgb(245,245,245);
 }
