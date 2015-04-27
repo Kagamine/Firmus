@@ -168,4 +168,18 @@ router.get('/department/edit/:id', auth.checkRole('department', 'modify'), funct
         .then(null, next)
 });
 
+// 编辑部门
+router.post('/department/edit/:id', auth.checkRole('department', 'modify'), function (req, res, next) {
+    db.departments.update({ _id: req.params.id }, {
+        title: req.body.title,
+        type: req.body.type,
+        city: req.body.city,
+        district: req.body.district,
+        address: req.body.address
+    })
+        .exec()
+        .then(function () { res.send('OK') })
+        .then(null, next);
+});
+
 module.exports = router;

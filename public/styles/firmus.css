@@ -534,7 +534,7 @@ table {
     margin: 0 auto;
     position: fixed;
     top: 100px;
-    padding: 10px 15px;
+    padding: 8px 12px;
     background-color: rgba(58, 56, 56, 0.95);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     display: none;
@@ -544,7 +544,7 @@ table {
     visibility: visible;
     transition: margin 0.2s linear, opacity 0.2s linear, visibility 0.2s linear;
     z-index: 9999;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .msg.hide {

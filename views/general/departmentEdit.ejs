@@ -1,33 +1,36 @@
 <% include departmentMenu %>
 <div class="block">
     <h3>编辑部门信息</h3>
-    <table class="detail-table">
-        <tr>
-            <td class="row-title">部门名称</td>
-            <td><input type="text" class="textbox w-3" value="<%= department.title %>" /></td>
-        </tr>
-        <tr>
-            <td class="row-title">部门类型</td>
-            <td>
-                <select>
-                    <% enums.departmentType.forEach(x => { %>
-                    <option<%= x == department.type ? ' selected' : '' %>><%= x %></option>
-                    <% }) %>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="row-title">城市</td>
-            <td><input type="text" class="textbox w-3" value="<%= department.city %>" /></td>
-        </tr>
-        <tr>
-            <td class="row-title">区县</td>
-            <td><input type="text" class="textbox w-3" value="<%= department.city %>" /></td>
-        </tr>
-        <tr>
-            <td class="row-title">详细地址</td>
-            <td><input type="text" class="textbox w-3" value="<%= department.city %>" /></td>
-        </tr>
-    </table>
-    <p><input type="button" value="保存" class="button green" /></p>
+    <form action="/general/department/edit/<%= department._id %>" method="post" id="frmEditDepartment">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">部门名称</td>
+                <td><input name="title" type="text" class="textbox w-3" value="<%= department.title %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">部门类型</td>
+                <td>
+                    <select name="type">
+                        <% enums.departmentType.forEach(x => { %>
+                        <option<%= x == department.type ? ' selected' : '' %>><%= x %></option>
+                        <% }) %>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">城市</td>
+                <td><input name="city" type="text" class="textbox w-3" value="<%= department.city %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">区县</td>
+                <td><input name="district" type="text" class="textbox w-3" value="<%= department.city %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">详细地址</td>
+                <td><input name="address" type="text" class="textbox w-3" value="<%= department.city %>" /></td>
+            </tr>
+        </table>
+    </form>
+    <p><input type="button" value="保存" class="button green" onclick="editDepartment()" /></p>
 </div>

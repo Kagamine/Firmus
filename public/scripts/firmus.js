@@ -10,7 +10,7 @@ $(document).ready(function () {
     resize();
 });
 
-function popResult(txt) {
+function popMsg(txt) {
     var msg = $('<div class="msg hide">' + txt + '</div>');
     msg.css('left', '50%');
     $('body').append(msg);
@@ -22,4 +22,11 @@ function popResult(txt) {
             msg.remove();
         }, 400);
     }, 2600);
+}
+
+function editDepartment()
+{
+    $.post(window.location.pathname, $('#frmEditDepartment').serialize(), function () {
+        popMsg('部门信息保存成功');
+    });
 }
