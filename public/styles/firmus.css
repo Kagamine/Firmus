@@ -417,3 +417,13 @@ table {
 .table tr:nth-child(odd) {
     background-color: rgb(245,245,245);
 }
+
+.pager {
+    color: #222;
+    background-color: #ececec;
+    transition: background 0.2s linear, color 0.2s linear;
+}
+
+.pager.active {
+    color: rgb(253,217,0);
+}

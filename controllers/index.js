@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-router.use('oauth', require('./oauth'));
+router.use('/oauth', require('./oauth'));
 router.use(require('./init'));
 router.use(require('./shared'));
+router.use('/general', require('./general'));
 
 router.use(function(req, res, next) {
     var err = new Error('Not Found');

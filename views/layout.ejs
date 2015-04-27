@@ -20,11 +20,20 @@
 </div>
 <div class="functions">
     <ul>
-        <li><a href="/">新闻公告</a></li>
-        <li><a href="/">部门管理</a></li>
-        <li><a href="/">职工管理</a></li>
-        <li><a href="/">地址信息管理</a></li>
-        <li><a href="/">配送车辆管理</a></li>
+        <% if (general) { %>
+        <% if (permission.news) { %>
+        <li><a href="/general/news">新闻公告</a></li>
+        <% } if (permission.department) { %>
+        <li><a href="/general/department">部门管理</a></li>
+        <% } if (permission.employee) { %>
+        <li><a href="/general/employee">职工管理</a></li>
+        <% } if (permission.address) { %>
+        <li><a href="/general/address">地址信息管理</a></li>
+        <% } if (permission.car) { %>
+        <li><a href="/general/car">配送车辆管理</a></li>
+        <% } if (permission.permission) { %>
+        <li><a href="/general/car">权限管理</a></li>
+        <% } } %>
     </ul>
 </div>
 <div class="main">

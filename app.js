@@ -1,4 +1,5 @@
 var os = require('os');
+var fs = require('fs');
 var _ = GLOBAL._ = require('underscore');
 var express = require('express');
 var path = require('path');
@@ -9,6 +10,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
 var expressLayouts = require('express-ejs-layouts');
+GLOBAL.permission = JSON.parse(fs.readFileSync(__dirname + '/permission.json'));
 GLOBAL.enums = require('./models/enums');
 GLOBAL.db = require('./models');
 var routes = require('./controllers');

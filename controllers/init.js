@@ -1,3 +1,4 @@
+'use strict'
 var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
@@ -13,12 +14,19 @@ router.use(function (req, res, next) {
     res.locals._ = _;
     res.locals.xss = xss;
     res.locals.csrf = req.csrfToken();
+    res.locals.permission = {};
     db.users.findById(req.session.uid)
         .exec()
         .then(function (user) {
-        res.locals.currentUser = user;
-        next();
-    }, next);
+            res.locals.currentUser = user;
+            for (let x in permission) {
+                if (x == 'access') continue;
+                res.locals.permission[x] = {};
+                res.locals.permission[x].query = permission[x].query.some(x => x == res.locals.currentUser);
+                res.locals.permission[x].modify = permission[x].modify.some(x => x == res.locals.currentUser);
+            }
+            next();
+        }, next);
 });
 
 module.exports = router;
