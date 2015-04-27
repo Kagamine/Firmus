@@ -529,3 +529,27 @@ table {
 .submenu {
     margin: 10px 0 30px 0;
 }
+
+.msg {
+    margin: 0 auto;
+    position: fixed;
+    top: 100px;
+    padding: 10px 15px;
+    background-color: rgba(58, 56, 56, 0.95);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    display: none;
+    color: #fff;
+    border-radius: 5px;
+    display: inline;
+    visibility: visible;
+    transition: margin 0.2s linear, opacity 0.2s linear, visibility 0.2s linear;
+    z-index: 9999;
+    font-size: 20px;
+}
+
+.msg.hide {
+    opacity: 0;
+    margin-top: -15px;
+    visibility: hidden;
+    transition: margin 0.2s linear, opacity 0.2s linear, visibility 0.2s linear;
+}
