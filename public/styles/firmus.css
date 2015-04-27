@@ -370,6 +370,7 @@ select {
     border-left: 10px solid rgb(253,217,0);
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
 }
 
 .block {
@@ -397,7 +398,7 @@ table {
 
 .table th {
     background-color: rgb(253,217,0);
-    color: rgb(8,47,143);
+    color: #555;
     text-shadow: 1px 1px 2px rgba(255,255,255,0.65);
     font-size: 14px;
 }
@@ -418,8 +419,8 @@ table {
     background-color: rgb(245,245,245);
 }
 
-.pager-item {
-    color: #222!important;
+.pager-item, .pager-item:visited, .pager-item:active {
+    color: #222;
     background-color: #ececec;
     transition: background 0.2s linear, color 0.2s linear;
     float: left;

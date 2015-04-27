@@ -3,7 +3,6 @@ var Schema = mongodb.mongoose.Schema;
 
 var departmentSchema = new Schema({
     title: String,
-    users: [{type: Schema.Types.ObjectId, ref: 'users'}],
     city: {
         type: String,
         index: true
