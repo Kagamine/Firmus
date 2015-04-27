@@ -1,4 +1,8 @@
-<h2>部门管理</h2>
+<h2>部门管理
+    <% if (permission.department.modify) { %>
+    <a class="add" href="javascript:$('#frmCreateDepartment').submit()">添加部门</a>
+    <% } %>
+</h2>
 <form class="search">
     检索：
     <input type="text" name="title" class="textbox" placeholder="部门名称" value="<%= req.query.title %>" />&nbsp;
