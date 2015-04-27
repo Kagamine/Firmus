@@ -143,4 +143,29 @@ router.get('/department', auth.checkRole('department', 'modify'), function (req,
         .then(null, next);
 });
 
+// 部门员工信息
+router.get('/department/:id', auth.checkRole('department', 'query'), function (req, res, next) {
+    db.departments.findById(req.params.id)
+        .exec()
+        .then(function (department) {
+            res.locals.department = department;
+            return db.users.find({ department: department._id }).sort('role').exec();
+        })
+        .then(function (users) {
+            res.locals.users = users;
+            res.render('general/departmentDetail', { title: res.locals.department.title });
+        })
+        .then(null, next);
+});
+
+// 编辑部门
+router.get('/department/edit/:id', auth.checkRole('department', 'modify'), function (req, res, next) {
+    db.departments.findById(req.params.id)
+        .exec()
+        .then(function (department) {
+            res.render('general/departmentEdit', { title: department.title, department: department });
+        })
+        .then(null, next)
+});
+
 module.exports = router;

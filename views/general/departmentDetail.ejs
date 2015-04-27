@@ -1,0 +1,34 @@
+<% include departmentMenu %>
+<% if (users.some(x => x.role == '部门主管')) { %>
+<p>部门主管：<a href="/general/employee/<%= users.filter(x => x.role == '部门主管')[0]._id %>"><%= users.filter(x => x.role == '部门主管')[0].name %></a></p>
+<% } %>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">工号</th>
+        <th class="tl">姓名</th>
+        <th>职务</th>
+        <th>学历</th>
+        <th>联系电话</th>
+        <% if (permission.employee.modify) { %>
+        <th>操作</th>
+        <% } %>
+    </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(x => { %>
+    <tr>
+        <td><%= x.jobNumber %></td>
+        <td><%= x.name %></td>
+        <td class="tc"><%= x.role %></td>
+        <td class="tc"><%= x.diploma %></td>
+        <td class="tc"><%= x.phone %></td>
+        <% if (permission.employee.modify) { %>
+        <td class="tc">
+            <a href="/general/employee/<%= x._id %>">编辑员工</a>
+        </td>
+        <% } %>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

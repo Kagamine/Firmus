@@ -41,7 +41,8 @@ var userSchema = new Schema({
         address: String,
         phone: String,
         PRCIdentity: String
-    }
+    },
+    diploma: String
 });
 
 var user = mongodb.mongoose.model('users', userSchema);

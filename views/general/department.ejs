@@ -27,11 +27,14 @@
     <tbody>
     <% departments.forEach(x => { %>
     <tr>
-        <td class="tl"><%= x.title %></td>
+        <td class="tl"><a href="/general/department/<%= x._id %>"><%= x.title %></a></td>
         <td class="tl"><%= x.master %></td>
         <td class="tc"><%= x.count %></td>
         <td class="tc"><%= x.type %></td>
         <td class="tc">
+            <% if (currentUser.role == '部门主管' && x._id == currentUser.department) { %>
+            <a href="/general/department/<%= x._id %>">管理</a>
+            <% } %>
             <a href="#">修改</a>
             <a href="#">删除</a>
         </td>
