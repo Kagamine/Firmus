@@ -21,17 +21,17 @@
 <div class="functions">
     <ul>
         <% if (general) { %>
-        <% if (permission.news) { %>
+        <% if (permission.news.query) { %>
         <li><a href="/general/news">新闻公告</a></li>
-        <% } if (permission.department) { %>
+        <% } if (permission.department.query) { %>
         <li><a href="/general/department">部门管理</a></li>
-        <% } if (permission.employee) { %>
+        <% } if (permission.employee.query) { %>
         <li><a href="/general/employee">职工管理</a></li>
-        <% } if (permission.address) { %>
+        <% } if (permission.address.query) { %>
         <li><a href="/general/address">地址信息管理</a></li>
         <% } if (permission.car) { %>
         <li><a href="/general/car">配送车辆管理</a></li>
-        <% } if (permission.permission) { %>
+        <% } if (permission.permission.query) { %>
         <li><a href="/general/car">权限管理</a></li>
         <% } } %>
     </ul>
