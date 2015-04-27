@@ -125,7 +125,10 @@ router.get('/department', auth.checkRole('department', 'modify'), function (req,
         })
         .then(function (users) {
             for (let i = 0; i < users.length; i++) {
-                res.locals.departments[i].master = users[i].name;
+                if (users[i])
+                    res.locals.departments[i].master = users[i].name;
+                else
+                    res.locals.departments[i].master = '未指派';
             }
             return Promise.all(res.locals.departments.map(x => {
                 return db.users.find({ department: x._id }).count().exec();
