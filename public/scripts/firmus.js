@@ -8,6 +8,9 @@ $(window).resize(function () {
 
 $(document).ready(function () {
     resize();
+    $('#logo').click(function () {
+        window.location = '/';
+    });
 });
 
 function popMsg(txt) {
