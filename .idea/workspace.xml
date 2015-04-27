@@ -94,24 +94,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="firmus.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="firmus.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-26.481482" vertical-offset="11759" max-vertical-offset="12958">
-              <caret line="567" column="14" selection-start-line="567" selection-start-column="14" selection-end-line="567" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.57009345" vertical-offset="11759" max-vertical-offset="12958">
+              <caret line="565" column="11" selection-start-line="565" selection-start-column="11" selection-end-line="565" selection-end-column="11" />
               <folding>
-                <marker date="1430132628000" expanded="true" signature="5540:5580" placeholder="{...}" />
-                <marker date="1430132628000" expanded="true" signature="5888:5928" placeholder="{...}" />
+                <marker date="1430133331000" expanded="true" signature="5540:5580" placeholder="{...}" />
+                <marker date="1430133331000" expanded="true" signature="5888:5928" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="firmus.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="firmus.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/firmus.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.63455147" vertical-offset="204" max-vertical-offset="1430">
-              <caret line="44" column="22" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="1430">
+              <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -174,9 +174,9 @@
         <option value="$PROJECT_DIR$/views/general/departmentEdit.ejs" />
         <option value="$PROJECT_DIR$/controllers/general.js" />
         <option value="$PROJECT_DIR$/views/general/department.ejs" />
-        <option value="$PROJECT_DIR$/public/styles/firmus.css" />
         <option value="$PROJECT_DIR$/views/layout.ejs" />
         <option value="$PROJECT_DIR$/public/scripts/firmus.js" />
+        <option value="$PROJECT_DIR$/public/styles/firmus.css" />
       </list>
     </option>
   </component>
@@ -857,17 +857,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.481482" vertical-offset="11759" max-vertical-offset="12958">
-          <caret line="567" column="14" selection-start-line="567" selection-start-column="14" selection-end-line="567" selection-end-column="14" />
-          <folding>
-            <marker date="1430132628000" expanded="true" signature="5540:5580" placeholder="{...}" />
-            <marker date="1430132628000" expanded="true" signature="5888:5928" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-21.185184" vertical-offset="0" max-vertical-offset="946">
@@ -902,9 +891,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/firmus.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63455147" vertical-offset="204" max-vertical-offset="1430">
-          <caret line="44" column="22" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="1430">
+          <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57009345" vertical-offset="11759" max-vertical-offset="12958">
+          <caret line="565" column="11" selection-start-line="565" selection-start-column="11" selection-end-line="565" selection-end-column="11" />
+          <folding>
+            <marker date="1430133331000" expanded="true" signature="5540:5580" placeholder="{...}" />
+            <marker date="1430133331000" expanded="true" signature="5888:5928" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
