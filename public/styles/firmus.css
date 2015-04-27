@@ -513,7 +513,7 @@ table {
 
 .submenu-item {
     font-size: 16px;
-    background-color: #eee;
+    background-color: #e7e7e7;
     padding: 8px 10px;
     color: #333!important;
     transition: background-color 0.2s linear;

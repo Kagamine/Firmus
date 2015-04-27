@@ -107,12 +107,12 @@ router.get('/department', auth.checkRole('department', 'modify'), function (req,
         .count()
         .exec()
         .then(function (count) {
-            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var page = res.locals.page = req.params.page || 1;
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
-                .skip(50 * (req.query.p || 1 - 1))
+                .skip(50 * (page - 1))
                 .limit(50)
                 .populate('user')
                 .exec();
