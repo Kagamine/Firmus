@@ -49,3 +49,6 @@
     <% } %>
     <a class="pager-item" href="/general/department?p=<%= pageCount %>">»</a>
 </div>
+<form id="frmCreateDepartment" action="/general/department/create" method="post">
+    <input type="hidden" value="<%= csrf %>" name="_csrf" />
+</form>

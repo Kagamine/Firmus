@@ -182,11 +182,22 @@ router.post('/department/edit/:id', auth.checkRole('department', 'modify'), func
         .then(null, next);
 });
 
+// 删除部门
 router.post('/department/delete/:id', auth.checkRole('department', 'modify'), function (req, res, next) {
     db.departments.remove({ _id: req.params.id })
         .exec()
         .then(function () { res.send('OK'); })
         .then();
+});
+
+// 创建部门
+router.post('/department/create', auth.checkRole('department', 'modify'), function (req, res, next) {
+    let department = new db.departments();
+    department.title = '新建部门';
+    department.type = '普通部门';
+    department.save(function (err, department) {
+        res.redirect('/general/department/' + department._id);
+    });
 });
 
 module.exports = router;
