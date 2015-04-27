@@ -26,7 +26,7 @@
     </thead>
     <tbody>
     <% departments.forEach(x => { %>
-    <tr>
+    <tr id="<%= x._id %>">
         <td class="tl"><a href="/general/department/<%= x._id %>"><%= x.title %></a></td>
         <td class="tl"><%= x.master %></td>
         <td class="tc"><%= x.count %></td>
@@ -35,8 +35,8 @@
             <% if (currentUser.role == '部门主管' && x._id == currentUser.department) { %>
             <a href="/general/department/<%= x._id %>">管理</a>
             <% } %>
-            <a href="#">修改</a>
-            <a href="#">删除</a>
+            <a href="/general/department/edit/<%= x._id %>">修改</a>
+            <a href="javascript:deleteDialog('/general/department/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
         </td>
     </tr>
     <% }) %>

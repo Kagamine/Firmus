@@ -30,3 +30,31 @@ function editDepartment()
         popMsg('部门信息保存成功');
     });
 }
+
+function closeDialog() {
+    $('.dialog').removeClass('active');
+    setTimeout(function () {
+        $('.dialog').remove();
+    }, 200);
+}
+
+function postDelete(url, id) {
+    $.post(url, { _csrf: csrf }, function () {
+        $('#' + id).remove();
+        popMsg('删除成功');
+        closeDialog();
+    });
+}
+
+function deleteDialog(url, id)
+{
+    var html = '<div class="dialog">' +
+        '<h3 class="dialog-title">提示</h3>' +
+        '<p>您确认要删除这条记录吗？</p>' +
+        '<div class="dialog-buttons"><a href="javascript:postDelete(\'' + url + '\', \'' + id + '\')" class="button red">删除</a> <a href="javascript:closeDialog()" class="button blue">取消</a></div>' +
+        '</div>';
+    var dom = $(html);
+    dom.css('margin-left', -(dom.outerWidth() / 2));
+    $('body').append(dom);
+    setTimeout(function () { dom.addClass('active'); }, 10);
+}

@@ -182,4 +182,11 @@ router.post('/department/edit/:id', auth.checkRole('department', 'modify'), func
         .then(null, next);
 });
 
+router.post('/department/delete/:id', auth.checkRole('department', 'modify'), function (req, res, next) {
+    db.departments.remove({ _id: req.params.id })
+        .exec()
+        .then(function () { res.send('OK'); })
+        .then();
+});
+
 module.exports = router;
