@@ -51,7 +51,7 @@ router.post('/news/create', auth.checkRole('news', 'modify'), function (req, res
 
 // 删除新闻
 router.post('/news/delete/:id', auth.checkRole('news', 'modify'), function (req, res, next) {
-    db.news.remove(req.params.id)
+    db.news.remove({ _id: req.params.id })
         .exec()
         .then(function () {
             res.redirect('/general/news');
