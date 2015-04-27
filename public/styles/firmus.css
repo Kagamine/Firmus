@@ -418,14 +418,22 @@ table {
     background-color: rgb(245,245,245);
 }
 
-.pager {
-    color: #222;
+.pager-item {
+    color: #222!important;
     background-color: #ececec;
     transition: background 0.2s linear, color 0.2s linear;
+    float: left;
+    font-size: 18px;
+    padding: 10px;
+    margin-right: 1px;
 }
 
-.pager.active {
-    color: rgb(253,217,0);
+.pager {
+    padding: 20px 0;
+}
+
+.pager-item.active, .pager-item:hover {
+    background-color: rgb(253,217,0);
 }
 
 .news-list-item {

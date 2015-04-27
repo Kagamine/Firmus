@@ -19,3 +19,10 @@
 </div>
 <% }) %>
 <div class="clear"></div>
+<div class="pager">
+    <a class="pager-item" href="/general/news">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/news?p=<%= i %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/general/news?p=<%= pageCount %>">»</a>
+</div>

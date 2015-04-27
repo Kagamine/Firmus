@@ -15,7 +15,15 @@ router.get('/news', auth.checkRole('news', 'query'), function (req, res, next) {
         .limit(10)
         .exec()
         .then(function (news) {
-            res.render('general/news', { title: '新闻公告', news: news });
+            res.locals.news = news;
+            return db.news.count().exec();
+        })
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            res.render('general/news', { title: '新闻公告' });
         })
         .then(null, next);
 });
@@ -85,6 +93,11 @@ router.post('/news/edit/:id', auth.checkRole('news', 'modify'), function (req, r
             res.redirect('/general/news/' + req.params.id);
         })
         .then(null, next);
+});
+
+// 部门列表
+router.get('/department', auth.checkRole('department', 'modify'), function (req, res, next) {
+    db.departments.find();
 });
 
 module.exports = router;
