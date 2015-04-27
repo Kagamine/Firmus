@@ -1,1 +1,21 @@
-<h2>新闻公告</h2>
+<h2>新闻公告
+<% if (permission.news.modify) { %>
+<a href="javascript:$('#frmCreateNews').submit();" class="button blue">发布新闻</a>
+<% } %></h2>
+<% if (permission.news.modify) { %>
+<form action="/general/news/create" method="post" id="frmCreateNews">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+</form>
+<% } %>
+<% news.forEach(x => { %>
+<div class="news-list-item">
+    <div class="news-list-item-date">
+        <span class="news-list-item-day"><%= x.time.getDay() %></span>
+        <br />
+        <span class="news-list-item-year"><%= moment(x.time).format('YYYY/MM') %></span>
+    </div>
+    <h3><a href="/general/news/<%= x._id %>"><%= x.title %></a></h3>
+    <div><%- x.summary %></div>
+</div>
+<% }) %>
+<div class="clear"></div>

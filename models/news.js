@@ -4,10 +4,12 @@ var Schema = mongodb.mongoose.Schema;
 var newsSchema = new Schema({
     time: {
         type: Date,
-        index: true
+        index: true,
+        default: Date.now()
     },
     title: String,
-    content: String
+    content: String,
+    summary: String
 });
 
 var news = mongodb.mongoose.model('news', newsSchema);

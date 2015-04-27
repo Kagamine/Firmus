@@ -8,11 +8,10 @@ auth.guest = function (req, res, next) {
 };
 
 auth.checkRole = function (mod, method) {
-    if (!req.session.uid) {
-        res.status(403);
-        return next();
-    }
     return function (req, res, next) {
+        if (!req.session.uid) {
+            return res.redirect('/login');
+        }
         if (!permission.access.some(x => x == res.locals.currentUser.role)) {
             res.status(403);
             return next();

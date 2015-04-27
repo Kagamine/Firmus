@@ -20,6 +20,7 @@ db.activities = require('./activity');
 db.gifts = require('./gift');
 db.giftDelivers = require('./giftDeliver');
 db.orders = require('./order');
+db.news = require('./news');
 db.Schema = Schema;
 db.fs = fs;
 db.mongoose = mongodb.mongoose;

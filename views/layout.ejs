@@ -11,11 +11,11 @@
 <div class="nav">
     <div class="container">
         <img src="/images/logo.png" class="nav-logo" />
-        <a href="#">基本信息</a>
-        <a href="#">订单管理</a>
-        <a href="#">热线管理</a>
-        <a href="#">赠品管理</a>
-        <a href="#">奶箱管理</a>
+        <a href="/general/news" class="<%= general ? 'active' : '' %>">基本信息</a>
+        <a href="/order" class="<%= order ? 'active' : '' %>">订单管理</a>
+        <a href="/call" class="<%= call ? 'active' : '' %>">热线管理</a>
+        <a href="/gift"  class="<%= gift ? 'active' : '' %>">赠品管理</a>
+        <a href="/">奶箱管理</a>
     </div>
 </div>
 <div class="functions">

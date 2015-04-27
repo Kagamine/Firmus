@@ -367,14 +367,14 @@ select {
 
 .search {
     padding: 12px 20px;
-    border-left: 10px solid #ffe6b0;
+    border-left: 10px solid rgb(253,217,0);
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .block {
     padding: 20px;
-    border-top: 5px solid #56a5eb;
+    border-top: 5px solid rgb(253,217,0);
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
@@ -426,4 +426,32 @@ table {
 
 .pager.active {
     color: rgb(253,217,0);
+}
+
+.news-list-item {
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.news-list-item-date {
+    width: 80px;
+    height: 70px;
+    background-color: rgb(253,217,0);
+    text-align: center;
+    float: left;
+    margin-right: 20px;
+    padding: 25px 20px;
+}
+
+.news-list-item-day {
+    font-size: 32px;
+}
+
+.news-list-item-year {
+    font-size: 18px;
+}
+
+.clear {
+    clear: both;
 }
