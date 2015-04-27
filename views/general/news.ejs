@@ -10,7 +10,7 @@
 <% news.forEach(x => { %>
 <div class="news-list-item">
     <div class="news-list-item-date">
-        <span class="news-list-item-day"><%= x.time.getDay() %></span>
+        <span class="news-list-item-day"><%= moment(x.time).format('DD') %></span>
         <br />
         <span class="news-list-item-year"><%= moment(x.time).format('YYYY/MM') %></span>
     </div>
