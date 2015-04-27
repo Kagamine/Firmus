@@ -1,5 +1,12 @@
 <div class="block">
     <h2><%= title %></h2>
-    <p><%= moment(news.time).format('YYYY-MM-DD') %></p>
-    <%- xss.process(news.content) %>
+    <p class="news-info">发布于 <%= moment(news.time).format('YYYY-MM-DD HH:mm') %>
+        <% if (permission.news.modify) { %>
+        <a href="/general/news/edit/<%= news._id %>">编辑</a>
+        <a href="javascript:$('#frmDeleteNews').submit()">删除</a>
+        <% } %></p>
+    <div class="news-content"><%- xss.process(news.content) %></div>
 </div>
+<form action="/general/news/delete/<%= news._id %>" method="post" id="frmDeleteNews">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+</form>

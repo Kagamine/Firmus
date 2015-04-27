@@ -1,0 +1,17 @@
+<div class="block">
+    <form action="/general/news/edit/<%= news._id %>" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <p>
+            新闻标题
+            <br />
+            <input name="title" type="text" class="textbox w-3" value="<%= news.title %>" />
+        </p>
+        <p>
+            新闻内容
+            <br />
+            <textarea name="content" class="ckeditor"><%= news.content %></textarea>
+        </p>
+        <p><input type="submit" value="保存" class="button green"></p>
+    </form>
+</div>
+<script src="/scripts/ckeditor/ckeditor.js"></script>
