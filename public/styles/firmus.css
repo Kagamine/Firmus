@@ -364,7 +364,7 @@ select {
     line-height: 30px;
     font-size: 14px;
     margin: 0;
-    min-width: 150px;
+    width: 150px;
 }
 
 .search {
@@ -483,6 +483,14 @@ table {
 .news-content {
     font-size: 18px;
     padding: 10px;
+}
+
+.w-0-6 {
+    width: 60px!important;
+}
+
+.w-0-8 {
+    width: 80px!important;
 }
 
 .w-1 {

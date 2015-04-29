@@ -1,0 +1,71 @@
+<h2><%= title %></h2>
+<form class="search">
+    检索:
+    <select name="city" class="w-0-6">
+        <option value="">城市</option>
+        <% cities.forEach(x => { %>
+        <option><%= x %></option>
+        <% }) %>
+    </select>
+    <select name="district" class="w-0-6">
+        <option value="">区县</option>
+        <% districts.forEach(x => { %>
+        <option data-city="<%= x.city %>"><%= x.district %></option>
+        <% }) %>
+    </select>
+    <input type="text" class="w-0-6 textbox" name="address" placeholder="详细地址" />
+    <input type="text" class="w-0-6 textbox" name="name" placeholder="联系人" />
+    <input type="text" class="w-0-6 textbox" name="phone" placeholder="联系电话" />
+    <select name="milkStation" class="w-1">
+        <option value="">所属奶站</option>
+        <% milkStations.forEach(x => { %>
+        <option value="<%= x._id %>"><%= x.title %></option>
+        <% }) %>
+    </select>
+    <select name="milkbox" class="w-0-6">
+        <option value="">奶箱</option>
+        <option>已安装</option>
+        <option>未安装</option>
+    </select>
+    <input type="submit" value="过滤" class="button green" />
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>城市</th>
+        <th>区县</th>
+        <th>地址</th>
+        <th>联系人</th>
+        <th>联系电话</th>
+        <th>所属奶站</th>
+        <th>有无奶箱</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% addresses.forEach(x => { %>
+    <tr>
+        <td><%= x.city %></td>
+        <td><%= x.district %></td>
+        <td><%= x.address %></td>
+        <td><%= x.name %></td>
+        <td><%= x.phone %></td>
+        <td><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a></td>
+        <td><%= x.deposit ? '有奶箱' : '无奶箱' %></td>
+        <td>
+            <a href="/general/address/<%= x._id %>">编辑</a>
+            <a href="javascript:deleteDialog('/general/address/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+<div class="pager">
+    <a class="pager-item" href="/general/address?p=1&name=<%= req.query.name %>&phone=<%= req.query.phone %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/address?p=<%= i %>&name=<%= req.query.name %>&phone=<%= req.query.phone %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/general/address?p=<%= pageCount || 1 %>&name=<%= req.query.name %>&phone=<%= req.query.phone %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>">»</a>
+</div>

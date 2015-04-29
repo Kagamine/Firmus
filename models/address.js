@@ -15,7 +15,10 @@ var addressSchema = new Schema({
         type: String,
         index: true
     },
-    phone: String,
+    phone: {
+        type: String,
+        index: true
+    },
     milkStation: {
         type: Schema.Types.ObjectId,
         index: true,

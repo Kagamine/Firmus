@@ -335,4 +335,68 @@ router.post('/employee/edit/:id', auth.checkRole('employee', 'modify'), function
         .then(null, next);
 });
 
+// 地址信息列表
+router.get('/address', auth.checkRole('address', 'query'), function (req, res, next) {
+    let query = db.addresses.find();
+    if (req.body.city)
+        query = query.where('city').eq(req.body.city);
+    if (req.body.district)
+        query = query.where('district').eq(req.body.district);
+    if (req.body.address)
+        query = query.where({ address: new RegExp('.*' + req.query.address + '.*') });
+    if (req.body.milkStation)
+        query = query.where('milkStation').eq(req.body.milkStation);
+    if (req.body.name)
+        query = query.where({ name: new RegExp('.*' + req.query.name + '.*') })
+    if (req.body.phone)
+        query = query.where({ phone: new RegExp('.*' + req.query.phone + '.*') })
+    if (req.body.milkBox)
+    {
+        if (req.body.milkbox == '已安装')
+            query = query.where('deposit').ne(null);
+        else
+            query = query.where('deposit').eq(null);
+    }
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query.populate({ path: 'milkStation', select: 'title _id' }).skip(50 * (page - 1)).limit(50).exec();
+        })
+        .then(function (addresses) {
+            res.locals.addresses = addresses;
+            return db.addresses
+                .aggregate()
+                .project('addresses')
+                .group({ _id: 'city' })
+                .exec();
+        })
+        .then(function (cities) {
+            res.locals.cities = cities.map(x => x._id);
+            return db.addresses
+                .aggregate()
+                .project('addresses')
+                .group({ _id: { city: 'city', district: 'district' } })
+                .exec();
+        })
+        .then(function (districts) {
+            res.locals.districts = districts.map(x => {
+                return {
+                    city: x._id.city,
+                    district: x._id.district
+                }
+            });
+            return db.departments.find({ type: '奶站' }).exec();
+        })
+        .then(function (milkStations) {
+            res.locals.milkStations = milkStations;
+            res.render('general/address', { title: '地址信息管理' });
+        })
+        .then(null, next);
+});
+
 module.exports = router;
