@@ -1,0 +1,32 @@
+<h2><%= title %></h2>
+<div class="block">
+    <form method="post">
+        <input type="hidden" value="<%= csrf %>" name="_csrf" />
+        <h3>第一步 - 填写基本资料</h3>
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">工号</td>
+                <td><input type="text" class="textbox w-3" name="jobNumber" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">用户名</td>
+                <td><input type="text" class="textbox w-3" name="username" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">密码</td>
+                <td><input type="password" class="textbox w-3" name="password" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">角色</td>
+                <td>
+                    <select name="role">
+                        <% enums.role.forEach(x => { %>
+                        <option><%= x %></option>
+                        <% }) %>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <p><input type="submit" class="button blue" value="创建用户并填写详细资料" /></p>
+    </form>
+</div>

@@ -1,4 +1,8 @@
-<h2>职工管理</h2>
+<h2>职工管理
+    <% if (permission.employee.modify) { %>
+    <a href="/general/employee/create" class="add">添加职工</a>
+    <% } %>
+</h2>
 <form class="search">
     检索:
     <input name="name" type="text" placeholder="姓名" class="textbox" />

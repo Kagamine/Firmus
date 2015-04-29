@@ -234,6 +234,24 @@ router.get('/employee', auth.checkRole('employee', 'query'), function (req, res,
         .then(null, next);
 });
 
+
+// 添加职工
+router.get('/employee/create', auth.checkRole('employee', 'modify'), function (req, res, next) {
+    res.render('general/employeeCreate', { title: '添加职工' });
+});
+
+// 添加职工
+router.post('/employee/create', auth.checkRole('employee', 'modify'), function (req, res, next) {
+    let user = db.users();
+    user.username = req.body.username;
+    user.salt = crypto.salt();
+    user.password = crypto.sha256(req.body.password, salt);
+    user.role = req.body.role;
+    user.save(function (err, user) {
+        res.redirect('/general/employee/edit/' + user._id);
+    });
+});
+
 // 职工信息
 router.get('/employee/:id', auth.checkRole('employee', 'query'), function (req, res, next) {
     db.users.findById(req.params.id)
