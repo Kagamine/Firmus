@@ -1,0 +1,57 @@
+<h2>职工管理</h2>
+<form class="search">
+    检索:
+    <input name="name" type="text" placeholder="姓名" class="textbox" />
+    <input name="jobNumber" type="text" placeholder="工号" class="textbox" />
+    <select name="role">
+        <option value="">角色</option>
+        <% enums.role.forEach(x => { %>
+        <option value="<%= x %>"><%= x %></option>
+        <% }) %>
+    </select>
+    <select name="department">
+        <option value="">所属部门</option>
+        <% departments.forEach(x => { %>
+        <option value="<%= x._id %>"><%= x.title %></option>
+        <% }) %>
+    </select>
+    <input type="submit" value="过滤" class="button green" />
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">工号</th>
+        <th class="tl">姓名/用户名</th>
+        <th class="tl">职务</th>
+        <th>学历</th>
+        <th class="tl">联系电话</th>
+        <th>所属部门</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(x => { %>
+    <tr>
+        <td><%= x.jobNumber %></td>
+        <td><%= x.name %> (<%= x.username %>)</td>
+        <td><%= x.role %></td>
+        <td class="tc"><%= x.diploma %></td>
+        <td><%= x.phone %></td>
+        <td class="tc"><%= x.department ? x.department.title : '未分配' %></td>
+        <td class="tc">
+            <a href="/general/employee/<%= x._id %>">详细资料</a>
+            <a href="/general/employee/edit/<%= x._id %>">编辑</a>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+<div class="pager">
+    <a class="pager-item" href="/general/employee?p=1&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/employee?p=<%= i %>&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/general/employee?p=<%= pageCount || 1 %>&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>">»</a>
+</div>

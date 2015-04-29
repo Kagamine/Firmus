@@ -15,7 +15,7 @@
         <span class="news-list-item-year"><%= moment(x.time).format('YYYY/MM') %></span>
     </div>
     <h3><a href="/general/news/<%= x._id %>"><%= x.title %></a></h3>
-    <div><%- x.summary %></div>
+    <div><%= x.summary %></div>
 </div>
 <% }) %>
 <div class="clear"></div>
@@ -24,5 +24,5 @@
     <% for(var i = start; i <= end; i++) { %>
     <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/news?p=<%= i %>"><%= i %></a>
     <% } %>
-    <a class="pager-item" href="/general/news?p=<%= pageCount %>">»</a>
+    <a class="pager-item" href="/general/news?p=<%= pageCount || 1 %>">»</a>
 </div>

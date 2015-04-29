@@ -43,11 +43,11 @@
     </tbody>
 </table>
 <div class="pager">
-    <a class="pager-item" href="/general/department">«</a>
+    <a class="pager-item" href="/general/department?p=1&title=<%= req.query.title %>&type=<%= req.query.type %>">«</a>
     <% for(var i = start; i <= end; i++) { %>
-    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/department?p=<%= i %>"><%= i %></a>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/department?p=<%= i %>&title=<%= req.query.title %>&type=<%= req.query.type %>""><%= i %></a>
     <% } %>
-    <a class="pager-item" href="/general/department?p=<%= pageCount %>">»</a>
+    <a class="pager-item" href="/general/department?p=<%= pageCount || 1 %>&title=<%= req.query.title %>&type=<%= req.query.type %>"">»</a>
 </div>
 <form id="frmCreateDepartment" action="/general/department/create" method="post">
     <input type="hidden" value="<%= csrf %>" name="_csrf" />

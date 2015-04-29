@@ -107,7 +107,7 @@ router.get('/department', auth.checkRole('department', 'modify'), function (req,
         .count()
         .exec()
         .then(function (count) {
-            var page = res.locals.page = req.params.page || 1;
+            var page = res.locals.page = req.query.p || 1;
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
@@ -198,6 +198,39 @@ router.post('/department/create', auth.checkRole('department', 'modify'), functi
     department.save(function (err, department) {
         res.redirect('/general/department/' + department._id);
     });
+});
+
+// 职工列表
+router.get('/employee', auth.checkRole('department', 'query'), function (req, res, next) {
+    let query;
+    db.departments.find()
+        .select('_id title')
+        .exec()
+        .then(function (departments) {
+            res.locals.departments = departments;
+            query = db.users.find();
+            if (req.query.name)
+                query = query.where({ name: req.query.name });
+            if (req.query.jobNumber)
+                query = query.where({ jobNumber: req.query.jobNumber });
+            if (req.query.department)
+                query = query.where({ department: req.query.department });
+            if (req.query.role)
+                query = query.where({ role: req.query.role });
+            return _.clone(query).count().exec();
+        })
+        .then (function (count) {
+            var page = res.locals.page = req.query.p || 1;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query.populate('department').skip(50 * (page - 1)).limit(50).exec();
+        })
+        .then(function (users) {
+            res.locals.users = users;
+            res.render('general/employee', { title: '职工管理' });
+        })
+        .then(null, next);
 });
 
 module.exports = router;

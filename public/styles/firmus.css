@@ -405,6 +405,14 @@ table {
     font-size: 14px;
 }
 
+.table tbody tr {
+    transition: background 0.2s linear;
+}
+
+.table tbody tr:hover {
+    background-color: rgb(255,248,233);
+}
+
 .tl {
     text-align: left;
 }
