@@ -64,12 +64,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="employeeCreate.ejs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="employeeCreate.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/general/employeeCreate.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.069327734" vertical-offset="0" max-vertical-offset="952">
-              <caret line="3" column="60" selection-start-line="3" selection-start-column="60" selection-end-line="3" selection-end-column="60" />
+            <state vertical-scroll-proportion="-12.774194" vertical-offset="0" max-vertical-offset="814">
+              <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="firmus.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.44769874" vertical-offset="12464" max-vertical-offset="13420">
+              <caret line="586" column="1" selection-start-line="586" selection-start-column="1" selection-end-line="586" selection-end-column="1" />
+              <folding>
+                <marker date="1430273689000" expanded="true" signature="5540:5580" placeholder="{...}" />
+                <marker date="1430273689000" expanded="true" signature="5888:5928" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -89,16 +102,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-12.774194" vertical-offset="0" max-vertical-offset="1452">
               <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="shared.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/shared.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="946">
-              <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="3" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -175,11 +178,11 @@
         <option value="$PROJECT_DIR$/views/general/employeeCautioner.ejs" />
         <option value="$PROJECT_DIR$/public/scripts/firmus.js" />
         <option value="$PROJECT_DIR$/views/layout.ejs" />
-        <option value="$PROJECT_DIR$/public/styles/firmus.css" />
         <option value="$PROJECT_DIR$/views/general/employeeEdit.ejs" />
         <option value="$PROJECT_DIR$/views/general/employee.ejs" />
         <option value="$PROJECT_DIR$/controllers/general.js" />
         <option value="$PROJECT_DIR$/views/general/employeeCreate.ejs" />
+        <option value="$PROJECT_DIR$/public/styles/firmus.css" />
       </list>
     </option>
   </component>
@@ -278,6 +281,10 @@
               <option name="myItemId" value="public" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -294,6 +301,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Firmus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Firmus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -746,17 +767,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="12349" max-vertical-offset="13420">
-          <caret line="591" column="1" selection-start-line="591" selection-start-column="1" selection-end-line="591" selection-end-column="1" />
-          <folding>
-            <marker date="1430272214000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1430272214000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/general/employeeCautioner.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.4193548" vertical-offset="0" max-vertical-offset="594">
@@ -855,9 +865,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/general/employeeCreate.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.069327734" vertical-offset="0" max-vertical-offset="952">
-          <caret line="3" column="60" selection-start-line="3" selection-start-column="60" selection-end-line="3" selection-end-column="60" />
+        <state vertical-scroll-proportion="-12.774194" vertical-offset="0" max-vertical-offset="814">
+          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/styles/firmus.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44769874" vertical-offset="12464" max-vertical-offset="13420">
+          <caret line="586" column="1" selection-start-line="586" selection-start-column="1" selection-end-line="586" selection-end-column="1" />
+          <folding>
+            <marker date="1430273689000" expanded="true" signature="5540:5580" placeholder="{...}" />
+            <marker date="1430273689000" expanded="true" signature="5888:5928" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
