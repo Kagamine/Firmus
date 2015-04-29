@@ -1,0 +1,51 @@
+<h2><%= title %></h2>
+<div class="block">
+    <form method="post">
+        <input type="hidden" value="<%= csrf %>" name="_csrf" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">城市</td>
+                <td><input type="text" class="textbox w-3" name="city" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">区县</td>
+                <td><input type="text" class="textbox w-3" name="district" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">详细地址</td>
+                <td><input type="text" class="textbox w-3" name="address" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">联系人</td>
+                <td><input type="text" class="textbox w-3" name="name" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">联系电话</td>
+                <td><input type="text" class="textbox w-3" name="phone" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">楼层指示</td>
+                <td>
+                    <select name="storey">
+                        <option>电梯</option>
+                        <option>楼梯</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">奶站</td>
+                <td>
+                    <select name="milkStation">
+                        <option value="">未指派</option>
+                        <% milkStations.forEach(x => { %>
+                        <option value="<%= x._id %>"><%= x.title %></option>
+                        <% }) %>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input type="submit" class="button blue" value="创建" />
+        </p>
+    </form>
+</div>

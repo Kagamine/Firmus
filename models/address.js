@@ -22,7 +22,7 @@ var addressSchema = new Schema({
     milkStation: {
         type: Schema.Types.ObjectId,
         index: true,
-        ref: 'department'
+        ref: 'departments'
     },
     storey: {
         type: String,
@@ -42,7 +42,8 @@ var addressSchema = new Schema({
     },
     blankOut: {
         type: Boolean,
-        index: true
+        index: true,
+        default: false
     }
 });
 

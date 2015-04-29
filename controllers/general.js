@@ -337,7 +337,7 @@ router.post('/employee/edit/:id', auth.checkRole('employee', 'modify'), function
 
 // 地址信息列表
 router.get('/address', auth.checkRole('address', 'query'), function (req, res, next) {
-    let query = db.addresses.find();
+    let query = db.addresses.find({ blankOut: false });
     if (req.body.city)
         query = query.where('city').eq(req.body.city);
     if (req.body.district)
@@ -395,6 +395,84 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
         .then(function (milkStations) {
             res.locals.milkStations = milkStations;
             res.render('general/address', { title: '地址信息管理' });
+        })
+        .then(null, next);
+});
+
+// 奶站订单列表
+router.get('/department/order/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    db.orders.find({
+        'address.department': req.params.id
+    })
+        .exec()
+        .populate({ path: 'address', select: 'department' })
+        .then(function (orders) {
+            res.send(orders);
+        })
+        .then(null, next);
+});
+
+// 添加地址
+router.get('/address/create', auth.checkRole('address', 'modify'), function (req, res, next) {
+    db.departments.find({ type: '奶站' })
+        .exec()
+        .then(function (milkStations) {
+            res.locals.milkStations = milkStations;
+            res.render('general/addressCreate', { title: '添加地址信息' });
+        })
+        .then(null, next);
+});
+
+// 添加地址
+router.post('/address/create', auth.checkRole('address', 'modify'), function (req, res, next) {
+    let address = new db.addresses();
+    address.city = req.body.city;
+    address.district = req.body.district;
+    address.address = req.body.address;
+    address.storey = req.body.storey;
+    address.milkStation = req.body.milkStation;
+    address.name = req.body.name;
+    address.phone = req.body.phone;
+    address.blockOut = false;
+    address.save(function (err, address) {
+        res.redirect('/address/' + address._id);
+    });
+});
+
+// 删除地址
+router.post('/address/delete/:id', auth.checkRole('address', 'modify'), function (req, res, next) {
+    db.addresses.update({ _id: req.params.id }, {
+        blankOut: true
+    })
+        .exec()
+        .then(function () {
+            res.send('OK');
+        })
+        .then(null, next)
+});
+
+// 编辑地址
+router.get('/address/edit/:id', auth.checkRole('address', 'modify'), function (req, res, next) {
+    db.addresses.findById(req.params.id)
+        .exec()
+        .then(function (address) {
+            res.locals.address = address;
+            return db.departments.find({ type: '奶站' }).select('_id title').exec();
+        })
+        .then(function (milkStations) {
+            res.locals.milkStations = milkStations;
+            res.render('general/addressEdit', { title: '编辑地址' });
+        })
+        .then(null, next);
+});
+
+// 获取服务人员/配送人员下拉列表
+router.get('/address/milkStationMember', auth.checkRole('address', 'modify'), function (req, res, next) {
+    db.users.find({ department: req.query.department })
+        .select('_id title role')
+        .exec()
+        .then(function (users) {
+            res.json(users);
         })
         .then(null, next);
 });
