@@ -38,8 +38,9 @@
         <th>地址</th>
         <th>联系人</th>
         <th>联系电话</th>
-        <th>所属奶站</th>
-        <th>有无奶箱</th>
+        <th>奶站</th>
+        <th>奶箱</th>
+        <th>楼层指示</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -53,6 +54,7 @@
         <td><%= x.phone %></td>
         <td><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a></td>
         <td><%= x.deposit ? '有奶箱' : '无奶箱' %></td>
+        <td><%= x.storey %></td>
         <td>
             <a href="/general/address/<%= x._id %>">编辑</a>
             <a href="javascript:deleteDialog('/general/address/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
