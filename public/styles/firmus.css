@@ -594,3 +594,8 @@ table {
 #logo {
     cursor: pointer;
 }
+
+.photo {
+    max-width: 200px;
+    max-height: 200px;
+}

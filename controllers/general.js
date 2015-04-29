@@ -201,7 +201,7 @@ router.post('/department/create', auth.checkRole('department', 'modify'), functi
 });
 
 // 职工列表
-router.get('/employee', auth.checkRole('department', 'query'), function (req, res, next) {
+router.get('/employee', auth.checkRole('employee', 'query'), function (req, res, next) {
     let query;
     db.departments.find()
         .select('_id title')
@@ -229,6 +229,81 @@ router.get('/employee', auth.checkRole('department', 'query'), function (req, re
         .then(function (users) {
             res.locals.users = users;
             res.render('general/employee', { title: '职工管理' });
+        })
+        .then(null, next);
+});
+
+// 职工信息
+router.get('/employee/:id', auth.checkRole('employee', 'query'), function (req, res, next) {
+    db.users.findById(req.params.id)
+        .populate({ path: 'department', select: '_id title' })
+        .exec()
+        .then(function (user) {
+            res.render('general/employeeDetail', { title: user.name, user: user });
+        })
+        .then(null, next);
+});
+
+// 职工担保人信息
+router.get('/employee/cautioner/:id', auth.checkRole('employee-private', 'query'), function (req, res, next) {
+    db.users.findById(req.params.id)
+        .populate({ path: 'department', select: '_id title' })
+        .exec()
+        .then(function (user) {
+            res.render('general/employeeCautioner', { title: user.name, user: user });
+        })
+        .then(null, next);
+});
+
+// 编辑职工
+router.get('/employee/edit/:id', auth.checkRole('employee', 'modify'), function (req, res, next) {
+    db.users.findById(req.params.id)
+        .exec()
+        .then(function (user) {
+            res.locals.user = user;
+            return db.department.find()
+                .select('_id title')
+                .exec();
+        })
+        .then(function (departments) {
+            res.locals.departments = departments;
+            res.render('general/employeeEdit', { title: user.name, user: user });
+        })
+        .then(null, next);
+});
+
+// 编辑职工
+router.post('/employee/edit/:id', auth.checkRole('employee', 'modify'), function (req, res, next) {
+    if (req.files.file) {
+        var writestream = db.gfs.createWriteStream({
+            filename: req.files.file.originalname,
+            metadata: { public: true }
+        });
+        db.fs.createReadStream(req.files.file.path).pipe(writestream);
+        writestream.on('close', function (file) {
+            db.fs.unlink(req.files.file.path);
+            db.users.update({ _id: req.params.id }, { photo: file._id }).exec();
+        });
+    }
+    db.users.update({ _id: req.params.id }, {
+        jobNumber: req.body.jobNumber,
+        name: req.body.name,
+        sex: req.body.sex,
+        takeOfficeTime: req.body.takeOfficeTime,
+        role: req.body.role,
+        department: req.body.department,
+        PRCIdentity: req.body.PRCIdentity,
+        address: req.body.address,
+        cautioner: {
+            name: req.body['cautioner-name'],
+            PRCIdentity: req.body['cautioner-PRCIdentity'],
+            address: req.body['cautioner-address'],
+            phone: req.body['cautioner-phone']
+        }
+    })
+        .exec()
+        .then(function () {
+            res.redirect('/general/employee/' + req.params.id);
         })
         .then(null, next);
 });

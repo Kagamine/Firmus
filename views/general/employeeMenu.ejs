@@ -1,0 +1,10 @@
+<h2><%= title %> <span class="subtitle">(<%= user.jobNumber %>)</span></h2>
+<div class="submenu">
+    <a class="submenu-item" href="/general/employee/<%= user._id %>">员工信息</a>
+    <% if (permission['employee-private'].query) { %>
+    <a class="submenu-item" href="/general/employee/cautioner/<%= user._id %>">担保人资料</a>
+    <% } %>
+    <% if (permission.employee.modify) { %>
+    <a class="submenu-item" href="/general/employee/edit/<%= user._id %>">编辑员工</a>
+    <% } %>
+</div>

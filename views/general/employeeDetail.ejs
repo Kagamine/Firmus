@@ -1,0 +1,50 @@
+<% include employeeMenu %>
+<div class="block">
+    <h3>基本资料</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">用户名</td>
+            <td><%= user.username %></td>
+        </tr>
+        <tr>
+            <td class="row-title">姓名/性别/工号</td>
+            <td><%= user.name %> / <%= user.sex %> / <%= user.jobNumber %></td>
+        </tr>
+        <% if (user.photo) { %>
+        <tr>
+            <td class="row-title">照片</td>
+            <td><img src="/file/download/<%= user.photo %>" class="photo" /></td>
+        </tr>
+        <% } %>
+        <tr>
+            <td class="row-title">就职日期</td>
+            <td><%= moment(user.takeOfficeTime).format('YYYY-MM-DD') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">角色</td>
+            <td><%= user.role %></td>
+        </tr>
+        <tr>
+            <td class="row-title">学历</td>
+            <td><%= user.diploma %></td>
+        </tr>
+        <tr>
+            <td class="row-title">部门</td>
+            <% if (user.department) { %>
+            <td><a href="/general/department/<%= user.department._id %>" target="_blank"><%= user.department.title %></a></td>
+            <% } else { %>
+            <td>未指派</td>
+            <% } %>
+        </tr>
+        <% if (permission['employee-private'].query) { %>
+        <tr>
+            <td class="row-title">身份证号</td>
+            <td><%= user.PRCIdentity %></td>
+        </tr>
+        <tr>
+            <td class="row-title">通信地址</td>
+            <td><%= user.address %></td>
+        </tr>
+        <% } %>
+    </table>
+</div>

@@ -18,8 +18,7 @@ if (router.get('env') === 'development') {
         res.render('error', {
             message: err.message,
             error: err,
-            title: 'Error',
-            layout: false
+            title: 'Error'
         });
     });
 }
@@ -29,8 +28,7 @@ router.use(function(err, req, res, next) {
     res.render('error', {
         message: err.message,
         error: err,
-        title: 'Error',
-        layout: false
+        title: 'Error'
     });
 });
 

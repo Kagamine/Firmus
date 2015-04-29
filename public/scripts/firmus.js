@@ -11,6 +11,7 @@ $(document).ready(function () {
     $('#logo').click(function () {
         window.location = '/';
     });
+    $('.datetime').datetimepicker();
 });
 
 function popMsg(txt) {

@@ -16,6 +16,10 @@
     "query": ["系统管理员"],
     "modify": ["系统管理员"]
   },
+  "employee-private": {
+    "query": ["系统管理员"],
+    "modify": ["系统管理员"]
+  },
   "address": {
     "query": ["系统管理员"],
     "modify": ["系统管理员"]

@@ -42,7 +42,12 @@ var userSchema = new Schema({
         phone: String,
         PRCIdentity: String
     },
-    diploma: String
+    diploma: String,
+    takeOfficeTime: {
+        type: Date,
+        default: Date.now()
+    },
+    photo: Schema.Types.ObjectId
 });
 
 var user = mongodb.mongoose.model('users', userSchema);

@@ -34,7 +34,7 @@
     <% users.forEach(x => { %>
     <tr>
         <td><%= x.jobNumber %></td>
-        <td><%= x.name %> (<%= x.username %>)</td>
+        <td><a href="/general/employee/<%= x._id %>"><%= x.name %> (<%= x.username %>)</a></td>
         <td><%= x.role %></td>
         <td class="tc"><%= x.diploma %></td>
         <td><%= x.phone %></td>
