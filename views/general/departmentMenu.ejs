@@ -3,6 +3,8 @@
     <a class="submenu-item" href="/general/department/<%= department._id %>">员工管理</a>
     <% if (department.type == '赠品仓库' || department.type == '奶箱仓库') { %>
     <a class="submenu-item" href="/general/department/store/<%= department._id %>">仓库管理</a>
+    <% } if (department.type == '奶站') { %>
+    <a class="submenu-item" href="/general/department/customer/<%= department._id %>">订户列表</a>
     <% } if (permission.department.modify) { %>
     <a class="submenu-item" href="/general/department/edit/<%= department._id %>">编辑部门</a>
     <% } %>
