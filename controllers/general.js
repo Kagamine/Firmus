@@ -1,6 +1,7 @@
 'use strict'
 var express = require('express');
 var router = express.Router();
+var crypto = require('../lib/cryptography');
 
 router.use(function (req, res, next) {
     res.locals.general = true;
@@ -261,13 +262,13 @@ router.get('/employee/edit/:id', auth.checkRole('employee', 'modify'), function 
         .exec()
         .then(function (user) {
             res.locals.user = user;
-            return db.department.find()
+            return db.departments.find()
                 .select('_id title')
                 .exec();
         })
         .then(function (departments) {
             res.locals.departments = departments;
-            res.render('general/employeeEdit', { title: user.name, user: user });
+            res.render('general/employeeEdit', { title: res.locals.user.name });
         })
         .then(null, next);
 });
@@ -285,22 +286,30 @@ router.post('/employee/edit/:id', auth.checkRole('employee', 'modify'), function
             db.users.update({ _id: req.params.id }, { photo: file._id }).exec();
         });
     }
-    db.users.update({ _id: req.params.id }, {
-        jobNumber: req.body.jobNumber,
-        name: req.body.name,
+    let options = {
+        jobNumber: req.body.jobNumber || '',
+        name: req.body.name || '',
         sex: req.body.sex,
         takeOfficeTime: req.body.takeOfficeTime,
         role: req.body.role,
         department: req.body.department,
-        PRCIdentity: req.body.PRCIdentity,
-        address: req.body.address,
+        PRCIdentity: req.body.PRCIdentity || '',
+        address: req.body.address || '',
+        phone: req.body.phone || '',
+        diploma: req.body.diploma || '',
         cautioner: {
-            name: req.body['cautioner-name'],
-            PRCIdentity: req.body['cautioner-PRCIdentity'],
-            address: req.body['cautioner-address'],
-            phone: req.body['cautioner-phone']
+            name: req.body['cautioner-name'] || '',
+            PRCIdentity: req.body['cautioner-PRCIdentity'] || '',
+            address: req.body['cautioner-address'] || '',
+            phone: req.body['cautioner-phone'] || ''
         }
-    })
+    };
+    if (req.body.password) {
+        let salt = crypto.salt();
+        options.salt = salt;
+        options.password = crypto.sha256(req.body.password, salt);
+    }
+    db.users.update({ _id: req.params.id }, options)
         .exec()
         .then(function () {
             res.redirect('/general/employee/' + req.params.id);

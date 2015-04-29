@@ -599,3 +599,7 @@ table {
     max-width: 200px;
     max-height: 200px;
 }
+
+.detail-table .textbox {
+    width: 280px;
+}
