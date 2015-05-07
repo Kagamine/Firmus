@@ -527,9 +527,24 @@ router.get('/car', auth.checkRole('car', 'query'), function (req, res, next) {
             return query.skip(50 * (page - 1)).limit(50).exec();
         })
         .then(function (cars) {
-            res.render('car', { title: '配送车辆管理', cars: cars });
+            res.render('general/car', { title: '配送车辆管理', cars: cars });
         })
         .then(null, next);
+});
+
+// 添加配送车辆
+router.get('/car/create', auth.checkRole('car', 'modify'), function (req, res, next) {
+    res.render('general/carCreate', { title: '添加配送车辆' });
+});
+
+// 添加配送车辆
+router.post('/car/create', auth.checkRole('car', 'modify'), function (req, res, next) {
+    let car = new db.cars();
+    car.line = req.body.line;
+    car.plate = req.body.plate;
+    car.save(function (err, car) {
+        res.redirect('/general/car/edit/' + car._id);
+    });
 });
 
 module.exports = router;

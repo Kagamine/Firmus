@@ -1,0 +1,19 @@
+<h2><%= title %></h2>
+<div class="block">
+    <form method="post">
+        <input type="hidden" value="<%= csrf %>" name="_csrf" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">线路名称</td>
+                <td><input type="text" class="textbox w-3" name="line" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">车牌号</td>
+                <td><input type="text" class="textbox w-3" name="plate" /></td>
+            </tr>
+        </table>
+        <p>
+            <input type="submit" class="button blue" value="创建并编辑行车路线" />
+        </p>
+    </form>
+</div>

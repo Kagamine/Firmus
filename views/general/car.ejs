@@ -1,12 +1,12 @@
 <h2><%= title %>
     <% if (permission.department.modify) { %>
-    <a class="add" href="javascript:$('#frmCreateCar').submit()">添加车辆</a>
+    <a class="add" href="/general/car/create">添加车辆</a>
     <% } %>
 </h2>
 <form class="search">
     检索：
-    <input type="text" name="line" class="textbox" placeholder="线路名称" value="<%= req.query.title %>" />&nbsp;
-    <input type="text" name="plate" class="textbox" placeholder="车牌号" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="line" class="textbox" placeholder="线路名称" value="<%= req.query.line %>" />&nbsp;
+    <input type="text" name="plate" class="textbox" placeholder="车牌号" value="<%= req.query.plate %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
 </form>
 <table class="table">
@@ -34,12 +34,9 @@
     </tbody>
 </table>
 <div class="pager">
-    <a class="pager-item" href="/general/department?p=1&title=<%= req.query.title %>&type=<%= req.query.type %>">«</a>
+    <a class="pager-item" href="/general/car/?p=1&plate=<%= req.query.plate %>&line=<%= req.query.line %>">«</a>
     <% for(var i = start; i <= end; i++) { %>
-    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/department?p=<%= i %>&title=<%= req.query.title %>&type=<%= req.query.type %>""><%= i %></a>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/car?p=<%= i %>&plate=<%= req.query.plate %>&line=<%= req.query.line %>"><%= i %></a>
     <% } %>
-    <a class="pager-item" href="/general/department?p=<%= pageCount || 1 %>&title=<%= req.query.title %>&type=<%= req.query.type %>"">»</a>
+    <a class="pager-item" href="/general/car?p=<%= pageCount || 1 %>&plate=<%= req.query.plate %>&line=<%= req.query.line %>">»</a>
 </div>
-<form id="frmCreateCar" action="/general/car/create" method="post">
-    <input type="hidden" value="<%= csrf %>" name="_csrf" />
-</form>
