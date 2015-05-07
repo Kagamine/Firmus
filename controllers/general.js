@@ -371,16 +371,14 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
             res.locals.addresses = addresses;
             return db.addresses
                 .aggregate()
-                .project('addresses')
-                .group({ _id: 'city' })
+                .group({ _id: '$city' })
                 .exec();
         })
         .then(function (cities) {
             res.locals.cities = cities.map(x => x._id);
             return db.addresses
                 .aggregate()
-                .project('addresses')
-                .group({ _id: { city: 'city', district: 'district' } })
+                .group({ _id: { city: '$city', district: '$district' } })
                 .exec();
         })
         .then(function (districts) {
