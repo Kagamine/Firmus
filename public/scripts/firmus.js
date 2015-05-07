@@ -68,3 +68,15 @@ function editAddress(id) {
         popMsg(msg);
     });
 }
+
+function saveCarStation(id) {
+    var ids = '';
+    $('.chk-station').each(function () {
+        if ($(this).is(':checked'))
+            ids += $(this).attr('data-id') + ' ';
+    });
+    ids = ids.trim();
+    $.post('/general/car/station/edit/' + id, { _csrf: csrf,  ids: ids }, function () {
+        popMsg('配送车辆行驶站点修改成功');
+    });
+}

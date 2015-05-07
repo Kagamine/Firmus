@@ -1,0 +1,34 @@
+<h2><%= title %></h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>权限</th>
+        <% enums.role.forEach(x => { %>
+        <th><%= x %></th>
+        <% }) %>
+    </tr>
+    </thead>
+    <tbody class="tc">
+    <% for (var x in permission) { %>
+    <% if (permission[x].length == null && permission[x]['display']) { %>
+    <tr>
+        <td><%= permission[x]['display'] %> (查询)</td>
+        <% enums.role.forEach(y => { %>
+        <td>
+            <% console.log(permission[x]['query']) %>
+            <input type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="query" <%= permission[x]['query'].some(z => z == y.toString()) ? 'checked' : '' %> />
+        </td>
+        <% }) %>
+    </tr>
+    <tr>
+        <td><%= permission[x]['display'] %> (修改)</td>
+        <% enums.role.forEach(y => { %>
+        <td>
+            <input type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="modify" <%= permission[x]['modify'].some(z => z == y.toString()) ? 'checked' : '' %> />
+        </td>
+        <% }) %>
+    </tr>
+    <% } %>
+    <% } %>
+    </tbody>
+</table>

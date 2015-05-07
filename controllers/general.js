@@ -593,9 +593,34 @@ router.get('/car/edit/station/:id', auth.checkRole('car', 'modify'), function (r
             return db.departments.find({ city: car.city, type: '奶站' }).exec();
         })
         .then(function (stations) {
+            stations.forEach(x => {
+                if (res.locals.car.stations.some(y => x._id.toString() == y.toString())) {
+                    x.checked = true;
+                } else {
+                    x.checked = false;
+                }
+            });
             res.render('general/carEditStation', { title: '编辑' + res.locals.car.line, milkStations: stations });
         })
         .then(null, next);
+});
+
+// 修改配送车辆站点信息
+router.post('/car/station/edit/:id', auth.checkRole('car', 'modify'), function (req, res, next) {
+    let ids = req.body.ids.split(' ');
+    db.cars.update({ _id: req.params.id }, {
+        stations: ids
+    })
+        .exec()
+        .then(function () {
+            res.send('ok');
+        })
+        .then(null, next);
+});
+
+// 修改权限分配
+router.get('/permission', auth.checkRole('permission', 'modify'), function (req, res, next) {
+    res.render('general/permission', { title: '权限管理', permission: permission });
 });
 
 module.exports = router;

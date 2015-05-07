@@ -1,0 +1,24 @@
+<% include carMenu %>
+<table class="table">
+    <thead>
+    <tr class="tl">
+        <th>选择</th>
+        <th>奶站名称</th>
+        <th>区县</th>
+        <th>详细地址</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% milkStations.forEach(x => { %>
+    <tr>
+        <td><input type="checkbox" data-id="<%= x._id %>" class="chk-station" <%= x.checked ? 'checked' : '' %> /></td>
+        <td><%= x.title %></td>
+        <td><%= x.district %></td>
+        <td><%= x.address %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<p>
+    <input class="button blue" type="button" onclick="saveCarStation('<%= car._id %>')" value="保存路线" />
+</p>
