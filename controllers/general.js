@@ -510,4 +510,26 @@ router.get('/address/milkStationMember', auth.checkRole('address', 'modify'), fu
         .then(null, next);
 });
 
+// 配送车辆信息
+router.get('/car', auth.checkRole('car', 'query'), function (req, res, next) {
+    let query = db.cars.find({
+        plate: new RegExp('.*' + (req.query.plate || '') + '.*'),
+        line: new RegExp('.*' + (req.query.line || '') + '.*')
+    });
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query.skip(50 * (page - 1)).limit(50).exec();
+        })
+        .then(function (cars) {
+            res.render('car', { title: '配送车辆管理', cars: cars });
+        })
+        .then(null, next);
+});
+
 module.exports = router;
