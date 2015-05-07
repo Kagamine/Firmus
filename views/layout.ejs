@@ -36,6 +36,25 @@
         <% } if (permission.permission.modify) { %>
         <li><a href="/general/permission">权限管理</a></li>
         <% } } %>
+        <% if (order) { %>
+        <% if (permission.order.query) { %>
+        <li><a href="/order">订单管理</a></li>
+        <% } if (permission.distribute.query) { %>
+        <li><a href="/order/distribute">配送管理</a></li>
+        <% } if (permission.customer.query) { %>
+        <li><a href="/order/customer">客户奶量管理</a></li>
+        <% } if (permission.produce.query) { %>
+        <li><a href="/order/produce">生产预报管理</a></li>
+        <% } if (permission.balance.query) { %>
+        <li><a href="/order/balance">余额管理</a></li>
+        <% } if (permission.freeDrink.query) { %>
+        <li><a href="/order/balence">赠饮管理</a></li>
+        <% } if (permission.change.query) { %>
+        <li><a href="/order/change">余额管理</a></li>
+        <% } if (permission.statistics.query) { %>
+        <li><a href="/order/statistics">统计查询管理</a></li>
+        <% } %>
+        <% } %>
     </ul>
 </div>
 <div class="main">

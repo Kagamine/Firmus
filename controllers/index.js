@@ -5,6 +5,7 @@ router.use('/oauth', require('./oauth'));
 router.use(require('./init'));
 router.use(require('./shared'));
 router.use('/general', require('./general'));
+router.use('/order', require('./order'));
 
 router.use(function(req, res, next) {
     var err = new Error('Not Found');
