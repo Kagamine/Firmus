@@ -15,8 +15,7 @@
         <td><%= permission[x]['display'] %> (查询)</td>
         <% enums.role.forEach(y => { %>
         <td>
-            <% console.log(permission[x]['query']) %>
-            <input type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="query" <%= permission[x]['query'].some(z => z == y.toString()) ? 'checked' : '' %> />
+            <input class="chk-permission" type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="query" <%= permission[x]['query'].some(z => z == y.toString()) ? 'checked' : '' %> />
         </td>
         <% }) %>
     </tr>
@@ -24,7 +23,7 @@
         <td><%= permission[x]['display'] %> (修改)</td>
         <% enums.role.forEach(y => { %>
         <td>
-            <input type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="modify" <%= permission[x]['modify'].some(z => z == y.toString()) ? 'checked' : '' %> />
+            <input class="chk-permission" type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="modify" <%= permission[x]['modify'].some(z => z == y.toString()) ? 'checked' : '' %> />
         </td>
         <% }) %>
     </tr>

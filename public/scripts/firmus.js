@@ -12,6 +12,17 @@ $(document).ready(function () {
         window.location = '/';
     });
     $('.datetime').datetimepicker();
+    $('.chk-permission').change(function () {
+        $.post('/general/permission', {
+            _csrf: csrf,
+            permission: $(this).attr('data-permission'),
+            type: $(this).attr('data-type'),
+            chkrole: $(this).attr('data-role'),
+            mode: $(this).is(':checked') ? 'allow' : 'forbidden'
+        }, function () {
+            popMsg('权限设置成功');
+        });
+    });
 });
 
 function popMsg(txt) {

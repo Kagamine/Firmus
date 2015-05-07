@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('../lib/cryptography');
+var fs = require('fs');
 
 router.use(function (req, res, next) {
     res.locals.general = true;
@@ -621,6 +622,21 @@ router.post('/car/station/edit/:id', auth.checkRole('car', 'modify'), function (
 // 修改权限分配
 router.get('/permission', auth.checkRole('permission', 'modify'), function (req, res, next) {
     res.render('general/permission', { title: '权限管理', permission: permission });
+});
+
+// 修改权限分配
+router.post('/permission', auth.checkRole('permission', 'modify'), function (req, res, next) {
+    if (req.body.mode == 'allow') {
+        permission[req.body.permission][req.body.type].push(req.body.chkrole);
+    } else {
+        let index = permission[req.body.permission][req.body.type].indexOf(req.body.chkrole);
+        console.log(index);
+        if (index >= 0)
+            permission[req.body.permission][req.body.type].splice(index, 1);
+        console.log(permission[req.body.permission][req.body.type]);
+    }
+    fs.writeFileSync(__dirname + '/../permission.json', JSON.stringify(permission));
+    res.send('ok');
 });
 
 module.exports = router;
