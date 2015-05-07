@@ -452,16 +452,51 @@ router.post('/address/delete/:id', auth.checkRole('address', 'modify'), function
 // 编辑地址
 router.get('/address/edit/:id', auth.checkRole('address', 'modify'), function (req, res, next) {
     db.addresses.findById(req.params.id)
+        .populate('deposit')
         .exec()
         .then(function (address) {
             res.locals.address = address;
-            return db.departments.find({ type: '奶站' }).select('_id title').exec();
-        })
-        .then(function (milkStations) {
-            res.locals.milkStations = milkStations;
             res.render('general/addressEdit', { title: '编辑地址' });
         })
         .then(null, next);
+});
+
+// 编辑地址信息
+router.post('/address/edit/:id', auth.checkRole('address', 'modify'), function (req, res, next) {
+    let options = {
+        city: req.body.city,
+        district: req.body.district,
+        address: req.body.address,
+        name: req.body.name,
+        phone: req.body.phone,
+        storey: req.body.storey,
+        service: req.body.service || null,
+        distributor: req.body.distributor || null,
+        milkStation: req.body.milkStation || null
+    };
+    let findDeposit = new Promise(function (resolve, reject) {
+        if (req.body.deposit) {
+            db.deposit.findOne({ Number: req.body.deposit }).exec(function (err, deposit) {
+                if (err || !deposit) {
+                    res.send('没有找到对应的押金单号');
+                    reject();
+                } else {
+                    options.deposit = deposit._id;
+                    resolve();
+                }
+            })
+        } else {
+            resolve();
+        }
+    });
+    findDeposit
+        .then(function () {
+            return db.addresses.update({ _id: req.params.id }, options).exec();
+        })
+        .then(function () {
+            res.send('地址信息保存成功');
+        })
+        .then(null, function (err) { console.error(err); });
 });
 
 // 获取服务人员/配送人员下拉列表

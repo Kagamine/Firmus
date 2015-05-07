@@ -14,6 +14,7 @@ router.use(function(req, res, next) {
 
 if (router.get('env') === 'development') {
     router.use(function(err, req, res, next) {
+        console.error(err);
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -24,6 +25,7 @@ if (router.get('env') === 'development') {
 }
 
 router.use(function(err, req, res, next) {
+    console.error(err);
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
