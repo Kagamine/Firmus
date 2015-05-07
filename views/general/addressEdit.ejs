@@ -1,0 +1,73 @@
+<h2><%= title %></h2>
+<div class="block">
+    <h3>编辑地址信息</h3>
+    <form method="post" id="frmEditDepartment">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">城市</td>
+                <td>
+                    <input type="text" class="textbox w-3" name="city" value="<%= address.city %>" />
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">区县</td>
+                <td>
+                    <input type="text" class="textbox w-3" name="district" value="<%= address.district %>" />
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">详细地址</td>
+                <td><input name="address" type="text" class="textbox w-3" value="<%= address.address %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">姓名</td>
+                <td><input name="name" type="text" class="textbox w-3" value="<%= address.name %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">联系电话</td>
+                <td><input name="phone" type="text" class="textbox w-3" value="<%= address.phone %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">楼层指示</td>
+                <td>
+                    <select name="storey">
+                        <option<%= address.storey == '电梯' ? 'selected' : '' %>>电梯</option>
+                        <option<%= address.storey == '楼梯' ? 'selected' : '' %>>楼梯</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">奶箱押金单号</td>
+                <td>
+                    <% if (address.deposit) { %>
+                    <input name="deposit" type="text" class="textbox w-3" value="<%= address.deposit.number %>" />
+                    <% if (address.deposit.giveBackFlag) { %>
+                    <span>于<%= moment(deposit.giveBackTime).format('YYYY-MM-DD') %>拆箱</span>
+                    <% } %>
+                    <a href="/milkbox/deposit/<%= address.deposit._id %>" target="_blank">查看押金单详情</a>
+                    <% } else { %>
+                    <input name="deposit" type="text" class="textbox w-3"/>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">服务人员</td>
+                <td>
+                    <select name="service">
+                        <option value="">未指定</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">配送人员</td>
+                <td>
+                    <select name="distributor">
+                        <option value="">未指定</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <p><input type="button" value="保存" class="button green" onclick="editDepartment()" /></p>
+</div>

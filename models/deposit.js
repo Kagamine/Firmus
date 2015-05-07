@@ -2,7 +2,7 @@ var mongodb = require('../models/mongodb');
 var Schema = mongodb.mongoose.Schema;
 
 var depositSchema = new Schema({
-    Number: {
+    number: {
         type: String,
         index: true
     },
