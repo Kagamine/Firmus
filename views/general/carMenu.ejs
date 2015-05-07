@@ -1,0 +1,8 @@
+<h2><%= title %> <span class="subtitle"><%= car.plate %></span></h2>
+<div class="submenu">
+    <a class="submenu-item" href="/general/car/station/<%= car._id %>">行驶路线</a>
+    <% if (permission.car.modify) { %>
+    <a class="submenu-item" href="/general/car/edit/<%= car._id %>">编辑车辆信息</a>
+    <a class="submenu-item" href="/general/car/edit/station/<%= car._id %>">编辑行驶路线</a>
+    <% } %>
+</div>

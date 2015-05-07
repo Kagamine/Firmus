@@ -1,0 +1,23 @@
+<% include carMenu %>
+<div class="block">
+    <form method="post">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">线路名称</td>
+                <td><input type="text" class="textbox w-3" name="line" value="<%= car.line %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">车牌号</td>
+                <td><input type="text" class="textbox w-3" name="plate" value="<%= car.plate %>" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">所属城市</td>
+                <td><input type="text" class="textbox w-3" name="city" value="<%= car.city %>" /></td>
+            </tr>
+        </table>
+        <p>
+            <input type="submit" class="button blue" value="保存车辆信息" />
+        </p>
+    </form>
+</div>

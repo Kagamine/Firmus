@@ -1,0 +1,21 @@
+<% include carMenu %>
+<table class="table">
+    <thead>
+    <tr>
+        <th>站点名称</th>
+        <th>城市</th>
+        <th>区县</th>
+        <th>详细地址</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% car.stations.forEach(x => { %>
+    <tr>
+        <td><%= x.title %></td>
+        <td><%= x.city %></td>
+        <td><%= x.district %></td>
+        <td><%= x.address %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

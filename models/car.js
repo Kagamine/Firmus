@@ -10,6 +10,10 @@ var carSchema = new Schema({
         type: String,
         unique: true
     },
+    city: {
+        type: String,
+        index: true
+    },
     stations: [{ type: Schema.Types.ObjectId, ref: 'departments' }]
 });
 

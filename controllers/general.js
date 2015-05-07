@@ -514,7 +514,8 @@ router.get('/address/milkStationMember', auth.checkRole('address', 'modify'), fu
 router.get('/car', auth.checkRole('car', 'query'), function (req, res, next) {
     let query = db.cars.find({
         plate: new RegExp('.*' + (req.query.plate || '') + '.*'),
-        line: new RegExp('.*' + (req.query.line || '') + '.*')
+        line: new RegExp('.*' + (req.query.line || '') + '.*'),
+        city: new RegExp('.*' + (req.query.city || '') + '.*')
     });
     _.clone(query)
         .count()
@@ -542,9 +543,59 @@ router.post('/car/create', auth.checkRole('car', 'modify'), function (req, res, 
     let car = new db.cars();
     car.line = req.body.line;
     car.plate = req.body.plate;
+    car.city = req.body.city;
     car.save(function (err, car) {
         res.redirect('/general/car/edit/' + car._id);
     });
+});
+
+// 查看车辆行驶站点
+router.get('/car/station/:id', auth.checkRole('car', 'query'), function (req, res, next) {
+    db.cars.findById(req.params.id)
+        .populate('stations')
+        .exec()
+        .then(function (car) {
+            res.render('general/carStation', { title: car.line + '行驶站点', car: car });
+        })
+        .then(null, next);
+});
+
+// 修改配送车辆信息
+router.get('/car/edit/:id', auth.checkRole('car', 'modify'), function (req, res, next) {
+    db.cars.findById(req.params.id)
+        .exec()
+        .then(function (car) {
+            res.render('general/carEdit', { title: '编辑' + car.line, car: car });
+        })
+        .then(null, next);
+});
+
+// 修改配送车辆信息
+router.post('/car/edit/:id', auth.checkRole('car', 'modify'), function (req, res, next) {
+    db.cars.update({ _id: req.params.id }, {
+        city: req.body.city,
+        line: req.body.line,
+        plate: req.body.plate
+    })
+        .exec()
+        .then(function () {
+            res.redirect('/car/station/' + req.params.id);
+        })
+        .then(null, next);
+});
+
+// 修改配送车辆站点信息
+router.get('/car/edit/station/:id', auth.checkRole('car', 'modify'), function (req, res, next) {
+    db.cars.findById(req.params.id)
+        .exec()
+        .then(function (car) {
+            res.locals.car = car;
+            return db.departments.find({ city: car.city, type: '奶站' }).exec();
+        })
+        .then(function (stations) {
+            res.render('general/carEditStation', { title: '编辑' + res.locals.car.line, milkStations: stations });
+        })
+        .then(null, next);
 });
 
 module.exports = router;
