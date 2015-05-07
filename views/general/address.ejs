@@ -17,7 +17,7 @@
         <option data-city="<%= x.city %>"><%= x.district %></option>
         <% }) %>
     </select>
-    <input type="text" class="w-0-6 textbox" name="address" placeholder="详细地址" />
+    <input type="text" class="w-1 textbox" name="address" placeholder="详细地址" />
     <input type="text" class="w-0-6 textbox" name="name" placeholder="联系人" />
     <input type="text" class="w-0-6 textbox" name="phone" placeholder="联系电话" />
     <select name="milkStation" class="w-1">
@@ -56,7 +56,13 @@
         <td><%= x.address %></td>
         <td><%= x.name %></td>
         <td><%= x.phone %></td>
-        <td><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a></td>
+        <td>
+            <% if (x.milkStation) { %>
+            <a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a>
+            <% } else { %>
+            未分配
+            <% } %>
+        </td>
         <td class="tc"><%= x.deposit ? '有奶箱' : '无奶箱' %></td>
         <td class="tc"><%= x.storey %></td>
         <td class="tc">

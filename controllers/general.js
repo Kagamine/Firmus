@@ -496,7 +496,7 @@ router.post('/address/edit/:id', auth.checkRole('address', 'modify'), function (
         .then(function () {
             res.send('地址信息保存成功');
         })
-        .then(null, function (err) { console.error(err); });
+        .then(null, function (err) { res.send(err) });
 });
 
 // 获取服务人员/配送人员下拉列表
