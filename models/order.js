@@ -2,8 +2,6 @@ var mongodb = require('../models/mongodb');
 var Schema = mongodb.mongoose.Schema;
 
 var orderSchema = new Schema({
-    name: String,
-    phone: String,
     number: {
         type: String,
         index: true
@@ -78,7 +76,8 @@ var orderSchema = new Schema({
         },
         count: Number,
         hint: String
-    }]
+    }],
+    pos: String
 });
 
 var order = mongodb.mongoose.model('orders', orderSchema);

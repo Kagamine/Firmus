@@ -44,10 +44,10 @@
     <% orders.forEach(x => { %>
     <tr>
         <td><%= x.number %></td>
-        <td><%= x.address.city %></td>
-        <td><%= x.address.district %></td>
-        <td><%= x.milkStation.title %></td>
-        <td><%= x.user.name %>(<%= x.user.jobNumber %>)</td>
+        <td><%= x.address ? x.address.city : '' %></td>
+        <td><%= x.address ? x.address.district : '' %></td>
+        <td><% if (x.milkStation) { %><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a><% } %></td>
+        <td><% if (x.user) { %><a href="/general/employee/<%= x.user._id %>"><%= x.user.name %></a>(<%= x.user.jobNumber %>)<% } %></td>
         <td><%= x.milkType %></td>
         <td><%= moment(x.begin).format('YYYY-MM-DD') %></td>
         <td><%= x.distributeMethod %></td>
@@ -55,8 +55,10 @@
         <td><%= x.orderType %></td>
         <td>
             <a href="/order/<%= x._id %>">订单详情</a>
+            <% if (permission.order.modify) { %>
             <a href="/order/change/<%= x._id %>">变更</a>
             <a href="/order/delete/<%= x._id %>">删除</a>
+            <% } %>
         </td>
     </tr>
     <% }) %>

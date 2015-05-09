@@ -7,6 +7,7 @@ router.use(function (req, res, next) {
     next();
 });
 
+// 订单列表
 router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
     let query = db.orders.find();
     if (req.query.number)
@@ -35,6 +36,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
+                .populate('address milkStation')
                 .skip(50 * (page - 1))
                 .limit(50)
                 .exec();
@@ -53,6 +55,32 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
             res.render('order/index', { title: '订单管理' });
         })
         .then(null, next);
+});
+
+// 创建订单
+router.get('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
+    res.render('order/orderCreate', { title: '添加订单' });
+});
+
+// 创建订单
+router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
+    let order = new db.orders();
+    order.address = req.body.address;
+    order.number = req.body.number;
+    order.milkType = req.body.milkType;
+    order.count = req.body.count;
+    order.price = req.body.price;
+    order.payMethod = req.body.payMethod;
+    order.pos = req.body.pos || '';
+    order.begin = Date.parse(req.body.begin);
+    order.orderType = req.body.orderType;
+    // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
+    // order.end = ;
+    order.distributeMethod = req.body.distributeMethod;
+    order.distributeCount = req.body.distributeCount;
+    order.save(function (err, order) {
+        res.redirect('/order/' + order._id);
+    });
 });
 
 module.exports = router;
