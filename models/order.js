@@ -34,6 +34,10 @@ var orderSchema = new Schema({
         type: Date,
         index: true
     },
+    end: {
+        type: Date,
+        index: true
+    },
     distributeCount: {
         type: Number,
         index: true
