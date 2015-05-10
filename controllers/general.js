@@ -665,8 +665,6 @@ router.get('/address/getDistrictByCity',auth.checkRole('address','query'),functi
         .then(null, next);
 });
 
-
-
 // 根据区县找到奶站  by nele
 router.get('/address/getMilkStationByDistrict',auth.checkRole('address','query'),function(req,res,next){
     db.departments
@@ -704,7 +702,19 @@ router.get('/address/getDistrictsByName',auth.checkRole('address','query'),funct
             res.json(data.map(x=>x._id.district));
         })
         .then(null, next);
+});
 
+// 模糊匹配详细地址名称 by nele
+router.get('/address/getAddressByName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ address: new RegExp('.*' + req.query.data + '.*') })
+        .group({_id:{address:'$address'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>x._id.address));
+        })
+        .then(null, next);
 });
 
 // 根据城市 县区得到奶站
@@ -720,6 +730,25 @@ router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),funct
                 }
             }));
         })
+        .then(null, next);
+});
+
+// 根据奶站得到该奶站的服务人员
+router.get('/getServiceUserByDepartmentId',auth.checkRole('address','query'),function(req,res,next){
+    db.users
+        .aggregate()
+        .match({department:req.query.departmentId,role:'服务人员'})
+        .group({_id:{id:'$_id',username:'$username'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+                return {
+                    id:x._id.id,
+                    username:x._id.username
+                }
+            }));
+        })
+        .then(null, next);
 });
 
 module.exports = router;

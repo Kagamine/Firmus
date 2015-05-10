@@ -53,6 +53,10 @@ $(document).ready(function () {
         });
     });
 
+    $('#txtAddAddressCity').droptxt('/general/address/getCitiesByName','data');
+    $('#txtAddAddressDistrict').droptxt('/general/address/getDistrictsByName','data');
+    $('#txtAddAddressAddress').droptxt('/general/address/getAddressByName','data');
+
 
     //修改地址信息时 地址的改变奶站改变
     $('#txtEditAddressCity').blur(function(){
@@ -76,13 +80,25 @@ $(document).ready(function () {
         var district=$('#txtEditAddressDistrict').val();
         $('#lstEditAddressMilkStation option').remove();
         $.getJSON('/general/address/getDeparmentByCity',{city:city,district:district},function(data){
-            var str='';
+            var str='<option value="">选择奶站</option>';
             for(var i=0;i<data.length;i++){
                 str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
             }
-
             $('#lstEditAddressMilkStation').append(str);
         });
+    });
+
+    // 修改地址页面中的奶站的变化服务人员的改变服务人员
+    $('#lstEditAddressMilkStation').change(function(){
+         var departmentId = $('#lstEditAddressMilkStation').val();
+         $('#lstEditAddressServiceUser option').remove();
+         $.getJSON('/general/getServiceUserByDepartmentId',{departmentId:departmentId},function(data){
+             var str='<option value="">选择服务人员</option>';
+             for(var i=0;i<data.length;i++){
+                 str+='<option id='+data[i].id+'>'+data[i].username+'</option>'
+             }
+             $('#lstEditAddressServiceUser').append(str);
+         });
     });
 });
 
