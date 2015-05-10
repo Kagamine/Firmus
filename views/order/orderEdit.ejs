@@ -20,7 +20,7 @@
                     <% } %>
                 </span>
                 <a href="javascript:;">点击设置地址</a>
-                <input type="hidden" name="address" value="<%= order.address._id %>" />
+                <input type="hidden" name="address" value="<%= order.address ? order.address._id : '' %>" />
             </td>
         </tr>
         <tr>
@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <td class="row-title">开始配送日期</td>
-            <td><input type="text" class="textbox w-3 datetime" name="begin" value="<%= order.begin %>" /></td>
+            <td><input type="text" class="textbox w-3 datetime" name="begin" value="<%= moment(order.begin).format('YYYY-MM-DD') %>" /></td>
         </tr>
     </table>
     <p><input type="button" value="保存修改" class="button blue" onclick="saveOrder('<%= order._id %>')" /></p>
