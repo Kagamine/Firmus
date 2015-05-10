@@ -58,9 +58,29 @@ $(document).ready(function () {
     $('#txtEditAddressCity').blur(function(){
          var city =  $('#txtEditAddressCity').val();
          var district=$('#txtEditAddressDistrict').val();
+         $('#lstEditAddressMilkStation option').remove();
          $.getJSON('/general/address/getDeparmentByCity',{city:city,district:district},function(data){
-
+             var str='';
+             for(var i=0;i<data.length;i++){
+                 str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
+             }
+             $('#lstEditAddressMilkStation').append(str);
          });
+    });
+
+    //修改区县信息时 地址的改变奶站改变
+    $('#txtEditAddressDistrict').blur(function(){
+        var city =  $('#txtEditAddressCity').val();
+        var district=$('#txtEditAddressDistrict').val();
+        $('#lstEditAddressMilkStation option').remove();
+        $.getJSON('/general/address/getDeparmentByCity',{city:city,district:district},function(data){
+            var str='';
+            for(var i=0;i<data.length;i++){
+                str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
+            }
+
+            $('#lstEditAddressMilkStation').append(str);
+        });
     });
 });
 
