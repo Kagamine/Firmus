@@ -62,6 +62,8 @@ $(document).ready(function () {
 
          });
     });
+
+    $("#txtAddAddressCity").droptxt('/general/address/getCitiesByName', 'data');
 });
 
 function popMsg(txt) {
