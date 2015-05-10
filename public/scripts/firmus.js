@@ -53,9 +53,15 @@ $(document).ready(function () {
         });
     });
 
+    // 增加地址下拉选择  by nele
     $('#txtAddAddressCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtAddAddressDistrict').droptxt('/general/address/getDistrictsByName','data');
     $('#txtAddAddressAddress').droptxt('/general/address/getAddressByName','data');
+
+    // 修改地址下拉选择 by nele
+    $('#txtEditAddressCity').droptxt('/general/address/getCitiesByName','data');
+    $('#txtEditAddressDistrict').droptxt('/general/address/getDistrictsByName','data');
+    $('#txtEditAddressAddress').droptxt('/general/address/getAddressByName','data');
 
 
     //修改地址信息时 地址的改变奶站改变
