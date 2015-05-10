@@ -398,6 +398,8 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
         .then(null, next);
 });
 
+
+
 // 奶站订单列表
 router.get('/department/order/:id', auth.checkRole('order', 'query'), function (req, res, next) {
     db.orders.find({
@@ -646,6 +648,23 @@ router.post('/car/delete/:id', auth.checkRole('car', 'modify'), function (req, r
             res.send('ok');
         })
         .then(null, next);
+});
+
+
+//根据城市找到区县  by nele
+router.get('/address/getDistrictByCity',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+    .aggregate()
+    .match({'city':req.query.city})
+    .group({ _id: { city: '$city', district: '$district' } })
+        .exec()
+    .then(function(data){
+            res.json(data.map(x => {
+                return {
+                    city: x._id.city,
+                    district: x._id.district
+                }}));
+        });
 });
 
 module.exports = router;

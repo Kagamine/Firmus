@@ -5,13 +5,13 @@
 </h2>
 <form class="search">
     检索:
-    <select name="city" class="w-0-6">
+    <select name="city" class="w-0-6" id="lstCity">
         <option value="">城市</option>
         <% cities.forEach(x => { %>
-        <option><%= x %></option>
+        <option value="<%=x%>"><%= x %></option>
         <% }) %>
     </select>
-    <select name="district" class="w-0-6">
+    <select name="district" class="w-0-6" id="lstDistrict">
         <option value="">区县</option>
         <% districts.forEach(x => { %>
         <option data-city="<%= x.city %>"><%= x.district %></option>
