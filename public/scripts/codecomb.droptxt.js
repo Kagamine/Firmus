@@ -12,7 +12,7 @@ var lock = false;
             $('.codecomb-droptxt-outer').remove();
             $.getJSON(url, args, function (data) {
                 var html = '<div class="codecomb-droptxt-outer" data-parent="' + selector + '">';
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < data.length && i < 10; i++) {
                     html += '<div class="codecomb-droptxt-item" onclick="$(\'' + selector + '\').val($(this).text()); $(\'.codecomb-droptxt-outer\').remove()">' + data[i] + '</div>'
                 }
                 html += '</div>';
