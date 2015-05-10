@@ -1,3 +1,5 @@
+var departmentId;
+
 function resize() {
     $('.main').width($(window).width() - 280);
 }
@@ -78,7 +80,26 @@ $(document).ready(function () {
          });
     });
 
-    $("#txtAddAddressCity").droptxt('/general/address/getCitiesByName', 'data');
+    // 修改页面加载的时候显示奶厂
+    if($('#frmEditAddress').length>0){
+        var city =  $('#txtEditAddressCity').val();
+        var district=$('#txtEditAddressDistrict').val();
+        $('#lstEditAddressMilkStation option').remove();
+        $.getJSON('/general/address/getDeparmentByCity',{city:city,district:district},function(data){
+            var str='<option value="">选择奶站</option>';
+            if(departmentId!=null){
+                for(var i=0;i<data.length;i++){
+                    if(data[i].id==departmentId){
+                        str+='<option value='+data[i].id+' selected>'+data[i].title+'</option>';
+                    }
+                    else{
+                        str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
+                    }
+                }
+            }
+            $('#lstEditAddressMilkStation').append(str);
+        });
+    }
 
     //修改区县信息时 地址的改变奶站改变
     $('#txtEditAddressDistrict').blur(function(){

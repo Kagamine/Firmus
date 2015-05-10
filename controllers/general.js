@@ -455,7 +455,6 @@ router.get('/address/edit/:id', auth.checkRole('address', 'modify'), function (r
         .exec()
         .then(function (address) {
             res.locals.address = address;
-
             res.render('general/addressEdit', { title: '编辑地址' });
         })
         .then(null, next);
