@@ -707,15 +707,15 @@ router.get('/address/getDistrictsByName',auth.checkRole('address','query'),funct
 
 });
 
-
-router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),function(rea,res,next){
+// 根据城市 县区得到奶站
+router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),function(req,res,next){
      db.departments
     .where({city:req.query.city,district:req.query.district})
     .exec()
     .then(function(data){
              res.json(data.map(x=>{
                  return {
-                     id:x.id,
+                     id:x._id,
                      title:x.title
                  }
              }));
