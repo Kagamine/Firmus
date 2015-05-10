@@ -66,11 +66,11 @@
         <% } %>
         <tr>
             <td class="row-title">开始配送日期</td>
-            <td><%= order.begin %></td>
+            <td><%= moment(order.begin).format('YYYY-MM-DD') %></td>
         </tr>
         <tr>
             <td class="row-title">配送结束时间</td>
-            <td><%= order.end %></td>
+            <td><%= moment(order.end).format('YYYY-MM-DD') %></td>
         </tr>
         <tr>
             <td class="row-title">配送方式</td>
@@ -84,4 +84,15 @@
 </div>
 <div class="block">
     <h3>变更记录</h3>
+    <ul>
+        <% order.changes.forEach(x => { %>
+        <% if (x.type == '停送') { %>
+        <li><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 每次停送<%= x.count %>瓶的变更服务。</li>
+        <% } else if (x.type == '加送') { %>
+        <li><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 每次停送<%= x.count %>瓶的加送服务。</li>
+        <% } else { %>
+        <li><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 顺延的变更服务。</li>
+        <% } %>
+        <% }) %>
+    </ul>
 </div>
