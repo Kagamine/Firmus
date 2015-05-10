@@ -75,7 +75,12 @@ var orderSchema = new Schema({
             enum: enums.orderChangeType
         },
         count: Number,
-        hint: String
+        hint: String,
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'users'
+        },
+        time: Date
     }],
     pos: String
 });

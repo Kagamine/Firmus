@@ -65,6 +65,8 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
     let order = new db.orders();
+    order.time = Date.now();
+    order.user = req.session.uid;
     order.address = req.body.address;
     order.number = req.body.number;
     order.milkType = req.body.milkType;
@@ -90,6 +92,34 @@ router.get('/:id', auth.checkRole('order', 'query'), function (req, res, next) {
         .exec()
         .then(function (order) {
             res.render('order/orderDetail', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
+// 编辑订单
+router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .exec()
+        .then(function (order) {
+            res.render('order/orderEdit', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
+// 编辑订单
+router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    let end = Date.now(); //TODO: 计算最后一天送奶日期
+    db.orders.update({ _id: req.params.id }, {
+        number: req.body.number,
+        orderType: req.body.orderType,
+        address: req.body.address,
+        milkType: req.body.milkType,
+        begin: req.body.begin,
+        end: end
+    })
+        .exec()
+        .then(function () {
+            res.send('ok');
         })
         .then(null, next);
 });

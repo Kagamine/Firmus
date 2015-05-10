@@ -668,22 +668,12 @@ router.get('/address/getDistrictByCity',auth.checkRole('address','query'),functi
 //根据区县找到奶站  by nele
 router.get('／address/getMilkStationByDistrict',auth.checkRole('address','query'),function(req,res,next){
 
-
     db.departments
     .aggregate()
-    .match({''})
-
-    db.addresses
-        .aggregate()
-        .match({'city':req.query.city})
-        .group({ _id: { city: '$city', district: '$district' } })
-        .exec()
-        .then(function(data){
-            res.json(data.map(x => {
-                return {
-                    city: x._id.city,
-                    district: x._id.district
-                }}));
+    .match({'district':req.query.district})
+    .exec()
+    .then(function(data){
+            res.json(data);
         });
 });
 

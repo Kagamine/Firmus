@@ -1,0 +1,36 @@
+<% include orderMenu %>
+<form method="post" id="frmEditOrder" class="block">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <h3>订单信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">订单号</td>
+            <td><%= order.number %></td>
+        </tr>
+        <tr>
+            <td class="row-title">订单类型</td>
+            <td><input type="text" class="textbox w-3" name="orderType" value="<%= order.orderType %>" /> 订单类型编码</td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <span id="lbAddress">
+                    <% if (order.address) { %>
+                    <%= order.address.city %><%= order.address.district %><%= order.address.address %>
+                    <% } %>
+                </span>
+                <a href="javascript:;">点击设置地址</a>
+                <input type="hidden" name="address" value="<%= order.address ? order.address._id : '' %>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">奶品品相</td>
+            <td><input type="text" class="textbox w-3" name="milkType" value="<%= order.milkType %>" /> 品相编码</td>
+        </tr>
+        <tr>
+            <td class="row-title">开始配送日期</td>
+            <td><input type="text" class="textbox w-3 datetime" name="begin" value="<%= moment(order.begin).format('YYYY-MM-DD') %>" /></td>
+        </tr>
+    </table>
+    <p><input type="button" value="保存修改" class="button blue" onclick="saveOrder('<%= order._id %>')" /></p>
+</form>
