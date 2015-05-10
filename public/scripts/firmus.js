@@ -23,6 +23,33 @@ $(document).ready(function () {
             popMsg('权限设置成功');
         });
     });
+
+    //城市改变事件 by nele
+    $('#lstCity').change(function(){
+        var city=$('#lstCity').val();
+        $('#lstDistrict option').remove();
+        $.getJSON("/general/address/getDistrictByCity",{city:city},function(data){
+            var str='<option value="">区县</option>';
+            for(var i =0;i<data.length;i++){
+               str+='<option value='+data[i].city+'>'+data[i].district+'</option>';
+            }
+            $('#lstDistrict').append(str);
+        });
+    });
+
+
+    //区县改变事件 by nele
+    $('#lstDistrict').change(function(){
+        var district=$('#lstDistrict').val();
+        $('#lstMilkStation option').remove();
+        $.getJSON("/general/address/getMilkStationByDistrict",{district:district},function(data){
+            var str='<option value="">所属奶站</option>';
+            for(var i =0;i<data.length;i++){
+                str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
+            }
+            $('#lstMilkStation').append(str);
+        });
+    });
 });
 
 function popMsg(txt) {
