@@ -91,3 +91,9 @@ function saveCarStation(id) {
         popMsg('配送车辆行驶站点修改成功');
     });
 }
+
+function saveOrder(id) {
+    $.post('/order/edit/' + id, $('#frmEditOrder').serialize(), function () {
+        popMsg('订单信息修改成功');
+    });
+}

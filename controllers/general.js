@@ -639,6 +639,7 @@ router.post('/permission', auth.checkRole('permission', 'modify'), function (req
     res.send('ok');
 });
 
+// 删除车辆
 router.post('/car/delete/:id', auth.checkRole('car', 'modify'), function (req, res, next) {
     db.cars.remove({ _id: req.params.id })
         .exec()

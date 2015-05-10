@@ -96,4 +96,14 @@ router.get('/:id', auth.checkRole('order', 'query'), function (req, res, next) {
         .then(null, next);
 });
 
+// 编辑订单
+router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .exec()
+        .then(function (order) {
+            res.render('order/orderEdit', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
 module.exports = router;
