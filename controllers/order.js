@@ -106,4 +106,22 @@ router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, n
         .then(null, next);
 });
 
+// 编辑订单
+router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    let end = Date.now(); //TODO: 计算最后一天送奶日期
+    db.orders.update({ _id: req.params.id }, {
+        number: req.body.number,
+        orderType: req.body.orderType,
+        address: req.body.address,
+        milkType: req.body.milkType,
+        begin: req.body.begin,
+        end: end
+    })
+        .exec()
+        .then(function () {
+            res.send('ok');
+        })
+        .then(null, next);
+});
+
 module.exports = router;
