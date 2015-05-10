@@ -81,9 +81,12 @@ function closeDialog() {
 }
 
 function postDelete(url, id) {
-    $.post(url, { _csrf: csrf }, function () {
+    $.post(url, { _csrf: csrf }, function (data) {
         $('#' + id).remove();
-        popMsg('删除成功');
+        if (data == 'ok' || data == 'OK')
+            popMsg('删除成功');
+        else
+            popMsg(data);
         closeDialog();
     });
 }

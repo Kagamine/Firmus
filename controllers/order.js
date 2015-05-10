@@ -159,6 +159,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
 
 // 删除变更
 router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    //TODO: 判断各个字段是否合法
     db.orders.update({ _id: req.params.id }, {
         $pull: {
             changes: { _id: req.query.cid }
