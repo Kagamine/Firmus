@@ -613,14 +613,3 @@ table {
     width: 280px;
 }
 
-
-
-/*下拉样式*/
-.select4_box{border: 1px solid rgb(253,217,0);position: absolute;width:250px;background: #fff;
-    border-radius: 4px;-webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
-    box-shadow: 0 4px 5px rgba(0, 0, 0, .15);z-index: 9999;}
-.select4_box ul{padding: 0px;margin: 0px;}
-.select4_box ul li{list-style: none;padding: 3px 7px 4px; cursor: pointer;}
-.select4_box ul li:hover{background: rgb(253,217,0);color: #555;}
-.select4_box ul li.active{background:rgb(253,217,0);
-    color: #fff;}

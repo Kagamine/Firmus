@@ -455,6 +455,7 @@ router.get('/address/edit/:id', auth.checkRole('address', 'modify'), function (r
         .exec()
         .then(function (address) {
             res.locals.address = address;
+
             res.render('general/addressEdit', { title: '编辑地址' });
         })
         .then(null, next);
@@ -678,7 +679,7 @@ router.get('/address/getMilkStationByDistrict',auth.checkRole('address','query')
     .then(null, next);
 });
 
-
+//模糊匹配城市名称 by nele
 router.get('/address/getCitiesByName',auth.checkRole('address','query'),function(req,res,next){
      db.addresses
          .aggregate()
@@ -690,6 +691,35 @@ router.get('/address/getCitiesByName',auth.checkRole('address','query'),function
          })
          .then(null, next);
 
+});
+
+//模糊匹配县区名称 by nele
+router.get('/address/getDistrictsByName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ district: new RegExp('.*' + req.query.data + '.*') })
+        .group({_id:{district:'$district'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>x._id.district));
+        })
+        .then(null, next);
+
+});
+
+
+router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),function(rea,res,next){
+     db.departments
+    .where({city:req.query.city,district:req.query.district})
+    .exec()
+    .then(function(data){
+             res.json(data.map(x=>{
+                 return {
+                     id:x.id,
+                     title:x.title
+                 }
+             }));
+         })
 });
 
 

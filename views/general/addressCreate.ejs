@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <td class="row-title">区县</td>
-                <td><input type="text" class="textbox w-3" name="district" /></td>
+                <td><input type="text" class="textbox w-3" name="district" id="txtAddAddressDistrict" /></td>
             </tr>
             <tr>
                 <td class="row-title">详细地址</td>
@@ -51,5 +51,6 @@
 </div>
 
 <script>
-    $("#txtAddAddressCity").select4({ "ajax_url": "/general/address/getCitiesByName" });
+    //$("#txtAddAddressCity").select4({ "ajax_url": "/general/address/getCitiesByName" });
+    //$("#txtAddAddressDistrict").select4({ "ajax_url": "/general/address/getDistrictsByName" });
 </script>

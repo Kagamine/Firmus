@@ -53,6 +53,15 @@ $(document).ready(function () {
         });
     });
 
+
+    //修改地址信息时 地址的改变奶站改变
+    $('#txtEditAddressCity').blur(function(){
+         var city =  $('#txtEditAddressCity').val();
+         var district=$('#txtEditAddressDistrict').val();
+         $.getJSON('/general/address/getDeparmentByCity',{city:city,district:district},function(data){
+
+         });
+    });
 });
 
 function popMsg(txt) {
