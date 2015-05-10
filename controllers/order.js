@@ -157,4 +157,18 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
         .then(null, next);
 });
 
+// 删除变更
+router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    db.orders.update({ _id: req.params.id }, {
+        $pull: {
+            changes: { _id: req.query.cid }
+        }
+    })
+        .exec()
+        .then(function () {
+            res.send('ok');
+        })
+        .then(null, next);
+});
+
 module.exports = router;
