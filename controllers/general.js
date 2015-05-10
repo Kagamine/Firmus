@@ -427,7 +427,7 @@ router.post('/address/create', auth.checkRole('address', 'modify'), function (re
     address.district = req.body.district;
     address.address = req.body.address;
     address.storey = req.body.storey;
-    address.milkStation = req.body.milkStation;
+    address.milkStation = req.body.milkStation || null;
     address.name = req.body.name;
     address.phone = req.body.phone;
     address.blockOut = false;
