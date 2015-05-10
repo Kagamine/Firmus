@@ -660,21 +660,37 @@ router.get('/address/getDistrictByCity',auth.checkRole('address','query'),functi
                     city: x._id.city,
                     district: x._id.district
                 }}));
-        });
+        })
+        .then(null, next);
 });
 
 
 
 //根据区县找到奶站  by nele
-router.get('／address/getMilkStationByDistrict',auth.checkRole('address','query'),function(req,res,next){
-
+router.get('/address/getMilkStationByDistrict',auth.checkRole('address','query'),function(req,res,next){
     db.departments
     .aggregate()
-    .match({'district':req.query.district})
+    .match({'city':req.query.city,'district':req.query.district})
     .exec()
     .then(function(data){
             res.json(data);
-        });
+        })
+    .then(null, next);
 });
+
+
+router.get('/address/getCitiesByName',auth.checkRole('address','query'),function(req,res,next){
+     db.addresses
+         .aggregate()
+         .match({ city: new RegExp('.*' + req.query.data + '.*') })
+         .group({_id:{city:'$city'}})
+         .exec()
+         .then(function(data){
+             res.json(data.map(x=>x._id.city));
+         })
+         .then(null, next);
+
+});
+
 
 module.exports = router;

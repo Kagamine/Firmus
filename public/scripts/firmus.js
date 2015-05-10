@@ -41,8 +41,10 @@ $(document).ready(function () {
     //区县改变事件 by nele
     $('#lstDistrict').change(function(){
         var district=$('#lstDistrict').val();
+        var city=$('#lstCity').val();
         $('#lstMilkStation option').remove();
-        $.getJSON("/general/address/getMilkStationByDistrict",{district:district},function(data){
+        $.getJSON("/general/address/getMilkStationByDistrict",{district:district,city:city},function(data){
+            console.log(data);
             var str='<option value="">所属奶站</option>';
             for(var i =0;i<data.length;i++){
                 str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
@@ -50,6 +52,7 @@ $(document).ready(function () {
             $('#lstMilkStation').append(str);
         });
     });
+
 });
 
 function popMsg(txt) {

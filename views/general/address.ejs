@@ -22,9 +22,6 @@
     <input type="text" class="w-0-6 textbox" name="phone" placeholder="联系电话" />
     <select name="milkStation" class="w-1" id="lstMilkStation">
         <option value="">所属奶站</option>
-        <% milkStations.forEach(x => { %>
-        <option value="<%= x._id %>"><%= x.title %></option>
-        <% }) %>
     </select>
     <select name="milkbox" class="w-0-6">
         <option value="">奶箱</option>
