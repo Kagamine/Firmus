@@ -34,11 +34,16 @@
                         dataType: "json",
                         data: { data: val },
                         success: function (json) {
-                            if (json.Data) {
+                            console.log(json);
+                            if (json) {
                                 var html = '<div class="select4_box"><ul>';
-                                $.each(json.Data, function (k, v) {
-                                    html += '<li>' + v.city + '</li>';
-                                });
+
+                                for(var i=0;i<json.length;i++){
+                                    html += '<li>' + json[i]+ '</li>';
+                                }
+                                //$.each(json.Data, function (k, v) {
+                                //    html += '<li>' + v.city + '</li>';
+                                //});
                                 html += '</ul></div>';
                                 $(".select4_box").remove();
                                 mythis.after(html);
