@@ -13,7 +13,7 @@ var lock = false;
             $.getJSON(url, args, function (data) {
                 var html = '<div class="codecomb-droptxt-outer" data-parent="' + selector + '">';
                 for (var i = 0; i < data.length; i++) {
-                    html += '<div class="codecomb-droptxt-item" onclick="$(\'' + selector + '\').val($(this).text());">' + data[i] + '</div>'
+                    html += '<div class="codecomb-droptxt-item" onclick="$(\'' + selector + '\').val($(this).text()); $(\'.codecomb-droptxt-outer\').remove()">' + data[i] + '</div>'
                 }
                 html += '</div>';
                 var dom = $(html);
@@ -24,7 +24,9 @@ var lock = false;
                 lock = false;
             });
         });
-        this.on('blur', function () {
+        $(document).on('click', function (e) {
+            if ($(e).hasClass('codecomb-droptxt-outer')) return;
+            if ($(e).parent('.codecomb-droptxt-outer').length > 0) return;
             $('div[data-parent="' + selector + '"]').slideUp(200);
             setTimeout(function () {
                 $('div[data-parent="' + selector + '"]').remove();
