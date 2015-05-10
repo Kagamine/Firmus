@@ -83,4 +83,15 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     });
 });
 
+// 查看订单详情
+router.get('/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .populate('address user')
+        .exec()
+        .then(function (order) {
+            res.render('order/orderDetail', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
 module.exports = router;

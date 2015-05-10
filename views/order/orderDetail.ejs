@@ -1,0 +1,87 @@
+<% include orderMenu %>
+<div class="block">
+    <h3>订单信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">订单号</td>
+            <td><%= order.number %></td>
+        </tr>
+        <tr>
+            <td class="row-title">下单时间</td>
+            <td><%= moment(order.time).format('YYYY-MM-DD HH:mm:ss') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">业务员</td>
+            <td>
+                <% if (order.user) { %>
+                <a href="/general/employee/<%= order.user._id %>"><%= order.user.name %> (<%= order.user.jobNumber %>)</a>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">订单类型</td>
+            <td><%= order.type %></td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <% if (order.address) { %>
+                <%= order.address.city %><%= order.address.district %><%= order.address.address %>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">联系人</td>
+            <td>
+                <% if (order.address) { %>
+                <%= order.address.name %> (<%= order.address.phone %>)
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">奶品品相</td>
+            <td><%= order.milkType %></td>
+        </tr>
+        <tr>
+            <td class="row-title">总瓶数</td>
+            <td><%= order.count %></td>
+        </tr>
+        <tr>
+            <td class="row-title">金额</td>
+            <td><%= order.price %></td>
+        </tr>
+        <tr>
+            <td class="row-title">余额</td>
+            <td><%= order.balance %></td>
+        </tr>
+        <tr>
+            <td class="row-title">付款方式</td>
+            <td><%= order.payMethod %></td>
+        </tr>
+        <% if (order.payMethod == 'POS') { %>
+        <tr id="pos-number-row">
+            <td class="row-title">POS单号</td>
+            <td><%= order.pos %></td>
+        </tr>
+        <% } %>
+        <tr>
+            <td class="row-title">开始配送日期</td>
+            <td><%= order.begin %></td>
+        </tr>
+        <tr>
+            <td class="row-title">配送结束时间</td>
+            <td><%= order.end %></td>
+        </tr>
+        <tr>
+            <td class="row-title">配送方式</td>
+            <td><%= order.distributeMethod %></td>
+        </tr>
+        <tr>
+            <td class="row-title">每次配送瓶数</td>
+            <td><%= order.distributeCount %></td>
+        </tr>
+    </table>
+</div>
+<div class="block">
+    <h3>变更记录</h3>
+</div>

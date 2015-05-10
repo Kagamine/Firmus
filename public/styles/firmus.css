@@ -380,6 +380,7 @@ select {
     border-top: 5px solid rgb(253,217,0);
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
 }
 
 table {
