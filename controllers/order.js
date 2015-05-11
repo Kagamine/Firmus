@@ -175,4 +175,17 @@ router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (r
         .then(null, next);
 });
 
+// 配送日报
+router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, res, next) {
+    db.orders.find({
+        begin: { $lte: Date.now() },
+        end: { $gte: Date.now() }
+    })
+        .exec()
+        .then(function (orders) {
+            console.log(orders);
+        })
+        .then(null, next);
+});
+
 module.exports = router;

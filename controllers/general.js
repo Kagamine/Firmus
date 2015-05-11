@@ -432,7 +432,7 @@ router.post('/address/create', auth.checkRole('address', 'modify'), function (re
     address.phone = req.body.phone;
     address.blockOut = false;
     address.save(function (err, address) {
-        res.redirect('/address/' + address._id);
+        res.redirect('/address/edit/' + address._id);
     });
 });
 
