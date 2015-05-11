@@ -84,14 +84,15 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.distributeMethod = req.body.distributeMethod;
     order.distributeCount = req.body.distributeCount;
     order.save(function (err, order) {
-        res.redirect('/order/' + order._id);
+        res.redirect('/order/show/' + order._id);
     });
 });
 
 // 查看订单详情
-router.get('/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
     db.orders.findById(req.params.id)
-        .populate('address user')
+        .populate('address')
+        .populate('order')
         .exec()
         .then(function (order) {
             res.render('order/orderDetail', { title: '订单详情', order: order });
@@ -152,7 +153,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     }
                 },
                 end: end
-            });
+            }).exec();
         })
         .then(function () {
             res.redirect('/order/' + req.params.id);
@@ -181,9 +182,12 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
         begin: { $lte: Date.now() },
         end: { $gte: Date.now() }
     })
+        .where('address').ne(null)
+        .populate('address')
         .exec()
         .then(function (orders) {
             console.log(orders);
+            res.send('ok');
         })
         .then(null, next);
 });

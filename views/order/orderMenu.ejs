@@ -1,8 +1,8 @@
 <h2><%= title %></h2>
 <div class="submenu">
-    <a href="/order/<%= order._id %>" class="submenu-item">订单详情</a>
+    <a href="/order/show/<%= order._id || req.params.id %>" class="submenu-item">订单详情</a>
     <% if (permission.order.modify) { %>
-    <a href="/order/edit/<%= order._id %>" class="submenu-item">修改订单</a>
-    <a href="/order/change/<%= order._id %>" class="submenu-item">填写变更</a>
+    <a href="/order/edit/<%= order._id || req.params.id %>" class="submenu-item">修改订单</a>
+    <a href="/order/change/<%= order._id || req.params.id %>" class="submenu-item">填写变更</a>
     <% } %>
 </div>
