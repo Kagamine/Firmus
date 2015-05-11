@@ -380,6 +380,7 @@ select {
     border-top: 5px solid rgb(253,217,0);
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
 }
 
 table {
@@ -578,7 +579,7 @@ table {
     transition: opacity 0.2s linear, visibility 0.2s linear, transform 0.2s linear;
     background-color: rgba(255,255,255, 0.95);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    position: absolute;
+    position: fixed;
     top: 150px;
     font-size: 16px;
     left: 50%;
@@ -611,3 +612,4 @@ table {
 .detail-table .textbox {
     width: 280px;
 }
+

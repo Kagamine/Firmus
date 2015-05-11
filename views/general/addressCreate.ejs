@@ -5,15 +5,15 @@
         <table class="detail-table">
             <tr>
                 <td class="row-title">城市</td>
-                <td><input type="text" class="textbox w-3" name="city" /></td>
+                <td><input type="text" class="textbox w-3" name="city" id="txtAddAddressCity" /></td>
             </tr>
             <tr>
                 <td class="row-title">区县</td>
-                <td><input type="text" class="textbox w-3" name="district" /></td>
+                <td><input type="text" class="textbox w-3" name="district" id="txtAddAddressDistrict" /></td>
             </tr>
             <tr>
                 <td class="row-title">详细地址</td>
-                <td><input type="text" class="textbox w-3" name="address" /></td>
+                <td><input type="text" class="textbox w-3" name="address" id="txtAddAddressAddress" /></td>
             </tr>
             <tr>
                 <td class="row-title">联系人</td>
@@ -49,3 +49,8 @@
         </p>
     </form>
 </div>
+
+<script>
+    //$("#txtAddAddressCity").select4({ "ajax_url": "/general/address/getCitiesByName" });
+    //$("#txtAddAddressDistrict").select4({ "ajax_url": "/general/address/getDistrictsByName" });
+</script>

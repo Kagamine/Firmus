@@ -222,12 +222,12 @@ router.get('/employee', auth.checkRole('employee', 'query'), function (req, res,
             return _.clone(query).count().exec();
         })
         .then (function (count) {
-            var page = res.locals.page = req.query.p || 1;
-            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
-            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
-            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-            return query.populate('department').skip(50 * (page - 1)).limit(50).exec();
-        })
+        var page = res.locals.page = req.query.p || 1;
+        var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+        var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+        var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+        return query.populate('department').skip(50 * (page - 1)).limit(50).exec();
+    })
         .then(function (users) {
             res.locals.users = users;
             res.render('general/employee', { title: '职工管理' });
@@ -389,14 +389,12 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
                     district: x._id.district
                 }
             });
-            return db.departments.find({ type: '奶站' }).exec();
-        })
-        .then(function (milkStations) {
-            res.locals.milkStations = milkStations;
             res.render('general/address', { title: '地址信息管理' });
         })
         .then(null, next);
 });
+
+
 
 // 奶站订单列表
 router.get('/department/order/:id', auth.checkRole('order', 'query'), function (req, res, next) {
@@ -429,7 +427,7 @@ router.post('/address/create', auth.checkRole('address', 'modify'), function (re
     address.district = req.body.district;
     address.address = req.body.address;
     address.storey = req.body.storey;
-    address.milkStation = req.body.milkStation;
+    address.milkStation = req.body.milkStation || null;
     address.name = req.body.name;
     address.phone = req.body.phone;
     address.blockOut = false;
@@ -639,11 +637,115 @@ router.post('/permission', auth.checkRole('permission', 'modify'), function (req
     res.send('ok');
 });
 
+// 删除车辆信息
 router.post('/car/delete/:id', auth.checkRole('car', 'modify'), function (req, res, next) {
     db.cars.remove({ _id: req.params.id })
         .exec()
         .then(function () {
             res.send('ok');
+        })
+        .then(null, next);
+});
+
+// 根据城市找到区县  by nele
+router.get('/address/getDistrictByCity',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({'city':req.query.city})
+        .group({ _id: { city: '$city', district: '$district' } })
+        .exec()
+        .then(function(data){
+            res.json(data.map(x => {
+                return {
+                    city: x._id.city,
+                    district: x._id.district
+                }}));
+        })
+        .then(null, next);
+});
+
+// 根据区县找到奶站  by nele
+router.get('/address/getMilkStationByDistrict',auth.checkRole('address','query'),function(req,res,next){
+    db.departments
+        .aggregate()
+        .match({'city':req.query.city,'district':req.query.district})
+        .exec()
+        .then(function(data){
+            res.json(data);
+        })
+        .then(null, next);
+});
+
+// 模糊匹配城市名称 by nele
+router.get('/address/getCitiesByName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ city: new RegExp('.*' + req.query.data + '.*') })
+        .group({_id:{city:'$city'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>x._id.city));
+        })
+        .then(null, next);
+
+});
+
+// 模糊匹配县区名称 by nele
+router.get('/address/getDistrictsByName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ district: new RegExp('.*' + req.query.data + '.*') })
+        .group({_id:{district:'$district'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>x._id.district));
+        })
+        .then(null, next);
+});
+
+// 模糊匹配详细地址名称 by nele
+router.get('/address/getAddressByName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ address: new RegExp('.*' + req.query.data + '.*') })
+        .group({_id:{address:'$address'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>x._id.address));
+        })
+        .then(null, next);
+});
+
+// 根据城市 县区得到奶站
+router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),function(req,res,next){
+    db.departments
+        .where({city:req.query.city,district:req.query.district})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+                return {
+                    id:x._id,
+                    title:x.title
+                }
+            }));
+        })
+        .then(null, next);
+});
+
+// 根据奶站得到该奶站的服务人员
+router.get('/getServiceUserByDepartmentId',auth.checkRole('address','query'),function(req,res,next){
+    db.users
+        .aggregate()
+        .match({department:req.query.departmentId,role:'服务人员'})
+        .group({_id:{id:'$_id',username:'$username'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+                return {
+                    id:x._id.id,
+                    username:x._id.username
+                }
+            }));
         })
         .then(null, next);
 });

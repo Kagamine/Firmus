@@ -68,6 +68,8 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
     let order = new db.orders();
+    order.time = Date.now();
+    order.user = req.session.uid;
     order.address = req.body.address;
     order.number = req.body.number;
     order.milkType = req.body.milkType;
@@ -86,15 +88,89 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     });
 });
 
-router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, res, next) {
-    db.orders.find({
-        begin: { $lte: Date.now() },
-        end: { $gte: Date.now() }
+// 查看订单详情
+router.get('/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .populate('address user')
+        .exec()
+        .then(function (order) {
+            res.render('order/orderDetail', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
+// 编辑订单
+router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .populate('address')
+        .exec()
+        .then(function (order) {
+            res.render('order/orderEdit', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
+// 编辑订单
+router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    let end = Date.now(); //TODO: 计算最后一天送奶日期
+    db.orders.update({ _id: req.params.id }, {
+        number: req.body.number,
+        orderType: req.body.orderType,
+        address: req.body.address,
+        milkType: req.body.milkType,
+        begin: req.body.begin,
+        end: end
     })
         .exec()
-        .then(function (orders) {
-            let tmp = _.group(orders, 'city');
-            console.log(tmp);
+        .then(function () {
+            res.send('ok');
+        })
+        .then(null, next);
+});
+
+// 添加订单变更
+router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    res.render('order/orderChange', { title: '订单变更' });
+});
+
+// 添加订单变更
+router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .exec()
+        .then(function (order) {
+            let end = Date.now(); //TODO: 计算最后一天送奶日
+            return db.orders.update({ _id: req.params.id }, {
+                $push: {
+                    changes: {
+                        user: req.session.uid,
+                        time: Date.now(),
+                        type: req.body.type,
+                        begin: req.body.begin,
+                        end: req.body.end,
+                        hint: req.body.hint,
+                        count: req.body.count
+                    }
+                },
+                end: end
+            });
+        })
+        .then(function () {
+            res.redirect('/order/' + req.params.id);
+        })
+        .then(null, next);
+});
+
+// 删除变更
+router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    //TODO: 判断各个字段是否合法
+    db.orders.update({ _id: req.params.id }, {
+        $pull: {
+            changes: { _id: req.query.cid }
+        }
+    })
+        .exec()
+        .then(function () {
+            res.send('ok');
         })
         .then(null, next);
 });

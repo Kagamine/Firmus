@@ -7,18 +7,18 @@
             <tr>
                 <td class="row-title">城市</td>
                 <td>
-                    <input type="text" class="textbox w-3" name="city" value="<%= address.city %>" />
+                    <input type="text" class="textbox w-3" name="city" value="<%= address.city %>"  id="txtEditAddressCity" />
                 </td>
             </tr>
             <tr>
                 <td class="row-title">区县</td>
                 <td>
-                    <input type="text" class="textbox w-3" name="district" value="<%= address.district %>" />
+                    <input type="text" class="textbox w-3" name="district" value="<%= address.district %>" id="txtEditAddressDistrict" />
                 </td>
             </tr>
             <tr>
                 <td class="row-title">详细地址</td>
-                <td><input name="address" type="text" class="textbox w-3" value="<%= address.address %>" /></td>
+                <td><input name="address" type="text" class="textbox w-3" value="<%= address.address %>"  id="txtEditAddressAddress" /></td>
             </tr>
             <tr>
                 <td class="row-title">姓名</td>
@@ -54,7 +54,7 @@
             <tr>
                 <td class="row-title">奶站</td>
                 <td>
-                    <select name="milkStation">
+                    <select name="milkStation" id="lstEditAddressMilkStation">
                         <option value="">未指定</option>
                     </select>
                 </td>
@@ -62,7 +62,7 @@
             <tr>
                 <td class="row-title">服务人员</td>
                 <td>
-                    <select name="service">
+                    <select name="service" id="lstEditAddressServiceUser">
                         <option value="">未指定</option>
                     </select>
                 </td>
@@ -80,4 +80,7 @@
     <p>
         <a href="javascript:editAddress('<%= address._id %>');" class="button green">保存</a>
     </p>
+    <script>
+         departmentId = '<%=address.milkStation==null?'':address.milkStation %>';
+    </script>
 </div>

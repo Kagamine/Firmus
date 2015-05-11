@@ -1,0 +1,25 @@
+.codecomb-droptxt-outer {
+    border: 1px solid rgb(253,217,0);
+    position: absolute;
+    background: #fff;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+    z-index: 9999;
+}
+.codecomb-droptxt-outer {
+    padding: 0px;
+    margin: 0px;
+}
+.codecomb-droptxt-item {
+    cursor: pointer;
+    padding: 8px;
+}
+.codecomb-droptxt-item:hover {
+    background: rgb(253,217,0);
+    color: #555;
+}
+.codecomb-droptxt-item.active {
+    background:rgb(253,217,0);
+    color: #fff;
+}

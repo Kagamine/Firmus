@@ -1,0 +1,98 @@
+<% include orderMenu %>
+<div class="block">
+    <h3>订单信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">订单号</td>
+            <td><%= order.number %></td>
+        </tr>
+        <tr>
+            <td class="row-title">下单时间</td>
+            <td><%= moment(order.time).format('YYYY-MM-DD HH:mm:ss') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">业务员</td>
+            <td>
+                <% if (order.user) { %>
+                <a href="/general/employee/<%= order.user._id %>"><%= order.user.name %> (<%= order.user.jobNumber %>)</a>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">订单类型</td>
+            <td><%= order.type %></td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <% if (order.address) { %>
+                <%= order.address.city %><%= order.address.district %><%= order.address.address %>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">联系人</td>
+            <td>
+                <% if (order.address) { %>
+                <%= order.address.name %> (<%= order.address.phone %>)
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">奶品品相</td>
+            <td><%= order.milkType %></td>
+        </tr>
+        <tr>
+            <td class="row-title">总瓶数</td>
+            <td><%= order.count %></td>
+        </tr>
+        <tr>
+            <td class="row-title">金额</td>
+            <td><%= order.price %></td>
+        </tr>
+        <tr>
+            <td class="row-title">余额</td>
+            <td><%= order.balance %></td>
+        </tr>
+        <tr>
+            <td class="row-title">付款方式</td>
+            <td><%= order.payMethod %></td>
+        </tr>
+        <% if (order.payMethod == 'POS') { %>
+        <tr id="pos-number-row">
+            <td class="row-title">POS单号</td>
+            <td><%= order.pos %></td>
+        </tr>
+        <% } %>
+        <tr>
+            <td class="row-title">开始配送日期</td>
+            <td><%= moment(order.begin).format('YYYY-MM-DD') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">配送结束时间</td>
+            <td><%= moment(order.end).format('YYYY-MM-DD') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">配送方式</td>
+            <td><%= order.distributeMethod %></td>
+        </tr>
+        <tr>
+            <td class="row-title">每次配送瓶数</td>
+            <td><%= order.distributeCount %></td>
+        </tr>
+    </table>
+</div>
+<div class="block">
+    <h3>变更记录</h3>
+    <ul>
+        <% order.changes.forEach(x => { %>
+        <% if (x.type == '停送') { %>
+        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 每次停送<%= x.count %>瓶的变更服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
+        <% } else if (x.type == '加送') { %>
+        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 每次停送<%= x.count %>瓶的加送服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
+        <% } else { %>
+        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 顺延的变更服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
+        <% } %>
+        <% }) %>
+    </ul>
+</div>
