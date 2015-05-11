@@ -2,6 +2,9 @@
 var express = require('express');
 var router = express.Router();
 
+let dayreport = null;
+let refreshTime = null;
+
 router.use(function (req, res, next) {
     res.locals.order = true;
     next();
@@ -81,6 +84,19 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.save(function (err, order) {
         res.redirect('/order/' + order._id);
     });
+});
+
+router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, res, next) {
+    db.orders.find({
+        begin: { $lte: Date.now() },
+        end: { $gte: Date.now() }
+    })
+        .exec()
+        .then(function (orders) {
+            let tmp = _.group(orders, 'city');
+            console.log(tmp);
+        })
+        .then(null, next);
 });
 
 module.exports = router;

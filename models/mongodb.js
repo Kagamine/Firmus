@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://firmus:123456@firmus.chinacloudapp.cn/firmus', {
+mongoose.connect('mongodb://firmus:123456@www.4321.io/firmus', {
     server: {
         auto_reconnect: true,
         socketOptions:{
