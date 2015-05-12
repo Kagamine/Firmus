@@ -176,6 +176,36 @@ router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (r
         .then(null, next);
 });
 
+// 获取订单某日需配送瓶数
+function getDistributeCount (order, time) {
+    let ret = order.distributeCount;
+    let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
+    let dend = new Date(order.end.getFullYear(), order.end.getMonth(), order.end.getDate());
+    let tmp = new Date();
+    let today = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
+    dend.setDate(dend.getDate() + 1);
+    if (order.type == '天天送') {
+        order.changes.forEach(x => {
+            if (x.type == '停送') {
+                if (dbeg <= time && time < dend)
+                    ret -= x.count;
+            } else if (x.type == '加送') {
+                if (dbeg <= time && time < dend)
+                    ret += x.count;
+            }
+        });
+    } else if (order.type == '隔天送') {
+        let i = 0;
+        while (_.clone(dbeg).setDate(dbeg.getDate() + i) <= today) {
+            if (i % 2 == 1 && _.clone(dbeg).setDate(dbeg.getDate() + i) == today)
+                ret = 0;
+        }
+    } else {
+
+    }
+    return ret;
+}
+
 // 配送日报
 router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, res, next) {
     db.orders.find({
@@ -186,8 +216,21 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
         .populate('address')
         .exec()
         .then(function (orders) {
-            console.log(orders);
-            res.send('ok');
+            let tmp = _.groupBy(orders, x => x.address.city);
+            let ret = {};
+            for (let x in tmp) {
+                ret[x] = {};
+                tmp[x].forEach(y => {
+                    let cnt = getDistributeCount(y);
+                    if (cnt > 0) {
+                        if (!ret[x][y.milkType])
+                            ret[x][y.milkType] = cnt;
+                        else
+                            ret[x][y.milkType] += cnt;
+                    }
+                });
+            }
+            res.render('order/distribute', { title: '配送管理', report: ret });
         })
         .then(null, next);
 });

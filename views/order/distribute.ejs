@@ -1,4 +1,22 @@
 <% include distributeMenu %>
 <div class="block">
-    <h3>日报概览</h3>
+    <% for (var x in report) { %>
+    <h3><%= x %></h3>
+    <table class="detail-table">
+        <thead>
+        <tr>
+            <td class="row-title">奶品品相</td>
+            <td>数量</td>
+        </tr>
+        </thead>
+        <tbody>
+        <% for (var y in report[x]) { %>
+        <tr>
+            <td class="row-title"><%= y %></td>
+            <td><%= report[x][y] %></td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+    <% } %>
 </div>
