@@ -244,10 +244,12 @@ router.get('/employee/create', auth.checkRole('employee', 'modify'), function (r
 // 添加职工
 router.post('/employee/create', auth.checkRole('employee', 'modify'), function (req, res, next) {
     let user = db.users();
+    let salt = crypto.salt();
     user.username = req.body.username;
-    user.salt = crypto.salt();
+    user.salt = salt;
     user.password = crypto.sha256(req.body.password, salt);
     user.role = req.body.role;
+    user.jobNumber = req.body.jobNumber;
     user.save(function (err, user) {
         res.redirect('/general/employee/edit/' + user._id);
     });

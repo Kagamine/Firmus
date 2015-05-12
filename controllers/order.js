@@ -235,4 +235,28 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
         .then(null, next);
 });
 
+// 车辆配送日报
+router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (req, res, next) {
+    let orders;
+    db.orders.find({
+        begin: { $lte: Date.now() },
+        end: { $gte: Date.now() }
+    })
+        .where('address').ne(null)
+        .populate('address')
+        .exec()
+        .then(function (_orders) {
+            orders = _orders
+            return db.cars.find().exec();
+        })
+        .then(function (cars) {
+            let tmp = _.groupBy(orders, x => x.address.city);
+            let ret = {};
+            for (let x in tmp) {
+
+            }
+        })
+        .then(null, next);
+});
+
 module.exports = router;

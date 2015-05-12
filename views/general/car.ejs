@@ -22,8 +22,8 @@
     <tbody>
     <% cars.forEach(x => { %>
     <tr id="<%= x._id %>">
-        <td class="tl"><%= x.line %></td>
         <td class="tl"><%= x.city %></td>
+        <td class="tl"><%= x.line %></td>
         <td class="tl"><%= x.plate %></td>
         <td class="tc">
             <a href="/general/car/station/<%= x._id %>">查看线路</a>
