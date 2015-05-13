@@ -1,5 +1,6 @@
 var mongodb = require('../models/mongodb');
 var Schema = mongodb.mongoose.Schema;
+var deepPopulate = require('mongoose-deep-populate');
 
 var addressSchema = new Schema({
     city: {
@@ -46,6 +47,8 @@ var addressSchema = new Schema({
         default: false
     }
 });
+
+addressSchema.plugin(deepPopulate, {});
 
 var address = mongodb.mongoose.model('addresses', addressSchema);
 module.exports = address;

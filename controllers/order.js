@@ -273,4 +273,23 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
         .then(null, next);
 });
 
+// 奶站配送日报
+router.get('/distribute/milkStation', auth.checkRole('distribute', 'query'), function (req, res, next) {
+    db.orders.find({
+        begin: { $lte: Date.now() },
+        end: { $gte: Date.now() }
+    })
+        .where('address').ne(null)
+        .where('address.milkStation').ne(null)
+        .populate('address')
+        .deepPopulate('address.milkStation')
+        .exec()
+        .then(function (orders) {
+            let ret = {};
+            let
+        })
+        .then(null, next);
+
+});
+
 module.exports = router;
