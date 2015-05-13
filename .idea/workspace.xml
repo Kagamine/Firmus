@@ -24,8 +24,8 @@
       <file leaf-file-name="order.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/order.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6911447">
-              <caret line="251" column="31" selection-start-line="251" selection-start-column="31" selection-end-line="251" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.4773218">
+              <caret line="248" column="33" selection-start-line="248" selection-start-column="33" selection-end-line="248" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -44,8 +44,8 @@
       <file leaf-file-name="general.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/general.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.777779">
-              <caret line="245" column="26" selection-start-line="245" selection-start-column="26" selection-end-line="245" selection-end-column="26" />
+            <state vertical-scroll-proportion="384.7037">
+              <caret line="247" column="38" selection-start-line="247" selection-start-column="38" selection-end-line="247" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -75,7 +75,7 @@
         <entry file="file://$PROJECT_DIR$/views/order/distribute.ejs">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-5.677419">
-              <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+              <caret line="8" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="21" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -84,8 +84,8 @@
       <file leaf-file-name="distributeCar.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/order/distributeCar.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.4193548">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state vertical-scroll-proportion="-15.612904">
+              <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -179,13 +179,13 @@
         <option value="$PROJECT_DIR$/views/order/orderDetail.ejs" />
         <option value="$PROJECT_DIR$/views/order/orderMenu.ejs" />
         <option value="$PROJECT_DIR$/views/order/index.ejs" />
-        <option value="$PROJECT_DIR$/views/order/distributeMenu.ejs" />
         <option value="$PROJECT_DIR$/views/order/distribute.ejs" />
-        <option value="$PROJECT_DIR$/views/order/distributeCar.ejs" />
         <option value="$PROJECT_DIR$/views/general/car.ejs" />
-        <option value="$PROJECT_DIR$/controllers/order.js" />
         <option value="$PROJECT_DIR$/views/layout.ejs" />
         <option value="$PROJECT_DIR$/controllers/general.js" />
+        <option value="$PROJECT_DIR$/views/order/distributeCar.ejs" />
+        <option value="$PROJECT_DIR$/views/order/distributeMenu.ejs" />
+        <option value="$PROJECT_DIR$/controllers/order.js" />
       </list>
     </option>
   </component>
@@ -294,24 +294,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="order" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Firmus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Firmus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="general" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -440,7 +422,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.157402" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21931261" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21931261" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -788,18 +770,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/order/distribute.ejs">
+    <entry file="file://$PROJECT_DIR$/views/layout.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.677419">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/order/distributeCar.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.4193548">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state vertical-scroll-proportion="-14.67742">
+          <caret line="52" column="50" selection-start-line="52" selection-start-column="50" selection-end-line="52" selection-end-column="50" />
           <folding />
         </state>
       </provider>
@@ -820,26 +794,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/layout.ejs">
+    <entry file="file://$PROJECT_DIR$/views/order/distributeCar.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.67742">
-          <caret line="52" column="50" selection-start-line="52" selection-start-column="50" selection-end-line="52" selection-end-column="50" />
+        <state vertical-scroll-proportion="-15.612904">
+          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/order/distribute.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.677419">
+          <caret line="8" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="21" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/general.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.777779">
-          <caret line="245" column="26" selection-start-line="245" selection-start-column="26" selection-end-line="245" selection-end-column="26" />
+        <state vertical-scroll-proportion="384.7037">
+          <caret line="247" column="38" selection-start-line="247" selection-start-column="38" selection-end-line="247" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/order.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6911447">
-          <caret line="251" column="31" selection-start-line="251" selection-start-column="31" selection-end-line="251" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.4773218">
+          <caret line="248" column="33" selection-start-line="248" selection-start-column="33" selection-end-line="248" selection-end-column="33" />
           <folding />
         </state>
       </provider>

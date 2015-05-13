@@ -221,7 +221,7 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
             for (let x in tmp) {
                 ret[x] = {};
                 tmp[x].forEach(y => {
-                    let cnt = getDistributeCount(y);
+                    let cnt = getDistributeCount(y, Date.now());
                     if (cnt > 0) {
                         if (!ret[x][y.milkType])
                             ret[x][y.milkType] = cnt;
@@ -243,18 +243,32 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
         end: { $gte: Date.now() }
     })
         .where('address').ne(null)
+        .where('address.city').ne(null)
         .populate('address')
         .exec()
         .then(function (_orders) {
-            orders = _orders
-            return db.cars.find().exec();
+            orders = _orders.map(x => x.toObject());
+            return db.cars.find().where('city').ne(null).exec();
         })
         .then(function (cars) {
-            let tmp = _.groupBy(orders, x => x.address.city);
+            let tmp = _.groupBy(cars, x => x.city);
             let ret = {};
             for (let x in tmp) {
-
+                if (!ret[x]) ret[x] = {};
+                tmp[x].forEach(y => {
+                    if (!ret[x][y.line]) ret[x][y.line] = {};
+                    let o = orders.filter(z => y.stations.some(a => a == z.address.milkStation));
+                    o.forEach(z => {
+                        let cnt = getDistributeCount(z, Date.now());
+                        if (cnt > 0) {
+                            if (!ret[x][y][z.milkType]) ret[x][y][z.milkType] = 0;
+                            ret[x][y][z.milkType] += cnt;
+                        }
+                    });
+                });
             }
+            console.log(ret);
+            res.render('order/distributeCar', { title: '配送车辆日报', report: ret });
         })
         .then(null, next);
 });
