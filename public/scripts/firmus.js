@@ -128,7 +128,7 @@ $(document).ready(function () {
          });
     });
 
-    // 加载页面时根据城市选择县区
+    // 订单加载页面时根据城市选择县区
     if($('#lstOrderCity').length>0){
         var city=$('#lstOrderCity').val();
         $('#lstOrderDistrict option').remove();
@@ -141,7 +141,7 @@ $(document).ready(function () {
         });
     }
 
-    // 城市改变显示县区
+    // 订单城市改变显示县区
     $('#lstOrderCity').change(function(){
         var city=$('#lstOrderCity').val();
         $('#lstOrderDistrict option').remove();
@@ -151,6 +151,21 @@ $(document).ready(function () {
                 str+='<option value='+data[i].city+'>'+data[i].district+'</option>';
             }
             $('#lstOrderDistrict').append(str);
+        });
+    });
+
+    // 订单县城改变选择奶站
+    $('#lstOrderDistrict').change(function(){
+        var district=$('#lstOrderDistrict').val();
+        var city=$('#lstOrderCity').val();
+        $('#lstOrderDepartment option').remove();
+        $.getJSON("/general/address/getMilkStationByDistrict",{district:district,city:city},function(data){
+            console.log(data);
+            var str='<option value="">所属奶站</option>';
+            for(var i =0;i<data.length;i++){
+                str+='<option value='+data[i].id+'>'+data[i].title+'</option>';
+            }
+            $('#lstOrderDepartment').append(str);
         });
     });
 
