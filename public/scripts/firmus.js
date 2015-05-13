@@ -26,7 +26,7 @@ $(document).ready(function () {
         });
     });
 
-    //城市改变事件 by nele
+    // 城市改变事件 by nele
     $('#lstCity').change(function(){
         var city=$('#lstCity').val();
         $('#lstDistrict option').remove();
@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
 
 
-    //区县改变事件 by nele
+    // 区县改变事件 by nele
     $('#lstDistrict').change(function(){
         var district=$('#lstDistrict').val();
         var city=$('#lstCity').val();
@@ -127,6 +127,33 @@ $(document).ready(function () {
              $('#lstEditAddressServiceUser').append(str);
          });
     });
+
+    // 加载页面时根据城市选择县区
+    if($('#lstOrderCity').length>0){
+        var city=$('#lstOrderCity').val();
+        $('#lstOrderDistrict option').remove();
+        $.getJSON("/general/address/getDistrictByCity",{city:city},function(data){
+            var str='<option value="">区县</option>';
+            for(var i =0;i<data.length;i++){
+                str+='<option value='+data[i].city+'>'+data[i].district+'</option>';
+            }
+            $('#lstOrderDistrict').append(str);
+        });
+    }
+
+    // 城市改变显示县区
+    $('#lstOrderCity').change(function(){
+        var city=$('#lstOrderCity').val();
+        $('#lstOrderDistrict option').remove();
+        $.getJSON("/general/address/getDistrictByCity",{city:city},function(data){
+            var str='<option value="">区县</option>';
+            for(var i =0;i<data.length;i++){
+                str+='<option value='+data[i].city+'>'+data[i].district+'</option>';
+            }
+            $('#lstOrderDistrict').append(str);
+        });
+    });
+
 });
 
 function popMsg(txt) {
