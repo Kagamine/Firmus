@@ -169,6 +169,16 @@ $(document).ready(function () {
         });
     });
 
+    // 创建订单付款方式的改变隐藏或显示POS号
+    $('#lstPaymentMethod').change(function () {
+        var method = $('#lstPaymentMethod').val();
+        if(method == '0'){
+            $('#pos-number-row').hide();
+        }
+        else{
+            $('#pos-number-row').show();
+        }
+    });
 });
 
 function popMsg(txt) {
@@ -245,4 +255,9 @@ function saveOrder(id) {
     $.post('/order/edit/' + id, $('#frmEditOrder').serialize(), function () {
         popMsg('订单信息修改成功');
     });
+}
+
+
+function createOrderSelectAddress(){
+    popMsg('address');
 }

@@ -14,7 +14,7 @@
         <tr>
             <td class="row-title">地址</td>
             <td>
-                <a href="javascript:;">点击设置地址</a>
+                <a href="javascript:createOrderSelectAddress();">点击设置地址</a>
             </td>
         </tr>
         <tr>
@@ -32,9 +32,9 @@
         <tr>
             <td class="row-title">付款方式</td>
             <td>
-                <select name="peyMethod">
-                    <option>现金</option>
-                    <option>POS</option>
+                <select name="peyMethod" id="lstPaymentMethod">
+                    <option value="0">现金</option>
+                    <option value="1">POS</option>
                 </select>
             </td>
         </tr>
