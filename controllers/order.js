@@ -316,7 +316,7 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
 router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, next) {
     let now = new Date();
     let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    time.setDate(time.getDate() + req.query.day || 3);
+    time.setDate(time.getDate() + (parseInt(req.query.day) || 3));
     db.orders.find({
         begin: { $lte: time },
         end: { $gte: time }
