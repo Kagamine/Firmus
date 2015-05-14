@@ -1,0 +1,9 @@
+<h2><%= title %></h2>
+<div class="submenu">
+    <a class="submenu-item" href="/gift/promotion/<%= activity._id || req.params.id %>">活动信息</a>
+    <% if (permission.promotion.modify) { %>
+    <a class="submenu-item" href="/gift/promotion/edit/<%= activity._id || req.params.id %>">编辑活动信息</a>
+    <a class="submenu-item" href="/gift/promotion/gift/<%= activity._id || req.params.id %>">编辑活动礼品</a>
+    <a class="submenu-item" href="javascript:deleteDialog('/gift/promotion/delete/<%= activity._id || req.params.id %>', '<%= activity._id || req.params.id %>');">删除活动</a>
+    <% } %>
+</div>

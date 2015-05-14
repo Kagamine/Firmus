@@ -1,0 +1,43 @@
+<% include promotionMenu %>
+<div class="block">
+    <h3>基本信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">促销活动名称</td>
+            <td><%= activity.title %></td>
+        </tr>
+        <tr>
+            <td class="row-title">宣传图标</td>
+            <td><img src="/file/download/<%= activity.icon %>" class="activity-table-icon" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">开始时间</td>
+            <td><%= moment(activity.begin).format('YYYY-MM-DD') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">结束时间</td>
+            <td><%= moment(activity.end).format('YYYY-MM-DD') %></td>
+        </tr>
+        <tr>
+            <td class="row-title">原价</td>
+            <td>￥<%= activity.original.toFixed(2) %></td>
+        </tr>
+        <tr>
+            <td class="row-title">现价</td>
+            <td>￥<%= activity.discount.toFixed(2) %></td>
+        </tr>
+        <tr>
+            <td class="row-title">活动介绍</td>
+            <td><%- xss.process(activity.content) %></td>
+        </tr>
+    </table>
+</div>
+
+<div class="block">
+    <h3>活动礼品</h3>
+    <div>
+        <% activity.gifts.forEach(x => { %>
+        <a href="/gift/show/<%= x._id %>"><%= x.title %></a>
+        <% }) %>
+    </div>
+</div>

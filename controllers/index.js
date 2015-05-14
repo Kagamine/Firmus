@@ -4,6 +4,7 @@ var router = express.Router();
 router.use('/oauth', require('./oauth'));
 router.use(require('./init'));
 router.use(require('./shared'));
+router.use('/file', require('./file'));
 router.use('/general', require('./general'));
 router.use('/order', require('./order'));
 router.use('/gift', require('./gift'));

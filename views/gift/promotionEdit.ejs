@@ -1,0 +1,37 @@
+<% include promotionMenu %>
+<script src="/scripts/ckeditor/ckeditor.js"></script>
+<form class="block" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <h3>基本信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">促销活动名称</td>
+            <td><input type="text" class="textbox" name="title" value="<%= activity.title %>" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">宣传图标</td>
+            <td><input type="file" name="file" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">开始时间</td>
+            <td><input type="text" class="textbox datetime" name="begin" value="<%= moment(activity.begin).format('YYYY-MM-DD HH:mm:ss') %>" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">结束时间</td>
+            <td><input type="text" class="textbox datetime" name="end" value="<%= moment(activity.end).format('YYYY-MM-DD HH:mm:ss') %>" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">原价</td>
+            <td><input type="text" class="textbox" name="original" value="<%= activity.original %>" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">现价</td>
+            <td><input type="text" class="textbox" name="discount" value="<%= activity.discount %>" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">活动介绍</td>
+            <td><textarea name="content" class="ckeditor"><%= activity.content %></textarea></td>
+        </tr>
+    </table>
+    <p><input type="submit" value="保存活动信息" class="button blue" /></p>
+</form>

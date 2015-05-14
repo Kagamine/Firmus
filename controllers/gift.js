@@ -59,4 +59,52 @@ router.get('/promotion/edit/:id', auth.checkRole('promotion', 'modify'), functio
         .then(null, next);
 });
 
+// 编辑活动
+router.post('/promotion/edit/:id', auth.checkRole('promotion', 'modify'), function (req, res, next) {
+    let summary = req.body.content.replace(/<[^>]+>/g, '');
+    if (summary.length >= 255)
+        summary = summary.substring(0, 247) + '...';
+    db.activities.update({ _id: req.params.id }, {
+        title: req.body.title,
+        content: req.body.content,
+        summary: summary,
+        begin: req.body.begin || Date.now(),
+        end: req.body.end || Date.now(),
+        original: req.body.original,
+        discount: req.body.discount
+    })
+        .exec()
+        .then(function () {
+            if (req.files.file) {
+                var writestream = db.gfs.createWriteStream({
+                    filename: req.files.file.originalname
+                });
+                db.fs.createReadStream(req.files.file.path).pipe(writestream);
+                writestream.on('close', function (file) {
+                    result.code = 200;
+                    result.fileId = file._id;
+                    db.fs.unlink(req.files.file.path);
+                    return Promise.resolve();
+                });
+            } else {
+                return Promise.resolve();
+            }
+        })
+        .then(function () {
+            res.redirect('/gift/promotion/' + req.params.id);
+        })
+        .then(null, next);
+});
+
+// 查看活动
+router.get('/promotion/:id', auth.checkRole('promotion', 'modify'), function (req, res, next) {
+    db.activities.findById(req.params.id)
+        .populate('gifts')
+        .exec()
+        .then(function (activity) {
+            res.render('gift/promotionShow', { title: activity.title, activity: activity });
+        })
+        .then(null, next);
+});
+
 module.exports = router;

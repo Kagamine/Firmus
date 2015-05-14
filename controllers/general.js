@@ -85,7 +85,6 @@ router.post('/news/edit/:id', auth.checkRole('news', 'modify'), function (req, r
     let summary = req.body.content.replace(/<[^>]+>/g, '');
     if (summary.length >= 255)
         summary = summary.substring(0, 247) + '...';
-    console.log(summary);
     db.news.update({ _id: req.params.id }, {
         title: req.body.title,
         content: req.body.content,
