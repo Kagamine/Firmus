@@ -274,19 +274,31 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
 });
 
 // 奶站配送日报
-router.get('/distribute/milkStation', auth.checkRole('distribute', 'query'), function (req, res, next) {
+router.get('/distribute/station', auth.checkRole('distribute', 'query'), function (req, res, next) {
     db.orders.find({
         begin: { $lte: Date.now() },
         end: { $gte: Date.now() }
     })
         .where('address').ne(null)
-        .where('address.milkStation').ne(null)
         .populate('address')
         .deepPopulate('address.milkStation')
         .exec()
         .then(function (orders) {
             let ret = {};
-            let
+            let tmp = _.groupBy(orders.filter(x => x.milkStation), x => x.address.milkStation.title + '(' + x.address.milkStation.city + ')');
+            console.log(orders);
+            for (let x in tmp) {
+                if (!ret[x]) ret[x] = {};
+                tmp[x].forEach(y => {
+                    let cnt = getDistributeCount(y, Date.now());
+                    if (cnt > 0) {
+                        if (!ret[x][y.milkType]) ret[x][y.milkType] = 0;
+                        ret[x][y.milkType] += cnt;
+                    }
+                });
+            }
+            console.log(ret);
+            res.render('order/distributeStation', { title: '奶站配送日报', report: ret });
         })
         .then(null, next);
 

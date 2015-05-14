@@ -1,5 +1,6 @@
 var mongodb = require('../models/mongodb');
 var Schema = mongodb.mongoose.Schema;
+var deepPopulate = require('mongoose-deep-populate');
 
 var orderSchema = new Schema({
     number: {
@@ -84,6 +85,8 @@ var orderSchema = new Schema({
     }],
     pos: String
 });
+
+orderSchema.plugin(deepPopulate, {});
 
 var order = mongodb.mongoose.model('orders', orderSchema);
 module.exports = order;
