@@ -40,7 +40,7 @@ router.post('/promotion/create', auth.checkRole('promotion', 'modify'), function
     activity.content = '<p>活动内容</p>';
     activity.summary = '活动内容';
     activity.discount = 0;
-    activity.original 0 ;
+    activity.original = 0;
     activity.begin = Date.now();
     activity.end = Date.now();
     activity.gifts = [];

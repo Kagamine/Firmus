@@ -12,23 +12,23 @@
 <table class="activity-table">
     <% activities.forEach(x => { %>
     <tr>
-        <td>
+        <td class="activity-table-icon-td">
             <img src="/file/download/<%= x.icon %>" class="icon" />
         </td>
         <td>
-            <h3><a href="/gift/promotion/<%= x._id %>"><%= x.title %></a></h3>
-            <p>
+            <h4><a href="/gift/promotion/<%= x._id %>"><%= x.title %></a></h4>
+            <p class="activity-table-info">
                 <% if (new Date() < x.begin) { %>
                 <span class="button small blue">尚未开始</span>
                 <% } else if (new Date() < x.end) { %>
                 <span class="button small red">正字啊进行</span>
                 <% } else { %>
-                <span class="button small">已经结束</span>
+                <span class="button small yellow">已经结束</span>
                 <% } %>
                 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %>
-                原价：￥<%= x.original.fixed(2) %>，折扣价：<span style="color: red">￥<%= x.discount.fixed(2) %></span>
+                原价：￥<%= x.original.toFixed(2) %>，折扣价：<span style="color: red">￥<%= x.discount.toFixed(2) %></span>
             </p>
-            <p><%= x.summary %></p>
+            <p class="activity-table-summary"><%= x.summary %></p>
         </td>
     </tr>
     <% }) %>

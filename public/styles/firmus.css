@@ -619,9 +619,24 @@ table {
 
 .activity-table td {
     padding: 15px;
+    vertical-align: top;
 }
 
 .activity-table .icon {
     height: 150px;
     width: 200px;
+}
+
+.activity-table-icon-td {
+    width: 200px;
+}
+
+.activity-table-info {
+    font-size: 12px;
+    color: #888;
+}
+
+.activity-table-summary {
+    font-size: 14px;
+    color: #555;
 }
