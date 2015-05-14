@@ -286,7 +286,6 @@ router.get('/distribute/milkStation', auth.checkRole('distribute', 'query'), fun
         .exec()
         .then(function (orders) {
             let ret = {};
-            let
         })
         .then(null, next);
 
