@@ -12,7 +12,11 @@ var activitySchema = new Schema({
         index: true
     },
     gifts: [{ type: Schema.Types.ObjectId, ref: 'gifts' }],
-    content: String
+    content: String,
+    Summary: String,
+    icon: Schema.Types.ObjectId,
+    discount: Number,
+    original: Number
 });
 
 var activity = mongodb.mongoose.model('activities', activitySchema);

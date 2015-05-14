@@ -1,0 +1,38 @@
+<h2>
+    <%= title %>
+    <% if (permission.promotion.modify) { %>
+    <a href="/gift/promotion/create">发布促销活动</a>
+    <% } %>
+</h2>
+
+<table class="activity-table">
+    <% activities.forEach(x => { %>
+    <tr>
+        <td>
+            <img src="/file/download/<%= x.icon %>" class="icon" />
+        </td>
+        <td>
+            <h3><a href="/gift/promotion/<%= x._id %>"><%= x.title %></a></h3>
+            <p>
+                <% if (new Date() < x.begin) { %>
+                <span class="button small blue">尚未开始</span>
+                <% } else if (new Date() < x.end) { %>
+                <span class="button small red">正字啊进行</span>
+                <% } else { %>
+                <span class="button small">已经结束</span>
+                <% } %>
+                原价：￥<%= x.original.fixed(2) %>，折扣价：<span style="color: red">￥<%= x.discount.fixed(2) %></span>
+            </p>
+            <p><%= x.summary %></p>
+        </td>
+    </tr>
+    <% }) %>
+</table>
+
+<div class="pager">
+    <a class="pager-item" href="/gift/promotion">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/gift/promotion?p=<%= i %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/gift/promotion?p=<%= pageCount || 1 %>">»</a>
+</div>

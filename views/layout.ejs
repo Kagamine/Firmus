@@ -54,6 +54,11 @@
         <% } if (permission.statistics.query) { %>
         <li><a href="/order/statistics">统计查询管理</a></li>
         <% } } %>
+
+        <% if (gift) { %>
+        <% if (permission.promotion.query) { %>
+        <li><a href="/gift/promotion">促销活动管理</a></li>
+        <% } } %>
     </ul>
 </div>
 <div class="main">
