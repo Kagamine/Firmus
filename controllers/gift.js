@@ -10,6 +10,7 @@ router.get('/', function (req, res, next) {
     res.redirect('/gift/promotion');
 });
 
+// 活动列表
 router.get('/promotion', auth.checkRole('promotion', 'query'), function (req, res, next) {
     let query = db.activities.find();
     _.clone(query)
@@ -28,6 +29,32 @@ router.get('/promotion', auth.checkRole('promotion', 'query'), function (req, re
         })
         .then(function (activities) {
             res.render('gift/promotion', { activities: activities, title: '促销活动管理' });
+        })
+        .then(null, next);
+});
+
+// 创建活动
+router.post('/promotion/create', auth.checkRole('promotion', 'modify'), function (req, res, next) {
+    let activity = new db.activities();
+    activity.title = '新建活动';
+    activity.content = '<p>活动内容</p>';
+    activity.summary = '活动内容';
+    activity.discount = 0;
+    activity.original 0 ;
+    activity.begin = Date.now();
+    activity.end = Date.now();
+    activity.gifts = [];
+    activity.save(function (err, activity) {
+        res.redirect('/promotion/edit/' + activity._id);
+    });
+});
+
+// 编辑活动
+router.get('/promotion/edit/:id', auth.checkRole('promotion', 'modify'), function (req, res, next) {
+    db.activities.findById(req.params.id)
+        .exec()
+        .then(function (activity) {
+            res.render('gift/promotionEdit', { title: '编辑活动 - ' + activity.title, activity: activity });
         })
         .then(null, next);
 });

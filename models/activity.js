@@ -13,7 +13,7 @@ var activitySchema = new Schema({
     },
     gifts: [{ type: Schema.Types.ObjectId, ref: 'gifts' }],
     content: String,
-    Summary: String,
+    summary: String,
     icon: Schema.Types.ObjectId,
     discount: Number,
     original: Number

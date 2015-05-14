@@ -1,9 +1,13 @@
 <h2>
     <%= title %>
     <% if (permission.promotion.modify) { %>
-    <a href="/gift/promotion/create">发布促销活动</a>
+    <a href="javascript:$('#frmCreatePromotion').submit();" class="add">发布促销活动</a>
     <% } %>
 </h2>
+
+<form action="/gift/promotion/create" method="post" id="frmCreatePromotion">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+</form>
 
 <table class="activity-table">
     <% activities.forEach(x => { %>
@@ -21,6 +25,7 @@
                 <% } else { %>
                 <span class="button small">已经结束</span>
                 <% } %>
+                <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %>
                 原价：￥<%= x.original.fixed(2) %>，折扣价：<span style="color: red">￥<%= x.discount.fixed(2) %></span>
             </p>
             <p><%= x.summary %></p>
