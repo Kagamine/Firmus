@@ -14,10 +14,11 @@
         <tr>
             <td class="row-title">地址</td>
             <td>
-                <a href="javascript:createOrderSelectAddress();">点击设置地址</a>
-                <input type="hidden" name="orderCity" id="txtOrderCity" />
-                <input type="hidden" name="orderDistrict" id="txtOrderDistrict" />
-                <input type="hidden" name="orderAddress" id="txtOrderAddress" />
+                <span id="showOrderAddress"></span>
+                <a href="javascript:createOrderSelectAddress();" id="btnSetAddress">点击设置地址</a>
+                <input type="hidden" name="city" id="txtOrderCity" />
+                <input type="hidden" name="district" id="txtOrderDistrict" />
+                <input type="hidden" name="address" id="txtOrderAddress" />
             </td>
         </tr>
         <tr>
@@ -41,7 +42,7 @@
                 </select>
             </td>
         </tr>
-        <tr id="pos-number-row">
+        <tr id="pos-number-row" style="display: none;">
             <td class="row-title">POS单号</td>
             <td><input type="text" class="textbox w-3" name="pos" /></td>
         </tr>
