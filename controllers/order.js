@@ -301,7 +301,37 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
             res.render('order/distributeStation', { title: '奶站配送日报', report: ret });
         })
         .then(null, next);
+});
 
+router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, next) {
+    let now = new Date();
+    let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    time.setDate(time.getDate() + req.query.day || 3);
+    db.orders.find({
+        begin: { $lte: time },
+        end: { $gte: time }
+    })
+        .where('address').ne(null)
+        .populate('address')
+        .exec()
+        .then(function (orders) {
+            let tmp = _.groupBy(orders, x => x.address.city);
+            let ret = {};
+            for (let x in tmp) {
+                ret[x] = {};
+                tmp[x].forEach(y => {
+                    let cnt = getDistributeCount(y, time);
+                    if (cnt > 0) {
+                        if (!ret[x][y.milkType])
+                            ret[x][y.milkType] = cnt;
+                        else
+                            ret[x][y.milkType] += cnt;
+                    }
+                });
+            }
+            res.render('order/produce', { title: '生产预报', report: ret });
+        })
+        .then(null, next);
 });
 
 module.exports = router;

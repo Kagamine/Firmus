@@ -1,4 +1,11 @@
-<% include distributeMenu %>
+<h2><%= title %> <span class="subtitle">(<%= req.query.day || 3 %>天后)</span></h2>
+<div class="submenu">
+    <a href="/order/produce?day=1">1天后</a>
+    <a href="/order/produce?day=2">2天后</a>
+    <a href="/order/produce?day=3">3天后</a>
+    <a href="/order/produce?day=4">4天后</a>
+    <a href="/order/produce?day=5">5天后</a>
+</div>
 <div class="block">
     <% for (var x in report) { %>
     <h3><%= x %></h3>
