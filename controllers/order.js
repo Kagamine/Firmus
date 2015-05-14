@@ -67,6 +67,16 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
+    var district = req.body.district;
+    var city = req.body.city;
+    var address = req.body.address;
+
+    db.addresses
+    .findOne({city:city,district:district,address:address})
+    .exec(function(address){
+
+        });
+
     let order = new db.orders();
     order.time = Date.now();
     order.user = req.session.uid;

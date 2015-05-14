@@ -718,6 +718,7 @@ router.get('/address/getAddressByName',auth.checkRole('address','query'),functio
         .then(null, next);
 });
 
+
 // 根据城市 县区得到奶站
 router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),function(req,res,next){
     db.departments

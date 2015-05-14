@@ -179,6 +179,8 @@ $(document).ready(function () {
             $('#pos-number-row').show();
         }
     });
+
+
 });
 
 function popMsg(txt) {
@@ -258,6 +260,57 @@ function saveOrder(id) {
 }
 
 
+// 确定地址触发事件  by nele
+function saveOrderAddress(){
+    var city = $('#txtOrderSetCity').val();
+    var district = $('#txtOrderSetDistrict').val();
+    var address = $('#txtOrderSetAddress').val();
+    $('#txtOrderCity').val(city);
+    $('#txtOrderDistrict').val(district);
+    $('#txtOrderAddress').val(address);
+    closeDialog();
+    var str='<span>'+city+'  '+district+'   '+address+'</span>';
+    $('#showOrderAddress').html(str);
+}
+
+
+// 增加订单设置地址  by nele
 function createOrderSelectAddress(){
-    popMsg('address');
+    var html = '<div class="dialog">' +
+        '<h3 class="dialog-title">编辑地址</h3>' +
+        '<table class="detail-table">' +
+        '<tr><td>城市</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetCity" /></td></tr>' +
+        '<tr><td>区县</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetDistrict" /></td></tr>' +
+        '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr></table>' +
+        '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" disabled="disabled" value="确定" /><a href="javascript:closeDialog()" class="button">取消</a></div>' +
+        '</div>';
+    var dom = $(html);
+    dom.css('margin-left', -(dom.outerWidth() / 2));
+    $('body').append(dom);
+    dom.addClass('active');
+
+
+
+    $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
+    $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
+    $('#txtOrderSetDistrict').droptxt('/general/address/getDistrictsByName','data');
+
+    $('#txtOrderSetCity').on('keyup',function(){
+        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
+            $('#btnAddOrderAddress').attr('disabled',false);
+        }
+    });
+
+    $('#txtOrderSetDistrict').on('keyup',function(){
+        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
+            $('#btnAddOrderAddress').attr('disabled',false);
+        }
+    });
+
+    $('#txtOrderSetAddress').on('keyup',function(){
+        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
+            $('#btnAddOrderAddress').attr('disabled',false);
+        }
+    });
+
 }
