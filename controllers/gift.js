@@ -107,4 +107,35 @@ router.get('/promotion/:id', auth.checkRole('promotion', 'modify'), function (re
         .then(null, next);
 });
 
+// 赠品库存管理
+router.get('/store', auth.checkRole('giftStore', 'query'), function (req, res, next) {
+    let query = db.departments.find({ type: '赠品仓库' });
+    if (req.query.city)
+        query = query.where({ city: req.query.city });
+    if (req.query.title)
+        query = query.where({ title: new RegExp('.*' + req.query.title + '.*') });
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query.skip(50 * (page - 1)).limit(50).exec();
+        })
+        .then(function (stores) {
+            res.locals.stores = stores;
+            return db.departments
+                .aggregate()
+                .group({ _id: '$city' })
+                .exec();
+        })
+        .then(function (cities) {
+            res.locals.cities = cities.map(x => x._id);
+            res.render('gift/store', { title: '赠品库存管理' });
+        })
+        .then(null, next);
+});
+
 module.exports = router;

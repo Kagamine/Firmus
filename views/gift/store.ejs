@@ -1,0 +1,50 @@
+<h2><%= title %></h2>
+
+<form class="search">
+    检索:
+    <select name="city" class="w-0-6" id="lstCity">
+        <option value="">城市</option>
+        <% cities.forEach(x => { %>
+        <option value="<%=x%>"><%= x %></option>
+        <% }) %>
+    </select>
+    <input type="text" class="textbox" name="title" placeholder="仓库名称" />
+    <input type="submit" value="过滤" class="button green" />
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">仓库名称</th>
+        <th class="tl">城市</th>
+        <th class="tl">区县</th>
+        <th class="tl">地址</th>
+        <% if (permission.giftStore.modify) { %>
+        <th>操作</th>
+        <% } %>
+    </tr>
+    </thead>
+    <tbody>
+    <% stores.forEach(x => { %>
+    <tr>
+        <td><%= x.title %></td>
+        <td><%= x.city %></td>
+        <td><%= x.district %></td>
+        <td><%= x.address %></td>
+        <% if (permission.giftStore.modify) { %>
+        <td class="tc">
+            <a href="/general/department/store/<%= x._id %>">管理仓库</a>
+        </td>
+        <% } %>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+<div class="pager">
+    <a class="pager-item" href="/gift/store?p=1&city=<%= req.query.city %>&title=<%= req.query.title %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/gift/store?p=<%= i %>&city=<%= req.query.city %>&title=<%= req.query.title %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/gift/store?p=<%= pageCount || 1 %>&city=<%= req.query.city %>&title=<%= req.query.title %>">»</a>
+</div>

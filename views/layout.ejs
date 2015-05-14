@@ -54,8 +54,10 @@
         <% if (gift) { %>
         <% if (permission.promotion.query) { %>
         <li><a href="/gift/promotion">促销活动管理</a></li>
+        <% } if (permission.gift.query) { %>
+        <li><a href="/gift/gift">赠品管理</a></li>
         <% } if (permission.giftStore.query) { %>
-        <li><a href="/gift/Store">赠品库存管理</a></li>
+        <li><a href="/gift/store">赠品库存管理</a></li>
         <% } } %>
     </ul>
 </div>
