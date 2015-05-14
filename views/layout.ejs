@@ -43,8 +43,6 @@
         <li><a href="/order">订单管理</a></li>
         <% } if (permission.distribute.query) { %>
         <li><a href="/order/distribute">配送管理</a></li>
-        <% } if (permission.customer.query) { %>
-        <li><a href="/order/customer">客户奶量管理</a></li>
         <% } if (permission.produce.query) { %>
         <li><a href="/order/produce">生产预报管理</a></li>
         <% } if (permission.balance.query) { %>
@@ -58,6 +56,8 @@
         <% if (gift) { %>
         <% if (permission.promotion.query) { %>
         <li><a href="/gift/promotion">促销活动管理</a></li>
+        <% } if (permission.giftStore.query) { %>
+        <li><a href="/gift/Store">赠品库存管理</a></li>
         <% } } %>
     </ul>
 </div>

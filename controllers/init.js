@@ -11,6 +11,7 @@ router.use(function (req, res, next) {
     res.locals.order = false;
     res.locals.gift = false;
     res.locals.call = false;
+    res.locals.milkBox = false;
     res.locals.res = res;
     res.locals.req = req;
     res.locals.moment = require('moment');
