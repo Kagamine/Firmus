@@ -187,4 +187,39 @@ router.post('/gift/create', auth.checkRole('gift', 'modify'), function (req, res
     });
 });
 
+// 赠品详情
+router.get('/gift/:id', auth.checkRole('gift', 'query'), function (req, res, next) {
+    let store, tmp;
+    db,gifts.findById(req.params.id)
+        .populate({ path: 'income.store', select: '_id title' })
+        .exec()
+        .then(function (gift) {
+            res.locals.gift = gift;
+            store = {};
+            gift.income.forEach(x => {
+                if (x.store && x.store.city) {
+                    if (!store[x.store.city + ' - ' + x.store.title]) store[x.store.title] = 0;
+                    store[x.store.city + ' - ' + x.store.title] += x.count;
+                }
+            });
+            tmp = [];
+            for (let x in store)
+                tmp.push(x);
+            return Promise.all(tmp.map(x => {
+                return db.giftDelivers.find({ giveBackDone: false })
+                    .select('count')
+                    .exec();
+            }));
+        })
+        .then(function (delivers) {
+            for (let i = 0; i < delivers.length; i++) {
+                delivers[i].forEach(x => {
+                    store[tmp[i]] -= x.count;
+                });
+            }
+            res.render('gift/show', { title: res.locals.gift.title, store: store });
+        })
+        .then(null, next);
+});
+
 module.exports = router;

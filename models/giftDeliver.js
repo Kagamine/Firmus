@@ -12,7 +12,13 @@ var giftDeliverSchema = new Schema({
     },
     gift: {
         type: Schema.Types.ObjectId,
-        ref: 'gifts'
+        ref: 'gifts',
+        index: true
+    },
+    store: {
+        type: Schema.Types.ObjectId,
+        ref: 'departments',
+        index: true
     },
     hint: String,
     giveBackFlag: {

@@ -1,0 +1,31 @@
+<h2><%= title %></h2>
+<div class="block">
+    <h3>赠品信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">赠品名称</td>
+            <td><%= gift.title %></td>
+        </tr>
+        <% if (gift.picture) { %>
+        <tr>
+            <td class="row-title">赠品照片</td>
+            <td><%= gift.title %></td>
+        </tr>
+        <% } %>
+        <tr>
+            <td class="row-title">赠品介绍</td>
+            <td><%= xss.process(gift.description) %></td>
+        </tr>
+    </table>
+</div>
+<div class="block">
+    <h3>库存信息</h3>
+    <table class="detail-table">
+        <% for (var x in store) { %>
+        <tr>
+            <td class="row-title"><%= x %></td>
+            <td><%= store[x] %></td>
+        </tr>
+        <% } %>
+    </table>
+</div>
