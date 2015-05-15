@@ -752,4 +752,31 @@ router.get('/getServiceUserByDepartmentId',auth.checkRole('address','query'),fun
         .then(null, next);
 });
 
+// 获取部门列表 by nele
+router.get('/getDepartments',auth.checkRole('department','query'),function(req,res,next){
+     db.departments.find()
+    .exec()
+    .then(function(departments){
+          res.json(departments.map(x=>x.title));
+         })
+    .then(null,next);
+});
+
+
+// order添加地址  by
+router.get('/address/orderAdd', auth.checkRole('address', 'modify'), function (req, res, next) {
+    let address = new db.addresses();
+    address.city = req.body.city;
+    address.district = req.body.district;
+    address.address = req.body.address;
+    address.storey = req.body.storey;
+    address.milkStation = req.body.milkStation || null;
+    address.name = req.body.name;
+    address.phone = req.body.phone;
+    address.blockOut = false;
+    address.save(function (err, address) {
+        res.send(address._id);
+    });
+});
+
 module.exports = router;

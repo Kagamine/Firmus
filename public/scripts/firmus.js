@@ -265,12 +265,27 @@ function saveOrderAddress(){
     var city = $('#txtOrderSetCity').val();
     var district = $('#txtOrderSetDistrict').val();
     var address = $('#txtOrderSetAddress').val();
-    $('#txtOrderCity').val(city);
-    $('#txtOrderDistrict').val(district);
-    $('#txtOrderAddress').val(address);
-    closeDialog();
-    var str='<span>'+city+'  '+district+'   '+address+'</span>';
-    $('#showOrderAddress').html(str);
+    $.get('/order/verifyAddress',{city:city,district:district,address:address}, function (data) {
+         console.log(data);
+        if(data=='no') {
+            $('#trOrderSetUser').show();
+            $('#trOrderSetPhone').show();
+            $('#trOrderSetStorey').show();
+            $('#trOrderSetMilkStation').show();
+            $.getJSON('/general/getDepartments',function(data){
+                var str='<option>选择奶站</option>';
+                for(var i=0;i<data.length;i++){
+                    str+='<option value='+data[i]+'>'+data[i]+'</option>'
+                }
+                $('#lstOrderMilkStation').html(str);
+
+                $('#btnAddOrderAddress').hide();
+                $('#btnAddOrderAddressNew').show();
+            });
+        }else{
+            $('#orderAddress').val(data);
+        }
+    });
 }
 
 
@@ -281,8 +296,14 @@ function createOrderSelectAddress(){
         '<table class="detail-table">' +
         '<tr><td>城市</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetCity" /></td></tr>' +
         '<tr><td>区县</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetDistrict" /></td></tr>' +
-        '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr></table>' +
-        '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" disabled="disabled" value="确定" /><a href="javascript:closeDialog()" class="button">取消</a></div>' +
+        '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr>' +
+        '<tr id="trOrderSetUser" style="display: none"><td>联系人</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetUser" /></td></tr>' +
+        '<tr id="trOrderSetPhone" style="display: none"><td>电话</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetPhone" /></td></tr>' +
+        '<tr id="trOrderSetStorey" style="display: none"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
+        '<tr id="trOrderSetMilkStation" style="display: none"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
+        '</table>' +
+        '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" disabled="disabled" value="确定" />' +
+        '<input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddressNew" value="确定" style="display: none;" /><a href="javascript:closeDialog()" class="button">取消</a></div>' +
         '</div>';
     var dom = $(html);
     dom.css('margin-left', -(dom.outerWidth() / 2));
@@ -298,19 +319,44 @@ function createOrderSelectAddress(){
     $('#txtOrderSetCity').on('keyup',function(){
         if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
             $('#btnAddOrderAddress').attr('disabled',false);
+            $('#btnAddOrderAddressNew').attr('disabled',false);
         }
     });
 
     $('#txtOrderSetDistrict').on('keyup',function(){
         if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
             $('#btnAddOrderAddress').attr('disabled',false);
+            $('#btnAddOrderAddressNew').attr('disabled',false);
         }
     });
 
     $('#txtOrderSetAddress').on('keyup',function(){
         if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
             $('#btnAddOrderAddress').attr('disabled',false);
+            $('#btnAddOrderAddressNew').attr('disabled',false);
         }
     });
 
+    $('#txtOrderSetUser').on('keyup',function(){
+        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
+            $('#btnAddOrderAddress').attr('disabled',false);
+            $('#btnAddOrderAddressNew').attr('disabled',false);
+        }
+    });
+
+    $('#btnAddOrderAddressNew').click(function(){
+        var city = $('#txtOrderSetCity').val();
+        var district = $('#txtOrderSetDistrict').val();
+        var address = $('#txtOrderSetAddress').val();
+        var name = $('#txtOrderSetUser').val();
+        var phone = $('#txtOrderSetPhone').val();
+        var storey = $('#lstOrderStorey').val();
+        var milkStation = $('#lstOrderMilkStation').val();
+        $.get('/general/address/orderAdd',{city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation},function(data){
+            $('#orderAddress').val(data);
+            closeDialog();
+            var str='<span>'+city+'  '+district+'   '+address+'</span>';
+            $('#showOrderAddress').html(str);
+        });
+    })
 }

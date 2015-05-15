@@ -67,16 +67,6 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
-    var district = req.body.district;
-    var city = req.body.city;
-    var address = req.body.address;
-
-    db.addresses
-    .findOne({city:city,district:district,address:address})
-    .exec(function(address){
-
-        });
-
     let order = new db.orders();
     order.time = Date.now();
     order.user = req.session.uid;
@@ -342,6 +332,24 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
             res.render('order/produce', { title: '生产预报', report: ret });
         })
         .then(null, next);
+});
+
+router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,res,next){
+    var district = req.body.district;
+    var city = req.body.city;
+    var address = req.body.address;
+
+    db.addresses
+        .findOne({city:city,district:district,address:address})
+        .exec()
+        .then(function(address){
+            if(address==null){
+                 res.send('no');
+            }else{
+                 res.send(address._id);
+            }
+        })
+       .then(null,next);
 });
 
 module.exports = router;
