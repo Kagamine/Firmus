@@ -154,7 +154,7 @@ $(document).ready(function () {
         });
     });
 
-    // 订单县城改变选择奶站
+    // 订单县城改变选择奶站 by nele
     $('#lstOrderDistrict').change(function(){
         var district=$('#lstOrderDistrict').val();
         var city=$('#lstOrderCity').val();
@@ -169,7 +169,7 @@ $(document).ready(function () {
         });
     });
 
-    // 创建订单付款方式的改变隐藏或显示POS号
+    // 创建订单付款方式的改变隐藏或显示POS号 by nele
     $('#lstPaymentMethod').change(function () {
         var method = $('#lstPaymentMethod').val();
         if(method == '0'){
@@ -177,6 +177,30 @@ $(document).ready(function () {
         }
         else{
             $('#pos-number-row').show();
+        }
+    });
+
+    // 是否回访单选按钮戳发事件 by nele
+    $('#chCallNeedFeedback').click( function() {
+        if($(this).is(':checked')){
+            $('#trCallIsFeedbacked').show();
+        }
+        else{
+            $('#trCallIsFeedbacked').hide();
+            $('#trCallFeedbackResult').hide();
+            $('#chCallIsFeedbacked').attr('checked',false);
+            $('#trCallFeedbackResult').val('');
+        }
+    });
+
+    // 是否已经回访单选按钮戳发事件 by nele
+    $('#chCallIsFeedbacked').click( function() {
+        if($(this).is(':checked')){
+            $('#trCallFeedbackResult').show();
+        }
+        else{
+            $('#trCallFeedbackResult').hide();
+            $('#trCallFeedbackResult').val('');
         }
     });
 
