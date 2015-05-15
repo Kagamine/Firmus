@@ -4,13 +4,22 @@ var Schema = mongodb.mongoose.Schema;
 var giftSchema = new Schema({
     title: String,
     picture: Schema.Types.ObjectId,
+    count: {
+        type: Number,
+        default: 0,
+        index: true
+    },
     income: [{
         time: {
             type: Date,
             index: true,
             default: Date.now()
         },
-        count: Number
+        count: Number,
+        store: {
+            type: Schema.Types.ObjectId,
+            ref: 'departments'
+        }
     }],
     delete: {
         type: Boolean,

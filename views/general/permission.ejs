@@ -20,7 +20,7 @@
         <% }) %>
     </tr>
     <tr>
-        <td><%= permission[x]['display'] %> (修改)</td>
+        <td><%= permission[x]['display'] %> (管理)</td>
         <% enums.role.forEach(y => { %>
         <td>
             <input class="chk-permission" type="checkbox" data-permission="<%= x %>" data-role="<%= y %>" data-type="modify" <%= permission[x]['modify'].some(z => z == y.toString()) ? 'checked' : '' %> />

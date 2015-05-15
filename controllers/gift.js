@@ -81,8 +81,6 @@ router.post('/promotion/edit/:id', auth.checkRole('promotion', 'modify'), functi
                 });
                 db.fs.createReadStream(req.files.file.path).pipe(writestream);
                 writestream.on('close', function (file) {
-                    result.code = 200;
-                    result.fileId = file._id;
                     db.fs.unlink(req.files.file.path);
                     return Promise.resolve();
                 });
@@ -134,6 +132,26 @@ router.get('/store', auth.checkRole('giftStore', 'query'), function (req, res, n
         .then(function (cities) {
             res.locals.cities = cities.map(x => x._id);
             res.render('gift/store', { title: '赠品库存管理' });
+        })
+        .then(null, next);
+});
+
+router.get('/gift', auth.checkRole('gift', 'query'), function (req, res, next) {
+    let query = db.gifts.find({ delete: false });
+    if (req.query.title)
+        query = query.where({ title: req.query.title });
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query.skip(50 * (page - 1)).limit(50).exec();
+        })
+        .then(function (gifts) {
+            res.render('gift/gift', { title: '赠品管理', gifts: gifts });
         })
         .then(null, next);
 });
