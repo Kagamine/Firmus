@@ -4,6 +4,7 @@ var Schema = mongodb.mongoose.Schema;
 var giftSchema = new Schema({
     title: String,
     picture: Schema.Types.ObjectId,
+    description: String,
     count: {
         type: Number,
         default: 0,

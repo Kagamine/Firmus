@@ -136,6 +136,7 @@ router.get('/store', auth.checkRole('giftStore', 'query'), function (req, res, n
         .then(null, next);
 });
 
+// 赠品列表
 router.get('/gift', auth.checkRole('gift', 'query'), function (req, res, next) {
     let query = db.gifts.find({ delete: false });
     if (req.query.title)
@@ -154,6 +155,36 @@ router.get('/gift', auth.checkRole('gift', 'query'), function (req, res, next) {
             res.render('gift/gift', { title: '赠品管理', gifts: gifts });
         })
         .then(null, next);
+});
+
+// 添加赠品
+router.get('/gift/create', auth.checkRole('gift', 'modify'), function (req, res, next) {
+    res.render('gift/create', { title: '添加赠品' });
+});
+
+// 添加赠品
+router.post('/gift/create', auth.checkRole('gift', 'modify'), function (req, res, next) {
+    let gift = new db.gifts();
+    gift.title = req.body.title;
+    gift.description = req.body.description;
+    gift.count = 0;
+    gift.save(function (err, gift) {
+        if (req.files.file) {
+            var writestream = db.gfs.createWriteStream({
+                filename: req.files.file.originalname
+            });
+            db.fs.createReadStream(req.files.file.path).pipe(writestream);
+            writestream.on('close', function (file) {
+                db.fs.unlink(req.files.file.path);
+                gift.picture = file._id;
+                gift.save(function (err, gift) {
+                    res.redirect('/gift/gift/' + gift._id);
+                });
+            });
+        } else {
+            res.redirect('/gift/gift/' + gift._id);
+        }
+    });
 });
 
 module.exports = router;
