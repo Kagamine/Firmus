@@ -204,6 +204,7 @@ $(document).ready(function () {
         }
     });
 
+    $('#txtCallUser').droptxt('/general/user/getSalesmanByName','data');
 
 });
 

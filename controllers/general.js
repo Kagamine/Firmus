@@ -242,7 +242,7 @@ router.get('/employee/create', auth.checkRole('employee', 'modify'), function (r
 
 // 添加职工
 router.post('/employee/create', auth.checkRole('employee', 'modify'), function (req, res, next) {
-    let user = db.users();
+    let user = new db.users();
     let salt = crypto.salt();
     user.username = req.body.username;
     user.salt = salt;
@@ -250,6 +250,7 @@ router.post('/employee/create', auth.checkRole('employee', 'modify'), function (
     user.role = req.body.role;
     user.jobNumber = req.body.jobNumber;
     user.save(function (err, user) {
+        console.log(err);
         res.redirect('/general/employee/edit/' + user._id);
     });
 });
@@ -753,7 +754,7 @@ router.get('/getServiceUserByDepartmentId',auth.checkRole('address','query'),fun
 });
 
 // 获取部门列表 by nele
-router.get('/getDepartments',auth.checkRole('department','query'),function(req,res,next){
+router.get('/getDepartments',auth.checkRole('department','query'), function (req,res,next){
      db.departments.find()
     .exec()
     .then(function(departments){
@@ -763,7 +764,7 @@ router.get('/getDepartments',auth.checkRole('department','query'),function(req,r
 });
 
 
-// order添加地址  by
+// order添加地址  by nele
 router.get('/address/orderAdd', auth.checkRole('address', 'modify'), function (req, res, next) {
     let address = new db.addresses();
     address.city = req.body.city;
@@ -777,6 +778,19 @@ router.get('/address/orderAdd', auth.checkRole('address', 'modify'), function (r
     address.save(function (err, address) {
         res.send(address._id);
     });
+});
+
+//  根据名字模糊查找业务员 by nele
+router.get('/user/getSalesmanByName',auth.checkRole('permission','query'), function ( req, res , next ) {
+      db.users
+      .aggregate()
+          .match({ name: new RegExp('.*' + req.query.data + '.*'),role:'业务员' })
+    .group({_id:{name:'$name'}})
+    .exec()
+    .then(function (users) {
+              res.json(users.map(x=>x._id.name));
+          })
+    .then(null,next);
 });
 
 module.exports = router;
