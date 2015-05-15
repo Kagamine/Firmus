@@ -59,6 +59,19 @@
         <% } if (permission.giftStore.query) { %>
         <li><a href="/gift/store">赠品库存管理</a></li>
         <% } } %>
+
+        <% if (call) { %>
+        <% if (permission.call.query) { %>
+        <li><a href="/call/acceptance">来电受理管理</a></li>
+        <% } if (permission.call.query) { %>
+        <li><a href="/call/change">赠品管理</a></li>
+        <% } if (permission.call.query) { %>
+        <li><a href="/call/callback">赠品库存管理</a></li>
+        <% } if (permission.call.query) { %>
+        <li><a href="/call/callback">顺延变更</a></li>
+        <% } if (permission.call.query) { %>
+        <li><a href="/call/statistic">查询统计</a></li>
+        <% } } %>
     </ul>
 </div>
 <div class="main">

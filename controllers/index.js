@@ -8,6 +8,8 @@ router.use('/file', require('./file'));
 router.use('/general', require('./general'));
 router.use('/order', require('./order'));
 router.use('/gift', require('./gift'));
+router.use('/call', require('./call'));
+
 
 router.use(function(req, res, next) {
     var err = new Error('Not Found');
