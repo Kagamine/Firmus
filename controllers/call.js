@@ -21,7 +21,7 @@ router.get('/',auth.checkRole('call','query'), function ( req, res, next) {
     .count()
     .exec()
     .then(function (count) {
-
+            res.render('call/index', { title: '来电受理管理' });
         })
     .then(null,next);
 });
