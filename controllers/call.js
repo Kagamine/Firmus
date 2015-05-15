@@ -16,11 +16,27 @@ router.get('/',auth.checkRole('call','query'), function ( req, res, next) {
     if(req.query.needFeedback){
         query = query.where({ needFeedback:req.query.needFeedback });
     }
+    if (req.query.begin)
+        query = query.where('begin').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('end').lte(Date.parse(req.query.end));
 
     _.clone(query)
     .count()
     .exec()
     .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (calls) {
+            console.log(calls);
+            res.locals.calls = calls;
             res.render('call/index', { title: '来电受理管理' });
         })
     .then(null,next);

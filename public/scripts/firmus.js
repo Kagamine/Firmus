@@ -181,21 +181,21 @@ $(document).ready(function () {
     });
 
     // 是否回访单选按钮戳发事件 by nele
-    $('#chCallNeedFeedback').click( function() {
-        if($(this).is(':checked')){
+    $('#slCallNeedFeedback').change( function() {
+        if($(this).val()=='1'){
             $('#trCallIsFeedbacked').show();
         }
         else{
             $('#trCallIsFeedbacked').hide();
             $('#trCallFeedbackResult').hide();
-            $('#chCallIsFeedbacked').attr('checked',false);
+            $('#slCallIsFeedbacked').val('0')
             $('#trCallFeedbackResult').val('');
         }
     });
 
     // 是否已经回访单选按钮戳发事件 by nele
-    $('#chCallIsFeedbacked').click( function() {
-        if($(this).is(':checked')){
+    $('#slCallIsFeedbacked').change( function() {
+        if($(this).val()=='1'){
             $('#trCallFeedbackResult').show();
         }
         else{

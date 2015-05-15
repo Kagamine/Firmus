@@ -14,13 +14,19 @@
         <tr>
             <td class="row-title">是否需要回访</td>
             <td>
-               <input type="checkbox" name="needFeedback" id="chCallNeedFeedback" />
+               <select name="needFeedback" id="slCallNeedFeedback">
+                   <option value="0">否</option>
+                   <option value="1">是</option>
+               </select>
             </td>
         </tr>
         <tr style="display: none;" id="trCallIsFeedbacked">
             <td class="row-title">是否已经回访</td>
             <td>
-                <input type="checkbox" class="textbox w-3" name="isFeedbacked" id="chCallIsFeedbacked" />
+                <select name="isFeedbacked" id="slCallIsFeedbacked">
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
             </td>
         </tr>
         <tr style="display: none;" id="trCallFeedbackResult">

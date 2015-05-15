@@ -5,10 +5,42 @@
     <% } %>
 </h2>
 <form class="search">
-    检索：<input type="text" id="txtCallSearchUser" name="user" placeholder="业务员" />
-    是否需要回访：<input type="checkbox" name="needFeedback"  id="chCallSearchNeedFeedback" />
+    检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8" name="user" placeholder="业务员" />&nbsp;
+    是否需要回访：<input type="checkbox" name="needFeedback"  id="chCallSearchNeedFeedback" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" value="过滤" class="button green" style="margin: 0" value="过滤" />
 </form>
+
+<table class="table">
+    <thead>
+       <tr class="tl">
+           <td>业务员</td>
+           <td>订单</td>
+           <td>备注</td>
+           <td>内容</td>
+           <td>时间</td>
+       </tr>
+    </thead>
+    <tbody>
+    <% calls.forEach(x => { %>
+    <tr>
+        <td><%= x.user.name %></td>
+        <td><%= x.order %></td>
+        <td><%= x.hint %></td>
+        <td><%= x.content %></td>
+        <td><%= x.time %></td>
+        <td>
+            <a href="/order/show/<%= x._id %>">订单详情</a>
+            <% if (permission.order.modify) { %>
+            <a href="/order/change/<%= x._id %>">变更</a>
+            <a href="/order/delete/<%= x._id %>">删除</a>
+            <% } %>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
 
 
 
