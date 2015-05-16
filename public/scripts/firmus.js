@@ -299,7 +299,7 @@ function saveOrderAddress(){
     var district = $('#txtOrderSetDistrict').val();
     var address = $('#txtOrderSetAddress').val();
     $.get('/order/verifyAddress',{city:city,district:district,address:address}, function (data) {
-         console.log(data);
+        console.log(data);
         if(data=='no') {
             $('#trOrderSetUser').show();
             $('#trOrderSetPhone').show();
@@ -317,6 +317,9 @@ function saveOrderAddress(){
             });
         }else{
             $('#orderAddress').val(data);
+            closeDialog();
+            var str='<span>'+city+'  '+district+'   '+address+'</span>';
+            $('#showOrderAddress').html(str);
         }
     });
 }

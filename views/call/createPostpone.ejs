@@ -1,0 +1,25 @@
+<form class="block" method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">变更起始时间</td>
+            <td><input type="text" name="begin" class="textbox w-3 datetime" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">变更结束时间</td>
+            <td><input type="text" name="end" class="textbox w-3 datetime" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">变动数量（每次）</td>
+            <td><input type="text" name="count" class="textbox w-3" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">备注</td>
+            <td>
+                <textarea name="hint" class="ckeditor"></textarea>
+                <script src="/scripts/ckeditor/ckeditor.js"></script>
+            </td>
+        </tr>
+    </table>
+    <p><input type="submit" value="提交变更" class="button blue" /></p>
+</form>

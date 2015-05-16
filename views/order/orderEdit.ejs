@@ -14,13 +14,13 @@
         <tr>
             <td class="row-title">地址</td>
             <td>
-                <span id="lbAddress">
+                <span id="showOrderAddress">
                     <% if (order.address) { %>
                     <%= order.address.city %><%= order.address.district %><%= order.address.address %>
                     <% } %>
                 </span>
-                <a href="javascript:;">点击设置地址</a>
-                <input type="hidden" name="address" value="<%= order.address ? order.address._id : '' %>" />
+                <a href="javascript:createOrderSelectAddress();" id="btnSetAddress">点击设置地址</a>
+                <input type="hidden" name="address" value="<%= order.address ? order.address._id : '' %>" id="orderAddress" />
             </td>
         </tr>
         <tr>
