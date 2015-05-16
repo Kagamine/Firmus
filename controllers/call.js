@@ -148,7 +148,57 @@ router.post('/edit/:id', auth.checkRole('call','modify'), function (req, res, ne
     .then(null,next);
 });
 
+//   删除来电  by nele
+router.get('/delete/:id',auth.checkRole('call','modify'), function ( req, res, next) {
+    db.calls.remove({ _id: req.params.id })
+        .exec()
+        .then(function () {
+            res.redirect('/call');
+        })
+        .then(null,next);
+});
 
+//  来电回访  by nele
+router.get('/callback',auth.checkRole('call','query'), function (req, res, next) {
+    let query = db.calls.find();
+    query = query.where({'needFeedback':true});
+    if (req.query.user) {
+        db.users
+            .aggregate()
+            .match({name: new RegExp('.*' + req.query.data + '.*'), role: '业务员'})
+            .group({_id:{id:'$_id'}})
+            .exec()
+            .then(function (users) {
+                query = query.where({ user: users[0]._id });
+            });
+    }
+    if (req.query.isFeedbacked)
+        query = query.where({ isFeedbacked: req.query.isFeedbacked });
+    if (req.query.begin)
+        query = query.where('time').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('time').lte(Date.parse(req.query.end));
+
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .populate('user order')
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (calls) {
+            res.locals.calls = calls;
+            res.render('call/callBack', { title: '来电回访管理' });
+        })
+        .then(null,next);
+});
 
 
 module.exports = router;

@@ -3,6 +3,5 @@
     <a href="/call/show/<%= call._id || req.params.id %>" class="submenu-item">来电详情</a>
     <% if (permission.order.modify) { %>
     <a href="/call/edit/<%= call._id || req.params.id %>" class="submenu-item">修改来电</a>
-    <a href="/call/change/<%= call._id || req.params.id %>" class="submenu-item">填写变更</a>
     <% } %>
 </div>
