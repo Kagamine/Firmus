@@ -24,7 +24,8 @@ var giftSchema = new Schema({
     }],
     delete: {
         type: Boolean,
-        index: true
+        index: true,
+        default: false
     }
 });
 

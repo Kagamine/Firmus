@@ -168,6 +168,7 @@ router.post('/gift/create', auth.checkRole('gift', 'modify'), function (req, res
     gift.title = req.body.title;
     gift.description = req.body.description;
     gift.count = 0;
+    gift.delete = false;
     gift.save(function (err, gift) {
         if (req.files.file) {
             var writestream = db.gfs.createWriteStream({
