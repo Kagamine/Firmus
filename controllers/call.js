@@ -10,7 +10,7 @@ router.use(function (req, res, next) {
 //
 router.get('/',auth.checkRole('call','query'), function ( req, res, next) {
     let query = db.calls.find();
-
+    
     _.clone(query)
     .count()
     .exec()
@@ -21,12 +21,12 @@ router.get('/',auth.checkRole('call','query'), function ( req, res, next) {
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
+                .populate('user order')
                 .skip(50 * (page - 1))
                 .limit(50)
                 .exec();
         })
         .then(function (calls) {
-            console.log(calls);
             res.locals.calls = calls;
             res.render('call/index', { title: '来电受理管理' });
         })

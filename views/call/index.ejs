@@ -30,11 +30,11 @@
     <tbody>
     <% calls.forEach(x => { %>
     <tr>
-        <td><%= x.user %></td>
-        <td><%= x.order %></td>
+        <td><%= x.user.name %></td>
+        <td><%= x.order.number %></td>
         <td><%= x.hint %></td>
         <td><%= x.content %></td>
-        <td><%= x.time %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
             <a href="/order/show/<%= x._id %>">订单详情</a>
             <% if (permission.order.modify) { %>
