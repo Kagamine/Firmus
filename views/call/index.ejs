@@ -6,7 +6,11 @@
 </h2>
 <form class="search">
     检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8" name="user" placeholder="业务员" />&nbsp;
-    是否需要回访：<input type="checkbox" name="needFeedback"  id="chCallSearchNeedFeedback" />&nbsp;
+    是否需要回访：
+    <select name="needFeedback"  id="slCallSearchNeedFeedback">
+          <option value="0">否</option>
+          <option value="0">是</option>
+    </select>&nbsp;
     <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" value="过滤" class="button green" style="margin: 0" value="过滤" />
@@ -20,12 +24,13 @@
            <td>备注</td>
            <td>内容</td>
            <td>时间</td>
+           <td>操作</td>
        </tr>
     </thead>
     <tbody>
     <% calls.forEach(x => { %>
     <tr>
-        <td><%= x.user.name %></td>
+        <td><%= x.user %></td>
         <td><%= x.order %></td>
         <td><%= x.hint %></td>
         <td><%= x.content %></td>
