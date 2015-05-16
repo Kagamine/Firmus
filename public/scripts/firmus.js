@@ -286,6 +286,12 @@ function saveOrder(id) {
     });
 }
 
+//  保存来电修改 by nele
+function saveCall(id) {
+    $.post('/call/edit/' + id, $('#frmEditCall').serialize(), function () {
+        popMsg('来电信息修改成功');
+    });
+}
 
 // 确定地址触发事件  by nele
 function saveOrderAddress(){

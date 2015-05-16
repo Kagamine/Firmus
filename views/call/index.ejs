@@ -8,7 +8,7 @@
     检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8" name="user" placeholder="业务员" />&nbsp;
     是否需要回访：
     <select name="needFeedback"  id="slCallSearchNeedFeedback">
-          <option value="-1">选择是否回访</option>
+          <option value="">选择是否回访</option>
           <option value="0">否</option>
           <option value="1">是</option>
     </select>&nbsp;
@@ -37,10 +37,10 @@
         <td><%= x.content %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
-            <a href="/order/show/<%= x._id %>">订单详情</a>
+            <a href="/call/show/<%= x._id %>">订单详情</a>
             <% if (permission.order.modify) { %>
-            <a href="/order/change/<%= x._id %>">变更</a>
-            <a href="/order/delete/<%= x._id %>">删除</a>
+            <a href="/call/change/<%= x._id %>">变更</a>
+            <a href="/call/delete/<%= x._id %>">删除</a>
             <% } %>
         </td>
     </tr>
