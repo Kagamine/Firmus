@@ -1,0 +1,25 @@
+<% include giftMenu %>
+<form class="block" method="post">
+    <h3>赠品信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">赠品名称</td>
+            <td>
+                <input type="text" class="textbox w-3" name="title" value="<%= gift.title %>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">赠品照片</td>
+            <td>
+                <input type="file" name="file" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">赠品介绍</td>
+            <td>
+                <textarea name="description"><%- xss.process(gift.description) %></textarea>
+            </td>
+        </tr>
+    </table>
+    <p><input type="submit" value="保存赠品信息" class="button blue" /></p>
+</form>

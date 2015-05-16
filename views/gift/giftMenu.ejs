@@ -1,0 +1,8 @@
+<h2><%= title %></h2>
+<div class="submenu">
+    <a href="/gift/gift/<%= gift._id || req.params.id %>" class="submenu-item">赠品信息</a>
+    <% if (permission.gift.modify) { %>
+    <a href="/gift/edit/<%= gift._id || req.params.id %>" class="submenu-item">编辑赠品</a>
+    <a href="/gift/income/<%= gift._id || req.params.id %>" class="submenu-item">入库记录</a>
+    <% } %>
+</div>
