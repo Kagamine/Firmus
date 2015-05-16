@@ -190,7 +190,7 @@ router.post('/gift/create', auth.checkRole('gift', 'modify'), function (req, res
 // 赠品详情
 router.get('/gift/:id', auth.checkRole('gift', 'query'), function (req, res, next) {
     let store, tmp;
-    db,gifts.findById(req.params.id)
+    db.gifts.findById(req.params.id)
         .populate({ path: 'income.store', select: '_id title' })
         .exec()
         .then(function (gift) {
