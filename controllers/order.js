@@ -18,7 +18,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
     if (req.query.city)
         query = query.where({ 'address.city': req.query.city });
     if (req.query.district)
-        query = query.where({ 'address.district': req.query.district });
+            query = query.where({ 'address.district': req.query.district });
     if (req.query.milkStation)
         query = query.where({ 'milkStation': req.query.milkStation });
     if (req.query.address) {

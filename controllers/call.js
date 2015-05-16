@@ -210,27 +210,28 @@ router.get('/createPostpone',auth.checkRole('call','query') , function (req ,res
     res.render('call/CreatePostpone',{ title: '增加顺延' });
 });
 
-// 增加顺延  by  nele
+// 增加顺延  by  nele   
 router.post('/createPostpone',auth.checkRole('call','query') , function (req ,res ,next) {
-      let end = Date.now(); //TODO: 计算最后一天送奶日
-      db.orders.update({end:},{
-          $push: {
-              changes: {
-                  user: req.session.uid,
-                  time: Date.now(),
-                  type: enums.orderChangeType.顺延,
-                  begin: req.body.begin,
-                  end: req.body.end,
-                  hint: req.body.hint,
-                  count: req.body.count
-              }
-           },
-           end: end
-         },{multi: true})
-          .exec()
-         .then(function () {
-              res.redirect('/call/postpone');
-          })
+      let now = Date.now(); //TODO: 计算最后一天送奶日
+    let query = db.orders.find();
+    query.where('begin').lte(now);
+    db.orders.update(query,{
+        $push: {
+            changes: {
+                user: req.session.uid,
+                time: Date.now(),
+                type: enums.orderChangeType.顺延,
+                begin: req.body.begin,
+                end: req.body.end,
+                hint: req.body.hint,
+                count: req.body.count
+            }
+        }
+    },{multi: true})
+        .exec()
+        .then(function () {
+            res.redirect('/call/postpone');
+        })
          .then(null,next);
 });
 
