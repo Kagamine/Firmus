@@ -7,15 +7,29 @@ router.use(function (req, res, next) {
     next();
 });
 
-//
+//  来电受理管理   by nele
 router.get('/',auth.checkRole('call','query'), function ( req, res, next) {
     let query = db.calls.find();
-    
+    if (req.query.user) {
+        db.users
+            .aggregate()
+            .match({name: new RegExp('.*' + req.query.data + '.*'), role: '业务员'})
+            .group({_id:{id:'$_id'}})
+            .exec()
+            .then(function (users) {
+                query = query.where({ user: users[0]._id });
+            });
+    }
+    if (req.query.needFeedback!=-1)
+        query = query.where({ needFeedback: req.query.needFeedback });
+    if (req.query.begin)
+        query = query.where('time').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('time').lte(Date.parse(req.query.end));
     _.clone(query)
     .count()
     .exec()
     .then(function (count) {
-            console.log(count);
             var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);

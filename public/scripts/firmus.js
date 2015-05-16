@@ -206,6 +206,8 @@ $(document).ready(function () {
 
     $('#txtCallUser').droptxt('/general/user/getSalesmanByName','data');
 
+    $('#txtCallSearchUser').droptxt('/general/user/getSalesmanByName','data');
+
 });
 
 function popMsg(txt) {

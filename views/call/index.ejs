@@ -8,8 +8,9 @@
     检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8" name="user" placeholder="业务员" />&nbsp;
     是否需要回访：
     <select name="needFeedback"  id="slCallSearchNeedFeedback">
+          <option value="-1">选择是否回访</option>
           <option value="0">否</option>
-          <option value="0">是</option>
+          <option value="1">是</option>
     </select>&nbsp;
     <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
@@ -48,5 +49,13 @@
 </table>
 
 
+
+<div class="pager">
+    <a class="pager-item" href="/call/?p=1&user=<%= req.query.user %>&needFeedback=<%= req.query.needFeedback %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/order/?p=<%= i %>&user=user=<%= req.query.user %>&needFeedback=<%= req.query.needFeedback %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/call/?p=<%= pageCount || 1 %>&%>&user=<%= req.query.user %>&needFeedback=<%= req.query.needFeedback %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">»</a>
+</div>
 
 
