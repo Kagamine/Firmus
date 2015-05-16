@@ -57,7 +57,7 @@
                     <select name="department">
                         <option value="">未指派</option>
                         <% departments.forEach(x => { %>
-                        <option value="<%= x._id %>"><%= x.title %></option>
+                        <option value="<%= x._id %>"><%= x.city %> - <%= x.title %></option>
                         <% }) %>
                     </select>
                 </td>

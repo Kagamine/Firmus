@@ -306,7 +306,7 @@ function saveOrderAddress(){
             $('#trOrderSetStorey').show();
             $('#trOrderSetMilkStation').show();
             $.getJSON('/general/getDepartments',function(data){
-                var str='<option>选择奶站</option>';
+                var str='<option value="">选择奶站</option>';
                 for(var i=0;i<data.length;i++){
                     str+='<option value='+data[i]+'>'+data[i]+'</option>'
                 }

@@ -284,7 +284,7 @@ router.get('/employee/edit/:id', auth.checkRole('employee', 'modify'), function 
         .then(function (user) {
             res.locals.user = user;
             return db.departments.find()
-                .select('_id title')
+                .select('_id title city')
                 .exec();
         })
         .then(function (departments) {
@@ -766,17 +766,17 @@ router.get('/getDepartments',auth.checkRole('department','query'), function (req
 
 // order添加地址  by nele
 router.get('/address/orderAdd', auth.checkRole('address', 'modify'), function (req, res, next) {
-    let address = new db.addresses();
-    address.city = req.body.city;
-    address.district = req.body.district;
-    address.address = req.body.address;
-    address.storey = req.body.storey;
-    address.milkStation = req.body.milkStation || null;
-    address.name = req.body.name;
-    address.phone = req.body.phone;
+    let address = db.addresses();
+    address.city = req.query.city;
+    address.district = req.query.district;
+    address.address = req.query.address;
+    address.storey = req.query.storey;
+    address.milkStation = req.query.milkStation || null;
+    address.name = req.query.name;
+    address.phone = req.query.phone;
     address.blockOut = false;
     address.save(function (err, address) {
-        res.send(address._id);
+         res.send(address._id);
     });
 });
 

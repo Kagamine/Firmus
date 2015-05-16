@@ -115,7 +115,6 @@ router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, n
 router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     let end = Date.now(); //TODO: 计算最后一天送奶日期
     db.orders.update({ _id: req.params.id }, {
-        number: req.body.number,
         orderType: req.body.orderType,
         address: req.body.address,
         milkType: req.body.milkType,
@@ -335,10 +334,9 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
 });
 
 router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,res,next){
-    var district = req.body.district;
-    var city = req.body.city;
-    var address = req.body.address;
-
+    var district = req.query.district;
+    var city = req.query.city;
+    var address = req.query.address;
     db.addresses
         .findOne({city:city,district:district,address:address})
         .exec()
