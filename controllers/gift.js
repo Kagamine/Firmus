@@ -222,4 +222,14 @@ router.get('/gift/:id', auth.checkRole('gift', 'query'), function (req, res, nex
         .then(null, next);
 });
 
+// 编辑赠品
+router.get('/edit/:id', auth.checkRole('gift', 'modify'), function (req, res, next) {
+    db.gifts.findById(req.params.id)
+        .exec()
+        .then(function (gift) {
+            res.render('gift/giftEdit', { title: '编辑赠品 - ' + gift.title, gift: gift });
+        })
+        .then(null, next);
+});
+
 module.exports = router;
