@@ -1,0 +1,7 @@
+<h2><%= title %></h2>
+<div class="submenu">
+    <a href="/order/finance/show/<%= finance._id || req.params.id %>" class="submenu-item">财务详情</a>
+    <% if (permission.finance.modify) { %>
+    <a href="/order/finance/edit/<%= finance._id || req.params.id %>" class="submenu-item">修改财务</a>
+    <% } %>
+</div>

@@ -1,0 +1,40 @@
+<% include financeMenu %>
+<form method="post" class="block" id="frmEditFinance">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <h3>订单信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">业务员</td>
+            <td><input type="text" class="textbox w-3" name="user" id="txtAddFinanceUser" value="<%= finance.user.name %>" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">金额</td>
+            <td><input type="text" class="textbox w-3" name="price" value="<%= finance.price %>" /> 例如: 38.5</td>
+        </tr>
+        <tr>
+            <td class="row-title">付款方式</td>
+            <td>
+                <select name="payMethod" id="lstPaymentMethod">
+                    <%
+                      if( finance.payMethod == 'POS'){
+                     %>
+                    <option value="0">现金</option>
+                    <option value="1" selected>POS</option>
+                     <%
+                      }else{
+                      %>
+                    <option value="0" selected>现金</option>
+                    <option value="1">POS</option>
+                      <%
+                      }
+                      %>
+                </select>
+            </td>
+        </tr>
+        <tr id="pos-number-row" style="display:<% finance.pos=='POS'?'yes':'none'%>;">
+            <td class="row-title">POS单号</td>
+            <td><input type="text" class="textbox w-3" name="pos" value="<%= finance.pos %>" /></td>
+        </tr>
+    </table>
+    <p><input type="button" value="保存" class="button blue" onclick="saveFinance('<%=finance._id%>')" /></p>
+</form>

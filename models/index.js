@@ -21,6 +21,7 @@ db.gifts = require('./gift');
 db.giftDelivers = require('./giftDeliver');
 db.orders = require('./order');
 db.news = require('./news');
+db.finances = require('./finance');
 db.Schema = Schema;
 db.fs = fs;
 db.mongoose = mongodb.mongoose;

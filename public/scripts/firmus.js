@@ -208,6 +208,12 @@ $(document).ready(function () {
 
     $('#txtCallSearchUser').droptxt('/general/user/getSalesmanByName','data');
 
+    // 创建财务下拉 by nele
+    $('#txtAddFinanceUser').droptxt('/general/user/getSalesmanByName','data');
+
+    //  财务管理检索业务员检索 by nele
+    $('#txtFinanceSearchUser').droptxt('/general/user/getSalesmanByName','data');
+
 });
 
 function popMsg(txt) {
@@ -285,6 +291,15 @@ function saveOrder(id) {
         popMsg('订单信息修改成功');
     });
 }
+
+// 修改财务  by nele
+function saveFinance(id) {
+    $.post('/order/finance/edit/' + id, $('#frmEditFinance').serialize(), function () {
+        popMsg('订单信息修改成功');
+    });
+}
+
+
 
 //  保存来电修改 by nele
 function saveCall(id) {

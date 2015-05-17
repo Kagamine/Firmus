@@ -1,0 +1,34 @@
+<% include financeMenu %>
+<div class="block">
+    <h3>财务信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">业务员</td>
+            <td><a href="/general/employee/<%=finance.user._id%>"><%= finance.user.name %><%= finance.user.jobNumber %></a></td>
+        </tr>
+        <tr>
+            <td class="row-title">金额</td>
+            <td>
+                <%= finance.price %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">付款方式</td>
+            <td><%= finance.payMethod %></td>
+        </tr>
+        <%
+            if(finance.payMethod=='POS'){
+        %>
+        <tr>
+            <td class="row-title">POS</td>
+            <td><%= finance.pos %></td>
+        </tr>
+        <%
+            }
+        %>
+        <tr>
+            <td class="row-title">时间</td>
+            <td><%= moment(finance.time).format('YYYY-MM-DD HH:mm:ss') %></td>
+        </tr>
+    </table>
+</div>

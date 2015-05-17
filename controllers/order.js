@@ -333,6 +333,7 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
         .then(null, next);
 });
 
+//  地址验证  by nele
 router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,res,next){
     var district = req.query.district;
     var city = req.query.city;
@@ -349,5 +350,131 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
         })
        .then(null,next);
 });
+
+// 财务管理  by nele
+router.get('/finance',auth.checkRole('finance','query'), function (req, res, next) {
+    let query = db.finances.find();
+    if (req.query.user) {
+        db.users
+            .aggregate()
+            .match({name: new RegExp('.*' + req.query.data + '.*'), role: '业务员'})
+            .group({_id:{id:'$_id'}})
+            .exec()
+            .then(function (users) {
+                query = query.where({ user: users[0]._id });
+            });
+    }
+    if (req.query.begin)
+        query = query.where('time').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('time').lte(Date.parse(req.query.end));
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .populate('user')
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (finances) {
+            console.log(finances);
+            res.locals.finances = finances;
+            res.render('order/finance',{ title: '财务管理'});
+        })
+        .then(null,next);
+
+});
+
+// 创建财务 by nele
+router.get('/createFinance',auth.checkRole('finance','modify'), function (req, res, next) {
+       res.render('order/financeCreate',{ title: '财务管理'});
+});
+
+// 常见财务 by nele
+router.post('/createFinance',auth.checkRole('finance','modify'), function (req, res, next) {
+    let finance = new db.finances();
+    var name = req.body.user;
+    var price= req.body.price;
+    var payMethod= req.body.payMethod;
+    var pos = req.body.pos;
+    db.users
+       .findOne({name:name})
+       .exec()
+       .then(function (user) {
+            finance.time=Date.now();
+            finance.user=user._id;
+            finance.payMethod=enums.payMethod[payMethod];
+            finance.price = price;
+            finance.pos=pos;
+            finance.save(function (err,finance) {
+                  res.redirect('/order/finance');
+            })
+        });
+});
+
+// 财务详细  by nele
+router.get('/finance/show/:id',auth.checkRole('finance','modify'), function (req, res, next) {
+      db.finances.findById(req.params.id)
+          .populate('user')
+       .exec()
+       .then(function (finance) {
+              res.render('order/financeDetail', { title: '财务详情', finance: finance });
+          })
+       .then(null,next);
+});
+
+
+// 财务修改  by nele
+router.get('/finance/edit/:id',auth.checkRole('finance','modify'), function (req, res, next) {
+    db.finances.findById(req.params.id)
+        .populate('user')
+        .exec()
+        .then(function (finance) {
+            res.render('order/financeEdit', { title: '财务修改', finance: finance });
+        })
+        .then(null,next);
+});
+
+// 修改财务 by nele
+router.post('/finance/edit/:id',auth.checkRole('finance','modify'), function (req, res, next) {
+    var name = req.body.user;
+    var price= req.body.price;
+    var payMethod= req.body.payMethod;
+    var pos = req.body.pos;
+
+    db.users
+        .findOne({name:name})
+        .exec()
+        .then(function (user) {
+            db.finances.update({ _id: req.params.id }, {
+                user:user._id,
+                price:price,
+                payMethod:enums.payMethod[payMethod],
+                pos:pos
+            })
+                .exec()
+                .then(function () {
+                    res.send('ok');
+                })
+        })
+        .then(null, next);
+});
+
+// 删除财务  by nele
+router.get('/finance/delete/:id',auth.checkRole('finance','modify'), function (req, res, next) {
+    db.finances.remove({ _id: req.params.id })
+        .exec()
+        .then(function () {
+            res.redirect('/order/finance');
+        })
+        .then(null, next);
+});
+
 
 module.exports = router;
