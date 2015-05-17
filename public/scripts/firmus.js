@@ -204,9 +204,9 @@ $(document).ready(function () {
         }
     });
 
-    $('#txtCallUser').droptxt('/general/user/getSalesmanByName','data');
+    $('#txtCallUser').droptxt('/general/user/getCallUserByName','data');
 
-    $('#txtCallSearchUser').droptxt('/general/user/getSalesmanByName','data');
+    $('#txtCallSearchUser').droptxt('/general/user/getCallUserByName','data');
 
     // 创建财务下拉 by nele
     $('#txtAddFinanceUser').droptxt('/general/user/getSalesmanByName','data');
@@ -214,6 +214,16 @@ $(document).ready(function () {
     //  财务管理检索业务员检索 by nele
     $('#txtFinanceSearchUser').droptxt('/general/user/getSalesmanByName','data');
 
+    // 统计页面加载部门  by nele
+    if($('#frmStatisticsSearch').length>0){
+        $.getJSON('/general/getDepartmentsWithId',function(data){
+            var str='<option value="">选择部门</option>';
+            for(var i=0;i<data.length;i++){
+                str+='<option value='+data[i].id+'>'+data[i].title+'</option>'
+            }
+            $('#slStatisticsDepartment').html(str);
+        });
+    }
 });
 
 function popMsg(txt) {

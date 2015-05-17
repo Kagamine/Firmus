@@ -1,11 +1,10 @@
 <% include callMenu %>
-<h2><%= title %></h2>
 <form method="post" class="block" id="frmEditCall">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
     <h3>来电信息修改</h3>
     <table class="detail-table">
         <tr>
-            <td class="row-title">业务员</td>
+            <td class="row-title">热线员</td>
             <td><input type="text" class="textbox w-3" name="user" id="txtCallUser" value="<%=call.user.name%>" /></td>
         </tr>
         <tr>

@@ -735,7 +735,7 @@ router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),funct
         .then(null, next);
 });
 
-// 根据奶站得到该奶站的服务人员
+// 根据奶站得到该奶站的服务人员 by nele
 router.get('/getServiceUserByDepartmentId',auth.checkRole('address','query'),function(req,res,next){
     db.users
         .aggregate()
@@ -761,6 +761,21 @@ router.get('/getDepartments',auth.checkRole('department','query'), function (req
           res.json(departments.map(x=>x.title));
          })
     .then(null,next);
+});
+
+// 获取部门列表带ID by nele
+router.get('/getDepartmentsWithId',auth.checkRole('department','query'), function (req,res,next){
+    db.departments.find()
+        .exec()
+        .then(function(departments){
+            res.json(departments.map(x=>{
+               return {
+                   id: x._id,
+                   title: x.title
+               }
+            }));
+        })
+        .then(null,next);
 });
 
 
@@ -793,4 +808,17 @@ router.get('/user/getSalesmanByName',auth.checkRole('permission','query'), funct
     .then(null,next);
 });
 
+
+//  根据名字模糊查找热线员 by nele
+router.get('/user/getCallUserByName',auth.checkRole('permission','query'), function ( req, res , next ) {
+    db.users
+        .aggregate()
+        .match({ name: new RegExp('.*' + req.query.data + '.*'),role:'热线员' })
+        .group({_id:{name:'$name'}})
+        .exec()
+        .then(function (users) {
+            res.json(users.map(x=>x._id.name));
+        })
+        .then(null,next);
+});
 module.exports = router;

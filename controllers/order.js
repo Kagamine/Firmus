@@ -476,5 +476,18 @@ router.get('/finance/delete/:id',auth.checkRole('finance','modify'), function (r
         .then(null, next);
 });
 
+//   财务统计  by nele
+router.get('/statistics',auth.checkRole('finance','modify'), function (req , res, next) {
+     res.render('order/statistics', { title: '财务统计报表' });
+});
+
+//  生成报表  by nele
+router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , res, next) {
+      var department =  res.query.department;
+      var begin = req.query.begin ;
+      var end =  req.query.end;
+
+
+});
 
 module.exports = router;

@@ -22,7 +22,6 @@ router.get('/',auth.checkRole('call','query'), function ( req, res, next) {
     }
     if (req.query.needFeedback)
         query = query.where({ needFeedback: req.query.needFeedback });
-
     if (req.query.begin)
         query = query.where('time').gte(Date.parse(req.query.begin));
     if (req.query.end)
@@ -59,7 +58,7 @@ router.post('/create', auth.checkRole('call', 'modify'), function (req, res, nex
     let call = new db.calls();
     db.users
     .aggregate()
-    .match({name:req.body.user,role:'业务员'})
+    .match({name:req.body.user,role:'热线员'})
         .group({_id:{name:'$name',id:'$_id'}})
     .exec()
     .then(function (user) {
