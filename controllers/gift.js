@@ -233,4 +233,35 @@ router.get('/edit/:id', auth.checkRole('gift', 'modify'), function (req, res, ne
         .then(null, next);
 });
 
+// 编辑赠品信息
+router.post('/edit/:id', auth.checkRole('gift', 'modify'), function (req, res, next) {
+    db.gift.update({ _id: req.params.id }, {
+        title: req.body.title,
+        description: req.body.description
+    })
+        .exec()
+        .then(function () {
+            if (req.files.file) {
+                var writestream = db.gfs.createWriteStream({
+                    filename: req.files.file.originalname
+                });
+                db.fs.createReadStream(req.files.file.path).pipe(writestream);
+                writestream.on('close', function (file) {
+                    db.fs.unlink(req.files.file.path);
+                    db.gifts.update({ _id: req.params.id }, {
+                        picture: file._id
+                    }).exec();
+                });
+            } else {
+                res.redirect('/gift/show/' + req.params.id);
+            }
+        })
+        .then(null, next);
+});
+
+// 赠品分放
+router.get('/deliver', auth.checkRole('deliver', 'query'), function (req, res, next) {
+
+});
+
 module.exports = router;
