@@ -224,6 +224,16 @@ $(document).ready(function () {
             $('#slStatisticsDepartment').html(str);
         });
     }
+
+    $('#btnGetFinanceStatistics').click(function () {
+        var department = $('#slStatisticsDepartment').val();
+        var begin = $('#begin').val();
+        var end = $('#end').val();
+        $.getJSON('/order/getStatistics',{department:department,begin:begin,end:end}, function (data) {
+               console.log(data);
+        });
+    })
+
 });
 
 function popMsg(txt) {

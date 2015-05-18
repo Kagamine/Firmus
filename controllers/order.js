@@ -424,7 +424,7 @@ router.get('/finance/show/:id',auth.checkRole('finance','modify'), function (req
           .populate('user')
        .exec()
        .then(function (finance) {
-              res.render('order/financeDetail', { title: '财务详情', finance: finance });
+              res.render('order/financeDetail', { title: '收款记录详情', finance: finance });
           })
        .then(null,next);
 });
@@ -436,7 +436,7 @@ router.get('/finance/edit/:id',auth.checkRole('finance','modify'), function (req
         .populate('user')
         .exec()
         .then(function (finance) {
-            res.render('order/financeEdit', { title: '财务修改', finance: finance });
+            res.render('order/financeEdit', { title: '收款记录修改', finance: finance });
         })
         .then(null,next);
 });
@@ -483,11 +483,23 @@ router.get('/statistics',auth.checkRole('finance','modify'), function (req , res
 
 //  生成报表  by nele
 router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , res, next) {
-      var department =  res.query.department;
-      var begin = req.query.begin ;
-      var end =  req.query.end;
+         /*var aggregate = db.finances.aggregate();
+         if(req.query.department){
+             console.log(req.query.department);
+             var pipeline= { $match: { 'user.department' : req.query.department }};
+           //  var pipeline= { $match: { user : '5555a34e8558d1df04d221a6' }};
+             //aggregate.match({'user.department':req.query.department});
+             aggregate.append(pipeline);
+         }*/
 
-
+         db.finances.aggregate()
+             .match({ user : '5555a34e8558d1df04d221a6' })
+         .group({_id:{user:'$user'},count: { $sum: '$price' }})
+        .exec()
+        .then(function (data) {
+               console.log(data);
+        })
+        .then(null,next);
 });
 
 module.exports = router;

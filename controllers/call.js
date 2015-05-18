@@ -93,7 +93,7 @@ router.get('/show/:id',auth.checkRole('call','query'), function ( req, res, next
         .populate('order')
         .exec()
         .then(function (call) {
-            res.render('call/callDetail', { title: '来电详情', call: call });
+            res.render('call/callDetail', { title: '来电信息详情', call: call });
         })
         .then(null, next);
 });
@@ -106,7 +106,7 @@ router.get('/edit/:id',auth.checkRole('call','modify'), function ( req, res, nex
         .populate('order')
         .exec()
         .then(function (call) {
-            res.render('call/callEdit', { title: '来电修改', call: call });
+            res.render('call/callEdit', { title: '来电信息修改', call: call });
         })
         .then(null, next);
 });
@@ -194,7 +194,7 @@ router.get('/callback',auth.checkRole('call','query'), function (req, res, next)
         })
         .then(function (calls) {
             res.locals.calls = calls;
-            res.render('call/callBack', { title: '来电回访管理' });
+            res.render('call/callBack', { title: '来电信息回访管理' });
         })
         .then(null,next);
 });
