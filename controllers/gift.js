@@ -18,7 +18,7 @@ router.get('/promotion', auth.checkRole('promotion', 'query'), function (req, re
         .exec()
         .then(function (count) {
             var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
-            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var pageCount = res.locals.pageCount = parseInt((count + 10 - 1) / 10);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
@@ -261,7 +261,32 @@ router.post('/edit/:id', auth.checkRole('gift', 'modify'), function (req, res, n
 
 // 赠品分放
 router.get('/deliver', auth.checkRole('deliver', 'query'), function (req, res, next) {
-
+    let query = db.giftDelivers.find();
+    if (req.query.department)
+        query = query.where({ department: req.body.department });
+    if (req.query.title)
+        query = query.where({ 'gift.title': new RegExp('.*' + req.query.title + '.*') });
+    if (req.query.begin)
+        query = query.where('time').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('time').lte(Date.parse(req.query.end));
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (delivers) {
+            res.render('gift/diliver', { title: '赠品分放记录', delivers: delivers });
+        })
+        .then(null, next);
 });
 
 module.exports = router;
