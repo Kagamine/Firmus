@@ -8,6 +8,11 @@ var orderSchema = new Schema({
         index: true
     },
     price: Number,
+    isSample: {
+        type: Boolean,
+        default: false,
+        index: true
+    },
     orders: [{
         milkType: {
             type: String,
@@ -113,7 +118,12 @@ var orderSchema = new Schema({
             type:Date,
             default: Date.now()
         }
-    }]
+    }],
+    recordTime: {
+        type: Date,
+        index: true,
+        default: new Date()
+    }
 });
 
 orderSchema.plugin(deepPopulate, {});

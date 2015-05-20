@@ -1,0 +1,42 @@
+<h2><%= title %></h2>
+<form method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td>申请人</td>
+            <td><%= hand.user.name %>(<%= hand.user.jobNumber %>)</td>
+        </tr>
+        <tr>
+            <td>申请时间</td>
+            <td><%= moment(hand.submitTime).format('YYYY-MM-DD') %></td>
+        </tr>
+        <tr>
+            <td>类型</td>
+            <td><%= hand.type %></td>
+        </tr>
+        <tr>
+            <td>数量:张</td>
+            <td><%= hand.count %></td>
+        </tr>
+        <tr>
+            <td>申请理由</td>
+            <td><%= hand.hint %></td>
+        </tr>
+        <tr>
+            <td>审批意见</td>
+            <td>
+                <select name="status">
+                    <option value="1">同意请求</option>
+                    <option value="2">驳回请求</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>审批备注</td>
+            <td>
+                <textarea name="hint" class="textbox" style="width: 320px;height: 200px;"></textarea>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" class="button" value="提交" />
+</form>

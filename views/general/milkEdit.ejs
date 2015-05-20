@@ -1,0 +1,41 @@
+<h2><%= title %> - <%= milk.title %>
+    <a href="/general/milk" class="add">返回奶品列表</a>
+</h2>
+
+<form action="/general/milk/edit/<%= milk._id %>" method="post" id="frmEditMilk">
+    <input type="hidden" value="<%= csrf %>" name="_csrf" />
+    <table class="detail-table">
+        <tr>
+            <td>奶品编号</td>
+            <td><input type="text" name="number" class="textbox" value="<%= milk.number %>" /></td>
+        </tr>
+        <tr>
+            <td>奶品名称</td>
+            <td><input type="text" name="title" class="textbox" value="<%= milk.title %>" /></td>
+        </tr>
+        <tr>
+            <td>规格</td>
+            <td><input type="text" name="standard" class="textbox" value="<%= milk.standard %>" /></td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td><input type="text" name="description" class="textbox" <%= milk.description %> /></td>
+        </tr>
+        <tr>
+            <td>价格(单价)</td>
+            <td><input type="text" name="price" class="textbox" value="<%= milk.price.toFixed(2) %>" /></td>
+        </tr>
+    </table>
+    <input type="button" value="保存修改" class="button blue" id="btnSubmit" />
+</form>
+
+<script>
+    $('#btnSubmit').click(function () {
+        $.post($('#frmEditMilk').attr('action'), $('#frmEditMilk').serialize(), function (data) {
+            if (data == 'OK')
+                popMsg('修改成功!')
+            else
+                popMsg(data);
+        });
+    });
+</script>

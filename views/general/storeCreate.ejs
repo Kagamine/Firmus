@@ -31,10 +31,12 @@
                     </select>
                 </td>
             </tr>
-            <tr style="display:<%=type=='赠品仓库'?'':'none' %>">
-                 <td class="row-title">增品</td>
-                 <td><input type="text" id="txtStoreGift" class="textbox w-3" /><input type="hidden" name="gift" id="hgift"/></td>
+            <% if (type == '赠品仓库') { %>
+            <tr>
+                <td class="row-title">赠品</td>
+                <td><input type="text" id="txtStoreGift" class="textbox w-3" /><input type="hidden" name="gift" id="hgift"/></td>
             </tr>
+            <% } %>
             <tr>
                 <td class="row-title">数量</td>
                 <td><input type="text" class="textbox w-3" name="count" /></td>

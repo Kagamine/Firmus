@@ -1,33 +1,33 @@
-<h2>奶箱管理
+<h2>奶箱仓库管理
 </h2>
 <form class="search">
     检索：
-    <input type="text" name="title" class="textbox nullable" placeholder="部门名称" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="title" class="textbox nullable" placeholder="仓库名称" value="<%= req.query.title %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
 </form>
 <table class="table">
     <thead>
     <tr>
-        <th class="tl">部门名称</th>
-        <th class="tl">部门经理</th>
-        <th>部门人数</th>
-        <th>部门类型</th>
-        <th>操作</th>
+        <th class="tl">仓库名称</th>
+        <th class="tl">城市</th>
+        <th class="tl">区县</th>
+        <th class="tl">地址</th>
+        <th class="tl">库存</th>
+        <th class="tl">操作</th>
     </tr>
     </thead>
     <tbody>
     <% departments.forEach(x => { %>
     <tr id="<%= x._id %>">
         <td class="tl"><a href="/general/department/<%= x._id %>"><%= x.title %></a></td>
-        <td class="tl"><%= x.master %></td>
-        <td class="tc"><%= x.count %></td>
-        <td class="tc"><%= x.type %></td>
-        <td class="tc">
-            <% if (currentUser.role == '部门主管' && x._id == currentUser.department) { %>
-            <a href="/general/department/<%= x._id %>">管理</a>
+        <td><%= x.city %></td>
+        <td><%= x.district %></td>
+        <td><%= x.address %></td>
+        <td><%= x.count %></td>
+        <td>
+            <% if (currentUser.role == '部门主管' && x._id == currentUser.department || permission.milkBox.modify) { %>
+            <a href="/general/department/<%= x._id %>">管理仓库</a>
             <% } %>
-            <a href="/general/department/edit/<%= x._id %>">修改</a>
-            <a href="javascript:deleteDialog('/general/department/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
         </td>
     </tr>
     <% }) %>

@@ -2,14 +2,17 @@
     <% if (permission.finance.modify) { %>
     <a class="add" href="/order/createFinance">添加账单</a>
     <a class="add" href="/order/createBackMoney">登记退钱</a>
+    <a class="add" href="/order/check">收款核对</a>
     <% } %>
 </h2>
 <form class="search">
     检索：
-    <input type="text" name="user" id="txtFinanceSearchUser"  class="textbox w-0-6 nullable" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="user" id="txtFinanceSearchUser"  class="textbox w-0-6 nullable" placeholder="业务员姓名" value="<%= req.query.user %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
+    <input id="raw" type="hidden" name="raw" value="false" />
+    <input id="btnPrint" type="button" class="button blue" value="打印" />
 </form>
 
 <table class="table">
@@ -26,7 +29,7 @@
     <% finances.forEach(x => { %>
     <tr id="<%= x._id %>">
         <td><%= x.user.name %></td>
-        <td><%= x.price %></td>
+        <td>¥<%= x.price.toFixed(2) %></td>
         <td><%= x.payMethod %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
@@ -48,3 +51,10 @@
     <% } %>
     <a class="pager-item" href="/order/finance/?p=<%= pageCount || 1 %>&%>&user=<%= req.query.user %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">»</a>
 </div>
+
+<script>
+    $('#btnPrint').click(function() {
+        $('#raw').val('true');
+        $('.search').submit();
+    });
+</script>

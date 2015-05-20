@@ -1,0 +1,33 @@
+<h2><%= title %> - <%= act.title %></h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">赠品名称</th>
+        <th class="tl">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% act.gifts.forEach(x => { %>
+    <% if (x.title) { %>
+    <tr id="<%= x._id %>">
+        <td><a href="/gift/gift/<%= x._id %>"><%= x.title %></a></td>
+        <td>
+            <a href="javascript:deleteDialog('/gift/promotion/gift/<%= act._id %>/remove', '<%= x._id %>');">删除关联</a>
+        </td>
+    </tr>
+    <% } }) %>
+    </tbody>
+</table>
+<br />
+<br />
+<h3>添加赠品</h3>
+<form method="post" action="/gift/promotion/gift/<%= act._id %>/add">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td>赠品名称</td>
+            <td><input type="text" class="textbox" placeholder="请填写赠品名称" name="gift" />(与现有赠品名一致)</td>
+        </tr>
+    </table>
+    <input type="submit" value="添加" class="button green" />
+</form>

@@ -16,6 +16,11 @@ var departmentSchema = new Schema({
         type: String,
         index: true,
         enum: enums.departmentType
+    },
+    delete: {
+        type: Boolean,
+        index: true,
+        default: false
     }
 });
 

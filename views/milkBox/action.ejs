@@ -1,0 +1,82 @@
+<h2><%= title %></h2>
+
+<form class="search">
+    检索:
+    <input name="order" type="text" placeholder="关联订单" class="textbox nullable" value="<%= req.query.order %>" />
+    <input name="begin" type="text" placeholder="起始日期" class="textbox nullable datetime" value="<%= req.query.begin %>" />
+    <input name="end" type="text" placeholder="截止日期" class="textbox nullable datetime" value="<%= req.query.end %>" />
+    <select name="type">
+        <option value="">操作类型</option>
+        <option>入库</option>
+        <option>出库</option>
+        <option>转入</option>
+        <option>转出</option>
+        <option>装箱</option>
+        <option>奶箱调换</option>
+        <option>奶箱报废</option>
+        <option>拆箱</option>
+    </select>
+    <select name="milkbox">
+        <option value="">状态追踪</option>
+        <option>待装箱</option>
+        <option>已装箱</option>
+        <option>迁址装箱</option>
+        <option>特批装箱</option>
+        <option>未能装箱</option>
+    </select>
+    <input type="submit" value="过滤" class="button green" />
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">仓库</th>
+        <th class="tl">动作</th>
+        <th class="tl">数量</th>
+        <th class="tl">相关订单</th>
+        <th class="tl">状态追踪</th>
+        <th class="tl">时间</th>
+        <th class="tl">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% stores.forEach(x => { %>
+    <tr>
+        <td><a href="/general/department/<%= x.department._id %>"><%= x.department.title %></a></td>
+        <td><%= x.operateType %></td>
+        <td><%= x.count %></td>
+        <td>
+            <% if (x.order) { %>
+            <a href="/order/show/<%= x.order._id %>"><%= x.order.number %></a>
+            <% } else { %>
+            -
+            <% } %>
+        </td>
+        <td>
+            <% if (x.order) { %>
+            <%= x.milkBox %></td>
+            <% } else { %>
+            -
+            <% } %>
+        <td><%= moment(x.time).format('YYYY-MM-DD hh:mm:ss') %></td>
+        <td>
+            <% if (x.operateType == '装箱' || x.operateType == '拆箱' || x.operateType == '奶箱调换') { %>
+            <a target="_blank" href="/milkBox/print/<%= x._id %>">打印装拆箱单</a>
+            <a href="/milkBox/feedback/<%= x._id %>">追踪状态</a>
+            <% } else { %>
+            -
+            <% } %>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<div id="divInfo">
+</div>
+<div class="pager">
+    <span class="pager-item">共：<%=count%> 条数据</span>
+    <a class="pager-item" href="/gift/action/?p=1&order=<%= req.query.order %>&title=<%= req.query.title %>&number=<%= req.query.number %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>&type=<%= req.query.type %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/gift/action/?p=<%= i %>&order=<%= req.query.order %>&title=<%= req.query.title %>&number=<%= req.query.number %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>&type=<%= req.query.type %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/gift/action/?p=<%= pageCount || 1 %>&order=<%= req.query.order %>&title=<%= req.query.title %>&number=<%= req.query.number %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>&type=<%= req.query.type %>">»</a>
+</div>

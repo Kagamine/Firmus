@@ -1,0 +1,23 @@
+<h2>核对账单 - <%= user.name %></h2>
+<table class="detail-table">
+    <tr>
+        <td>起始时间</td>
+        <td>
+            <%= req.query.begin ? moment(req.query.begin).format('YYYY-MM-DD') : '-' %>
+        </td>
+    </tr>
+    <tr>
+        <td>结束时间</td>
+        <td>
+            <%= req.query.begin ? moment(req.query.begin).format('YYYY-MM-DD') : '-' %>
+        </td>
+    </tr>
+    <tr>
+        <td>订单总额</td>
+        <td>¥<%= ot.toFixed(2) %></td>
+    </tr>
+    <tr>
+        <td>实际上缴总额</td>
+        <td>¥<%= ft.toFixed(2) %></td>
+    </tr>
+</table>

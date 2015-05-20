@@ -1,0 +1,41 @@
+<h2><%= title %></h2>
+<form class="search">
+    选择日期：
+    <input type="text" class="textbox" name="title" class="datetime" placeholder="日期" value="<%= req.query.time ? moment(req.query.time).format('YYYY-MM-DD') : moment(new Date()).format('YYYY-MM-DD') %>" />&nbsp;
+    <input type="hidden" name="raw" id="raw" />
+    <input type="submit" class="button green" style="margin: 0" value="生成日报" />&nbsp;
+    <input type="button" class="button blue" value="打印" id="btnPrint" />
+</form>
+<h4>装箱日报 <%= moment(req.query.time).format('YYYY-MM-DD') %></h4>
+<% if (req.query.time) { %>
+<% for (var x in data) { %>
+<h5><%= x %></h5>
+<table class="detail-table">
+    <tr>
+        <td>订单号</td>
+        <td>类型</td>
+        <td>状态</td>
+        <td>地址</td>
+        <td>联系人</td>
+        <td>电话</td>
+        <td>备注</td>
+    </tr>
+    <% data[x].forEach(x => { %>
+    <tr>
+        <td><%= x.order.number %></td>
+        <td><%= x.operateType %></td>
+        <td><%= x.milkBox %></td>
+        <td><%= x.order.address.address %></td>
+        <td><%= x.order.address.name %></td>
+        <td><%= x.order.address.phone %></td>
+        <td><%= x.hint %></td>
+    </tr>
+    <% }) %>
+</table>
+<% } } %>
+<script>
+    $('#btnPrint').click(function () {
+        $('#raw').val('true');
+        $('.search').submit();
+    });
+</script>

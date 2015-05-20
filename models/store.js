@@ -1,4 +1,5 @@
 var mongodb = require('../models/mongodb');
+var deepPopulate = require('mongoose-deep-populate');
 var Schema = mongodb.mongoose.Schema;
 
 var storeSchema = new Schema({
@@ -12,6 +13,10 @@ var storeSchema = new Schema({
         type: String,
         enum: enums.operateType
     },
+    milkBox:{
+        type: String,
+        enum: enums.milkBox
+    },
     department: {
         type: Schema.Types.ObjectId,
         index: true,
@@ -24,8 +29,19 @@ var storeSchema = new Schema({
     },
     hint:{
         type:String
+    },
+    order: {
+        type: Schema.Types.ObjectId,
+        index: true,
+        ref: 'orders'
+    },
+    feedback: {
+        type: String,
+        index: true
     }
 });
+
+storeSchema.plugin(deepPopulate, {});
 
 var store = mongodb.mongoose.model('stores', storeSchema);
 module.exports = store;

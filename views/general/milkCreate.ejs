@@ -1,0 +1,28 @@
+<h2><%= title %></h2>
+
+<form action="/general/milk/add" method="post">
+    <input type="hidden" value="<%= csrf %>" name="_csrf" />
+    <table class="detail-table">
+        <tr>
+            <td>奶品编号</td>
+            <td><input type="text" name="number" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>奶品名称</td>
+            <td><input type="text" name="title" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>规格</td>
+            <td><input type="text" name="standard" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td><input type="text" name="description" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>价格(单价)</td>
+            <td><input type="text" name="price" class="textbox" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="添加" class="button blue" />
+</form>

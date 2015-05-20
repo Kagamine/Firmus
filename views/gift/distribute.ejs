@@ -1,0 +1,60 @@
+<h2><%= title %></h2>
+
+<form method="post" action="/gift/distribute">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td>关联订单(订单号)</td>
+            <td><input type="text" name="number" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>配送类别</td>
+            <td>
+                <select name="type">
+                    <option>赠送给客户</option>
+                    <option>赠品调换</option>
+                    <option>补增赠品</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>赠品仓库</td>
+            <td>
+                <select id="lstStores" name="department">
+                    <option value="">选择仓库</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>赠品类型</td>
+            <td>
+                <select id="lstGifts" name="gift"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>赠送数量</td>
+            <td><input type="text" name="count" class="textbox" value="1" /></td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td><input type="text" name="hint" class="textbox" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="提交" class="button green" />
+</form>
+
+<script>
+    $.getJSON('/gift/storelist', {}, function (data) {
+        for(var i = 0; i < data.length; i++) {
+            $('#lstStores').append('<option value="' + data[i].id + '">' + data[i].title + '</option>');
+        }
+    });
+    $('#lstStores').change(function () {
+        $.getJSON('/gift/giftlist', { department: $('#lstStores').val() }, function (data) {
+            $('#lstGifts').html('');
+            for(var i = 0; i < data.length; i++) {
+                $('#lstGifts').append('<option value="' + data[i].id + '">' + data[i].title + '</option>');
+            }
+        });
+    });
+</script>

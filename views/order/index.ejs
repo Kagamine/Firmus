@@ -1,6 +1,8 @@
 <h2><%= title %>
     <% if (permission.order.modify) { %>
-    <a class="add" href="/order/create">添加订单</a>    <a class="add" href="/order/continue">续单</a>
+    <a class="add" href="/order/create">添加订单</a>
+    <a class="add" href="/order/continue">续单</a>
+    <a class="add" href="/order/hand">订单/押金单发放管理</a>
     <% } %>
 </h2>
 <form class="search">
@@ -54,8 +56,7 @@
             <a href="/order/change/<%= x._id %>">变更</a>
             <% if (permission.order.modify) { %>
             <a href="javascript:deleteDialog('/order/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
-            <% } %>
-            <% } %>
+            <% } } %>
         </td>
     </tr>
     <% }) %>

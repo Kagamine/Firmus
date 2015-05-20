@@ -1,0 +1,20 @@
+<h2><%= title %> - <%= milk.title %>
+    <a href="/general/milk" class="add">返回奶品列表</a>
+</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">价格</th>
+        <th class="tl">日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% milk.priceRecords.sort((a,b) => a < b).forEach(x => { %>
+    <tr>
+        <td>¥<%= x.price.toFixed(2) %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD hh:mm:ss') %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

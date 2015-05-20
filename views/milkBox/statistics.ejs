@@ -1,0 +1,24 @@
+<h2><%= title %></h2>
+<form class="search">
+    选择日期：
+    <input type="text" class="datetime textbox" name="time" placeholder="日期" value="<%= req.query.time ? moment(req.query.time).format('YYYY-MM-DD') : moment(new Date()).format('YYYY-MM-DD') %>" />&nbsp;
+    <input type="hidden" name="raw" id="raw" />
+    <input type="submit" class="button green" style="margin: 0" value="统计查询" />
+</form>
+
+<table class="detail-table">
+    <tr>
+        <td>奶箱仓库</td>
+        <% enums.ot2.forEach(x => { %>
+        <td><%= x %></td>
+        <% }) %>
+    </tr>
+    <% for (var x in result) { %>
+    <tr>
+        <td><%= x %></td>
+        <% enums.ot2.forEach(y => { %>
+        <td><%= result[x][y] %></td>
+        <% }) %>
+    </tr>
+    <% } %>
+</table>

@@ -1,0 +1,14 @@
+<h2><%= title %></h2>
+
+<table class="detail-table">
+    <tr>
+        <td>仓库</td>
+        <td>数量</td>
+    </tr>
+    <% for (var x in result) { %>
+    <tr>
+        <td><%= x %></td>
+        <td><%= result[x] %></td>
+    </tr>
+    <% } %>
+</table>

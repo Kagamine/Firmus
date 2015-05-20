@@ -1,0 +1,59 @@
+<h2><%= title %></h2>
+
+<form method="post" action="/milkBox/distribute">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td>关联订单(订单号)</td>
+            <td><input type="text" name="number" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>操作类别</td>
+            <td>
+                <select name="type">
+                    <option>装箱</option>
+                    <option>拆箱</option>
+                    <option>奶箱调换</option>
+                    <option>奶箱报废</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>追踪状态</td>
+            <td>
+                <select name="milkbox">
+                    <option>待装箱</option>
+                    <option>已装箱</option>
+                    <option>迁址装箱</option>
+                    <option>特批装箱</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>奶箱仓库</td>
+            <td>
+                <select id="lstStores" name="department">
+                    <option value="">选择仓库</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>数量</td>
+            <td><input type="text" name="count" class="textbox" value="1" /></td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td><input type="text" name="hint" class="textbox" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="提交" class="button green" />
+</form>
+
+<script>
+    $.getJSON('/milkBox/storelist', {}, function (data) {
+        for(var i = 0; i < data.length; i++) {
+            if (data[i].count > 0)
+                $('#lstStores').append('<option value="' + data[i].id + '">' + data[i].title + '</option>');
+        }
+    });
+</script>

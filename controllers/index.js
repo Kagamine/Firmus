@@ -10,6 +10,7 @@ router.use('/order', require('./order'));
 router.use('/gift', require('./gift'));
 router.use('/call', require('./call'));
 router.use('/milkBox', require('./milkBox'));
+router.use('/mobile', require('./mobile'));
 
 
 router.use(function(req, res, next) {

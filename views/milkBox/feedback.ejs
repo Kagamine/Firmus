@@ -1,0 +1,16 @@
+<h2><%= title %></h2>
+<form method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <pre><%= store.feedback %></pre>
+    <p><textarea name="feedback" style="width: 500px; height: 300px" placeholder="请填写跟进记录"></textarea></p>
+    <p>
+        更新追踪状态:<select name="milkbox">
+            <option <%= store.milkBox == '待装箱' ? 'selected' : '' %>>待装箱</option>
+            <option <%= store.milkBox == '已装箱' ? 'selected' : '' %>>已装箱</option>
+            <option <%= store.milkBox == '迁址装箱' ? 'selected' : '' %>>迁址装箱</option>
+            <option <%= store.milkBox == '特批装箱' ? 'selected' : '' %>>特批装箱</option>
+            <option <%= store.milkBox == '未能装箱' ? 'selected' : '' %>>未能装箱</option>
+        </select>
+    </p>
+    <p><input type="submit" value="提交" class="button blue" /></p>
+</form>

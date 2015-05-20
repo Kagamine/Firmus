@@ -136,6 +136,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
               return query
                   .populate('address milkStation user')
                   .deepPopulate('address.milkStation')
+                  .sort({ _id: -1 })
                   .skip(50 * (page - 1))
                   .limit(50)
                   .exec();
@@ -176,6 +177,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         order.customCall =  req.session.uid;
         order.customServiceFlag = false;
     }
+    order.isSample = req.body.sample == 'true';
     order.time = new Date();
     order.address = req.body.address;
     order.number = req.body.number;
@@ -1542,7 +1544,6 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
                 tmp[x].forEach(z => {
                     z.orders.forEach(y => {
                         let cnt = getDistributeCount(y, z.changes, new Date());
-                        console.log(cnt);
                         if (cnt > 0) {
                             if (!ret[x][y.milkType])
                                 ret[x][y.milkType] = cnt;
@@ -1613,10 +1614,17 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
                 if (!ret[x]) ret[x] = {};
                 tmp[x].forEach(z => {
                     z.orders.forEach(y => {
+                        if (!ret[x][y.milkType])
+                            ret[x][y.milkType] = {};
                         let cnt = getDistributeCount(y, z.changes, new Date());
                         if (cnt > 0) {
-                            if (!ret[x][y.milkType]) ret[x][y.milkType] = 0;
-                            ret[x][y.milkType] += cnt;
+                            if (!ret[x][y.milkType].count)
+                                ret[x][y.milkType].count = 0;
+                            if (!ret[x][y.milkType].sample)
+                                ret[x][y.milkType].sample = 0;
+                            ret[x][y.milkType].count += cnt;
+                            if (z.isSample)
+                                ret[x][y.milkType].sample += cnt;
                         }
                     });
                 });
@@ -1686,6 +1694,7 @@ router.get('/distribute/detail', function (req, res, next) {
         //begin: { $lte: Date.now() }
     })
         .where('address').ne(null)
+        .where('orders.end').gte(new Date())
         .populate('address')
         .deepPopulate('address.milkStation address.distributor')
         .exec()
@@ -1781,6 +1790,8 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
                     address.distributor = distributor;
                 }
                 address.save(function (err,address) {
+                    if(err)
+                        return Promise.reject(err);
                     res.send(address._id);
                 })
             }else{
@@ -1793,37 +1804,54 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
 // 财务管理  by nele
 router.get('/finance',auth.checkRole('finance','query'), function (req, res, next) {
     let query = db.finances.find();
-    if (req.query.user) {
-        db.users
-            .aggregate()
-            .match({name: new RegExp('.*' + req.query.data + '.*'), role: '业务员'})
-            .group({_id:{id:'$_id'}})
-            .exec()
-            .then(function (users) {
-                query = query.where({ user: users[0]._id });
-            });
-    }
-    if (req.query.begin)
-        query = query.where('time').gte(Date.parse(req.query.begin));
-    if (req.query.end)
-        query = query.where('time').lte(Date.parse(req.query.end));
-    _.clone(query)
-        .count()
-        .exec()
+
+    new Promise(function(resolve, reject) {
+        if (req.query.user) {
+            db.users.find({ name: new RegExp('.*' + req.query.user + '.*') })
+                .exec(function (err, users) {
+                    if (err)
+                        reject(err);
+                    if (!users)
+                        query = query.where({ user: null });
+                    else
+                    {
+                        let ids = users.map(x => x._id);
+                        query = query.where({ user: { $in: ids } });
+                    }
+                    return resolve();
+                });
+        } else {
+            return resolve();
+        }
+    })
+        .then(function() {
+            if (req.query.begin)
+                query = query.where('time').gte(Date.parse(req.query.begin));
+            if (req.query.end)
+                query = query.where('time').lte(Date.parse(req.query.end));
+            return _.clone(query)
+                .count()
+                .exec()
+        })
         .then(function (count) {
             var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            if (req.query.raw != 'true')
+            {
+                query = query.skip(50 * (page - 1)).limit(50);
+            }
             return query
                 .populate('user')
-                .skip(50 * (page - 1))
-                .limit(50)
                 .exec();
         })
         .then(function (finances) {
             res.locals.finances = finances;
-            res.render('order/finance',{ title: '财务管理'});
+            if (req.query.raw != 'true')
+                res.render('order/finance',{ title: '财务管理'});
+            else
+                res.render('order/financeRaw', { layout: false });
         })
         .then(null,next);
 
@@ -1842,7 +1870,7 @@ router.post('/createFinance',auth.checkRole('finance','modify'), function (req, 
     var payMethod= req.body.payMethod;
     var pos = req.body.pos;
     db.users
-       .findOne({name:name})
+       .findOne({jobNumber:name})
        .exec()
        .then(function (user) {
             finance.time=Date.now();
@@ -1851,9 +1879,13 @@ router.post('/createFinance',auth.checkRole('finance','modify'), function (req, 
             finance.price = price;
             finance.pos=pos;
             finance.save(function (err,finance) {
+                if (err)
+                    return Promise.reject(err);
                 res.redirect('/order/finance');
+                return Promise.resolve();
             })
-        });
+        })
+        .then(null, next);
 });
 
 
@@ -1871,7 +1903,7 @@ router.post('/createBackMoney',auth.checkRole('finance','modify'), function (req
         .then(function () {
             res.redirect('/order/finance');
         })
-     .then(null,next);
+        .then(null,next);
 });
 
 
@@ -1909,16 +1941,17 @@ router.post('/finance/edit/:id',auth.checkRole('finance','modify'), function (re
         .findOne({ name: name })
         .exec()
         .then(function (user) {
-            db.finances.update({ _id: req.params.id }, {
+            return db.finances.update({ _id: req.params.id }, {
                 user:user._id,
                 price:price,
                 payMethod:enums.payMethod[payMethod],
                 pos:pos
             })
-                .exec()
-                .then(function () {
-                    res.send('ok');
-                })
+                .exec();
+
+        })
+        .then(function () {
+            res.send('ok');
         })
         .then(null, next);
 });
@@ -1935,22 +1968,24 @@ router.post('/finance/delete/:id',auth.checkRole('finance','modify'), function (
 
 //   财务统计  by nele
 router.get('/statistics',auth.checkRole('finance','modify'), function (req , res, next) {
-     res.render('order/statistics', { title: '财务统计报表' });
-});
-
-//  生成报表  by nele
-router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , res, next) {
-        let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
-         var aggregate = db.finances.aggregate();
-         if(req.query.department){
-                var pipeline= { $match: { 'user.department': ObjectID(req.query.department)}};
-                aggregate.append(pipeline);
-         }
-         aggregate.group({_id:{user:'$user'},count: { $sum: '$price' }})
+    if (!req.query.time)
+        return res.render('order/statistics', { title: '奶品余额统计' });
+    db.orders.find()
+        .where('orders.end').gte(new Date(req.query.time))
         .exec()
-        .then(function (data) {
+        .then(function(data) {
+            console.error(data);
+            let statistics = {};
+            data.forEach(x => {
+                x.orders.forEach(y => {
+                    if (!statistics[y.milkType])
+                        statistics[y.milkType] = 0;
+                    statistics[y.milkType] += getLeftCount(y, x.changes, new Date());
+                });
+            });
+            res.render('order/statistics', { title: '奶品余额统计', statistics: statistics });
         })
-        .then(null,next);
+        .then(null, next);
 });
 
 
@@ -2227,6 +2262,8 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
                }
            }
            order.save(function (err, order) {
+               if (err)
+                    return Promise.reject(err);
                res.redirect('/order/show/' + order._id);
            });
        })
@@ -2246,6 +2283,131 @@ router.get('/orderDistribute/:id',auth.checkRole('order','query'), function (req
 
 });
 
+router.get('/hand', auth.checkRole('order','query'), function (req, res, next) {
+    let query = db.hands.find();
+    if (req.query.status)
+        query = query.where({ status: req.query.status });
+    if (req.query.jn)
+        query = query.where({ 'user.jobNumber': req.query.jn });
+    if (req.query.begin)
+        query = query.where('submitTime').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('submitTime').lte(Date.parse(req.query.end));
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .populate('user')
+                .sort({ submitTime: -1 })
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (hands) {
+            res.locals.hands = hands;
+            res.render('order/orderHand',{ title: '订单发放'});
+        })
+        .then(null,next);
+});
 
+router.get('/request', auth.checkRole('order','query'), function (req, res, next) {
+    res.render('order/orderRequest', { title: '申请订单/押金单' });
+});
+
+router.post('/request', auth.checkRole('order','query'), function (req, res, next) {
+    let hand = new db.hands();
+    hand.user = req.session.uid;
+    hand.submitTime = new Date();
+    hand.count = req.body.count;
+    hand.type = req.body.type;
+    hand.hint = req.body.hint;
+    hand.status = 0;
+    hand.save(function () {
+        res.redirect('/order/hand');
+    });
+});
+
+router.get('/verify/:id', auth.checkRole('order','query'), function (req, res, next) {
+    db.hands.findById(req.params.id)
+        .populate('user')
+        .exec()
+        .then(function(data) {
+            res.render('order/orderVerify', { title: '审核申请', hand: data.toObject() });
+        })
+        .then(null, next);
+});
+
+router.post('/verify/:id', auth.checkRole('order','query'), function (req, res, next) {
+    db.hands.findById(req.params.id)
+        .populate('user')
+        .exec()
+        .then(function(data) {
+            return db.hands.update({ _id: req.params.id }, {
+                status: req.body.status,
+                hint: req.body.hint
+            })
+                .exec();
+        })
+        .then(function() {
+            res.redirect('/order/hand');
+        })
+        .then(null, next);
+});
+
+router.get('/check', auth.checkRole('finance','query'), function(req, res, next) {
+    res.render('order/check', { title: '收款核对' });
+});
+
+router.get('/checkresult', auth.checkRole('finance','query'), function(req, res, next) {
+    let user;
+    let orders;
+    let finances;
+    db.users.findOne({ jobNumber: req.query.jn })
+        .exec()
+        .then(function (u) {
+            user = u;
+            let query = db.orders.find({ user: u._id });
+            if (req.query.begin) {
+                query = query.where('recordTime').gte(new Date(req.query.begin));
+            }
+            if (req.query.end) {
+                query = query.where('recordTime').lte(new Date(req.query.end));
+            }
+            return query.exec();
+        })
+        .then(function (o) {
+            orders = o.map(x => x.toObject());
+            let query = db.finances.find({ user: user._id });
+            if (req.query.begin) {
+                query = query.where('time').gte(new Date(req.query.begin));
+            }
+            if (req.query.end) {
+                query = query.where('time').lte(new Date(req.query.end));
+            }
+            return query.exec();
+        })
+        .then(function (f) {
+            finances = f;
+            let ot = 0;
+            let ft = 0;
+            finances.forEach(x => {
+                ft += x.price;
+            });
+            orders.forEach(x => {
+                x.orders.forEach(y => {
+                    if (y.single > 0 && y.count > 0) {
+                        ot += y.single * y.count;
+                    }
+                });
+            });
+            res.render('order/checkresult', { title: '收款核对', user: user, finances: finances, orders: orders, ot: ot, ft: ft });
+        })
+        .then(null, next);
+});
 
 module.exports = router;

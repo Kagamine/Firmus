@@ -99,7 +99,7 @@ router.post('/news/edit/:id', auth.checkRole('news', 'modify'), function (req, r
 
 // 部门列表
 router.get('/department', auth.checkRole('department', 'modify'), function (req, res, next) {
-    let query = db.departments.find();
+    let query = db.departments.find({ delete: false });
     if (req.query.title)
         query = query.where({ title: new RegExp('.*' + req.query.title + '.*') });
     if (req.query.type)
@@ -185,10 +185,17 @@ router.post('/department/edit/:id', auth.checkRole('department', 'modify'), func
 
 // 删除部门
 router.post('/department/delete/:id', auth.checkRole('department', 'modify'), function (req, res, next) {
-    db.departments.remove({ _id: req.params.id })
+    db.users.find({ department: req.params.id })
         .exec()
+        .then(function (data) {
+            if (data.length > 0)
+                return res.send('删除失败,该部门下还有职工!');
+            return db.departments.update({ _id: req.params.id }, {
+                delete: true
+            }).exec()
+        })
         .then(function () { res.send('OK'); })
-        .then();
+        .then(null, next);
 });
 
 // 创建部门
@@ -415,9 +422,9 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
 
 // 奶站仓库管理  by nele
 router.get('/department/store/:id',auth.checkRole('store','query'), function ( req, res, next) {
-    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
-    res.locals.type=req.query.type;
-    let query = db.stores.find({department:ObjectID(req.params.id)});
+    res.locals.type = req.query.type;
+    let stores;
+    let query = db.stores.find({ department: req.params.id });
     if (req.query.begin)
         query = query.where('time').gte(Date.parse(req.query.begin));
     if (req.query.end)
@@ -430,18 +437,24 @@ router.get('/department/store/:id',auth.checkRole('store','query'), function ( r
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-            return query.populate({ path: 'department', select: 'title _id' }).populate({ path: 'gift', select: 'title _id' }).skip(50 * (page - 1)).limit(50).exec();
+            return query
+                .populate({ path: 'department', select: 'title _id' })
+                .populate({ path: 'gift', select: 'title _id' })
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
         })
-        .then(function (stores) {
+        .then(function (s) {
+            console.error(s);
+            stores = s;
             res.locals.stores = stores;
             res.locals.departemtID = req.params.id;
-            db.departments.findById( req.params.id)
-            .exec()
-            .then(function (department) {
-                    res.locals.departemt =department.title;
-                    res.render('general/store', { title: '仓库管理' });
-                });
-
+            return db.departments.findById(req.params.id)
+                .exec()
+        })
+        .then(function (department) {
+            res.locals.departemt = department.title;
+            res.render('general/store', { title: '仓库管理', stores: stores });
         })
         .then(null, next);
 });
@@ -1183,6 +1196,103 @@ router.post('/AddressDistributor',auth.checkRole('address', 'modify'), function 
             })
             .then(null,next);
     }
+});
+
+router.get('/milk', auth.checkRole('milk', 'query'), function (req, res, next) {
+    let query = db.milks.find({ delete: false });
+    if (req.query.number)
+        query = query.where({ number: req.query.number });
+    if (req.query.title)
+        query = query.where({ title: new RegExp('.*' + req.query.title + '.*') });
+    query
+        .exec()
+        .then(function (data) {
+            res.render('general/milk', { title: '奶品管理', milks: data });
+        })
+        .then(null, next);
+});
+
+router.post('/milk/delete/:id',auth.checkRole('milk', 'modify'), function (req, res, next) {
+    db.milks.update({ _id: req.params.id }, {
+        delete: true
+    })
+        .exec()
+        .then(function () {
+            res.send('OK');
+        })
+        .then(null, next);
+});
+
+router.post('/milk/edit/:id', auth.checkRole('milk', 'modify'), function (req, res, next) {
+    db.milks.findById(req.params.id)
+        .exec()
+        .then(function (data) {
+            if (data.price != req.body.price)
+            {
+                return db.milks.update({ _id: req.params.id }, {
+                    $push:
+                    {
+                        priceRecords: {
+                            time: new Date(),
+                            price: req.body.price
+                        }
+                    }
+                })
+                    .exec();
+            }
+            return Promise.resolve();
+        })
+        .then(function () {
+            return db.milks.update({ _id: req.params.id }, {
+                title: req.body.title,
+                description: req.body.description,
+                standard: req.body.standard,
+                number: req.body.number,
+                price: req.body.price
+            })
+                .exec();
+        })
+        .then(function () {
+            res.send('OK');
+        })
+        .then(null, next);
+});
+
+router.get('/milk/edit/:id', auth.checkRole('milk', 'modify'), function (req, res, next) {
+    db.milks.findById(req.params.id)
+        .exec()
+        .then(function (data) {
+            res.render('general/milkEdit', { title: '编辑奶品', milk: data });
+        })
+        .then(null, next);
+});
+
+router.get('/milk/add', auth.checkRole('milk', 'modify'), function (req, res, next) {
+    res.render('general/milkCreate', { title: '添加奶品' });
+});
+
+router.post('/milk/add', auth.checkRole('milk', 'modify'), function (req, res, next) {
+    let milk = new db.milks();
+    milk.title = req.body.title;
+    milk.description = req.body.description;
+    milk.standard = req.body.standard;
+    milk.number = req.body.number;
+    milk.price = req.body.price;
+    milk.priceRecords = [{ time: new Date(), price: milk.price }];
+    milk.save(function (err, milk) {
+        if (err)
+            return next(err);
+        res.redirect('/general/milk');
+    });
+});
+
+router.get('/milk/history/:id', auth.checkRole('milk', 'query'), function (req, res, next) {
+    db.milks.findById(req.params.id)
+        .exec()
+        .then(function (data) {
+            res.render('general/milkHistory', { title: '奶品调价信息', milk: data });
+        })
+        .then(null, next);
 });
 
 module.exports = router;

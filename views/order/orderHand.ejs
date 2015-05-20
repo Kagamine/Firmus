@@ -1,0 +1,57 @@
+<h2>
+    订单/押金单发放
+    <a href="/order/request" class="add">申领订单/押金单</a>
+</h2>
+<form class="search">
+    检索：
+    <select name="status" class="w-0-6">
+        <option value="true" value="">审核状态</option>
+        <option value="true" value="0">待审核</option>
+        <option value="true" value="1">审核通过</option>
+        <option value="true" value="2">审核驳回</option>
+    </select>&nbsp;
+    <input type="text" name="user" class="textbox w-0-6 nullable" placeholder="业务员工号" value="<%= req.query.jn %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
+    <input type="submit" class="button green" style="margin: 0" value="过滤" />
+</form>
+<table class="table">
+    <thead>
+    <tr class="tl">
+        <th>申请人</th>
+        <th>类型</th>
+        <th>申请数量</th>
+        <th>状态</th>
+        <th>申请时间</th>
+        <th>审批时间</th>
+        <th>备注</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% hands.forEach(x => { %>
+    <tr id="<%= x._id %>" class="orderDataTr" data-id="<%= x._id %>">
+        <td><%= x.user.name %>(<%= x.user.jobNumber %>)</td>
+        <td><%= x.type %></td>
+        <td><%= x.count %></td>
+        <td><%= x.status == 0 ? '待审核' : x.status == 1 ? '审核通过' : '审核驳回' %></td>
+        <td><%= moment(x.submitTime).format('YYYY-MM-DD') %></td>
+        <td><%= x.status == 0 ? '' : moment(x.verifyTime).format('YYYY-MM-DD') %></td>
+        <td><%= x.hint %></td>
+        <td>
+            <% if(req.session.user.role == '系统管理员' && x.status == 0) { %>
+                <a href="/order/verify/<%= x._id %>">审核</a>
+            <% } %>
+        </td>
+    <% }) %>
+    </tbody>
+</table>
+<div id="divInfo">
+</div>
+<div class="pager">
+    <a class="pager-item" href="/order/?p=1&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/order/?p=<%= i %>&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/order/?p=<%= pageCount || 1 %>&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">»</a>
+</div>

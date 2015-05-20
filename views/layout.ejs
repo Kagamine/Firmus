@@ -39,9 +39,12 @@
         <li><a href="/general/car">配送车辆管理</a></li>
         <% } if (permission.permission.modify) { %>
         <li><a href="/general/permission">权限管理</a></li>
+        <% } if (permission.milk.query) { %>
+        <li><a href="/general/milk">奶品列表</a></li>
         <% } %>
         <li><a href="/general/modifypwd">修改密码</a></li>
         <% }  %>
+
         <% if (order) { %>
         <% if (permission.order.query) { %>
         <li><a href="/order">订单管理</a></li>
@@ -62,9 +65,19 @@
         <% if (permission.promotion.query) { %>
         <li><a href="/gift/promotion">促销活动管理</a></li>
         <% } if (permission.gift.query) { %>
-        <li><a href="/gift/gift">赠品管理</a></li>
+        <li><a href="/gift/gift">赠品类别管理</a></li>
+        <% } if (permission.gift.modify) { %>
+        <li><a href="/gift/distribute">赠品配送录入</a></li>
         <% } if (permission.giftStore.query) { %>
-        <li><a href="/gift/store">赠品出库管理</a></li>
+        <li><a href="/gift/action">进出库管理</a></li>
+        <% } if (permission.giftStore.query) { %>
+        <li><a href="/gift/store">赠品仓库管理</a></li>
+        <% } if (permission.gift.query) { %>
+        <li><a href="/gift/check">赠品盘点</a></li>
+        <% } if (permission.gift.query) { %>
+        <li><a href="/gift/day">日处理查询</a></li>
+        <% } if (permission.gift.query) { %>
+        <li><a href="/gift/query">赠品综合查询</a></li>
         <% } } %>
 
         <% if (call) { %>
@@ -77,13 +90,21 @@
         <% } if (permission.call.query) { %>
         <li><a href="/call/postpone">顺延变更</a></li>
         <% } if (permission.call.query) { %>
-        <li><a href="/call/statistic">查询统计</a></li>
+        <li><a href="/call/statistics">查询统计</a></li>
         <% } } %>
 
         <% if (milkBox) { %>
         <% if (permission.deposit.query) { %>
         <li><a href="/milkBox/">奶箱库存管理</a></li>
         <li><a href="/milkBox/deposit">押金管理</a></li>
+        <% } if (permission.milkBox.query) { %>
+        <li><a href="/milkBox/action">进出库管理</a></li>
+        <% } if (permission.milkBox.query) { %>
+        <li><a href="/milkBox/day">装拆箱日报</a></li>
+        <% } if (permission.milkBox.query) { %>
+        <li><a href="/milkBox/statistics">日处理统计查询</a></li>
+        <% } if (permission.milkBox.modify) { %>
+        <li><a href="/milkBox/distribute">装拆箱登记</a></li>
         <% } } %>
     </ul>
 </div>

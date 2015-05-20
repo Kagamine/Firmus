@@ -1,0 +1,42 @@
+<h2>
+    <%= title %>
+    <a href="/general/milk/add" class="add">添加奶品</a>
+</h2>
+
+<form class="search">
+    检索：
+    <input type="text" name="title" class="textbox nullable" placeholder="奶品名称" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="number" class="textbox nullable" placeholder="奶品编码" value="<%= req.query.number %>" />&nbsp;
+    <input type="submit" class="button green" style="margin: 0" value="过滤" />
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">编码</th>
+        <th class="tl">名称</th>
+        <th class="tl">单价</th>
+        <th class="tl">规格</th>
+        <th class="tl">备注</th>
+        <th class="tl">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% milks.forEach(x => { %>
+    <tr id="<%= x._id %>">
+        <td><%= x.number %></td>
+        <td><%= x.title %></td>
+        <td>¥<%= x.price.toFixed(2) %></td>
+        <td><%= x.standard %></td>
+        <td><%= x.description %></td>
+        <td>
+            <a href="/general/milk/history/<%= x._id %>">调价明细</a>
+            <% if (permission.milk.modify) { %>
+            <a href="/general/milk/edit/<%= x._id %>">编辑</a>
+            <a href="javascript:deleteDialog('/general/milk/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
+            <% } %>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

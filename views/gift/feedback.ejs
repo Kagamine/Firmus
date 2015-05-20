@@ -1,0 +1,10 @@
+<h2><%= title %></h2>
+<% if (!store.feedback) { %>
+<form method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <p><textarea name="feedback" style="width: 500px; height: 300px" placeholder="请填写回访记录"></textarea></p>
+    <p><input type="submit" value="提交" class="button blue" /></p>
+</form>
+<% } else { %>
+<p><%= store.feedback %></p>
+<% } %>

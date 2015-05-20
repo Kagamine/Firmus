@@ -1,0 +1,23 @@
+<h2><%= title %></h2>
+<form>
+    时间点: <input name="time" type="text" class="textbox datetime nullable" value="<%= req.query.time ? moment(req.query.time).format('YYYY-MM-DD hh:mm:ss') : moment(new Date()).format('YYYY-MM-DD hh:mm:ss') %>" />
+    <input type="submit" value="统计" class="button green" />
+</form>
+<div style="width: 100%; overflow-x:auto">
+    <table class="detail-table" style="white-space:nowrap;">
+        <tr>
+            <td>仓库</td>
+            <% for (var x in types) { %>
+            <td><%= x %>(进/出)</td>
+            <% } %>
+        </tr>
+        <% for (var x in result) { %>
+        <tr>
+            <td><%= x %></td>
+            <% for (var y in types) { %>
+            <td><%= result[x][y].in %> / <%= result[x][y].out %></td>
+            <% } %>
+        </tr>
+        <% } %>
+    </table>
+</div>

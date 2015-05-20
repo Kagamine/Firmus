@@ -2,7 +2,7 @@
     <%=title%>
 </h2>
 <form class="search">
-    检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8 nullable" name="user" placeholder="业务员" />&nbsp;
+    检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8 nullable" name="user" placeholder="业务员" value="<%= req.query.user %>" />&nbsp;
     <select name="isFeedbacked"  id="slCallSearchIsFeedback">
         <option value="">选择是否已经回访</option>
         <option value="0">否</option>
@@ -17,6 +17,7 @@
     <thead>
     <tr class="tl">
         <th>业务员</th>
+        <th>处理标识</th>
         <th>订单</th>
         <th>备注</th>
         <th>内容</th>
@@ -28,12 +29,13 @@
     <% calls.forEach(x => { %>
     <tr>
         <td><%= x.user.name %></td>
+        <td><%= x.isFeedbacked ? '已回访' : '待回访' %></td>
         <td><%= x.order.number %></td>
         <td><%- x.hint %></td>
         <td><%- x.content %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
-            <a href="/call/show/<%= x._id %>">订单详情</a>
+            <a href="/call/show/<%= x._id %>">来电详情</a>
             <% if (permission.order.modify) { %>
             <a href="/call/delete/<%= x._id %>">删除</a>
             <% } %>

@@ -1,0 +1,26 @@
+<h2><%= title %></h2>
+<form method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td>类型</td>
+            <td>
+                <select name="type">
+                    <option>订单</option>
+                    <option>押金单</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>数量:张</td>
+            <td><input type="text" name="count" value="100" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>理由</td>
+            <td>
+                <textarea name="hint" class="textbox" style="width: 320px;height: 200px;"></textarea>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" class="button" value="提交" />
+</form>

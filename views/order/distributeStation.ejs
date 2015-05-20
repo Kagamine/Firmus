@@ -11,11 +11,12 @@
         </thead>
         <tbody>
         <% for (var y in report[x]) { %>
+        <% if (report[x][y].count > 0) { %>
         <tr>
             <td class="row-title"><%= y %></td>
-            <td><%= report[x][y] %></td>
+            <td><%= report[x][y].count %>(含<%= report[x][y].sample %>瓶样品奶)</td>
         </tr>
-        <% } %>
+        <% } } %>
         </tbody>
     </table>
     <% } %>

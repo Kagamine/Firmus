@@ -1043,9 +1043,10 @@ function closeDialog() {
 
 function postDelete(url, id) {
     $.post(url, { _csrf: csrf }, function (data) {
-        $('#' + id).remove();
-        if (data == 'ok' || data == 'OK')
+        if (data == 'ok' || data == 'OK'){
             popMsg('删除成功');
+            $('#' + id).remove();
+        }
         else
             popMsg(data);
         closeDialog();

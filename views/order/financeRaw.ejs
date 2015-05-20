@@ -1,0 +1,23 @@
+<table style="width: 100%">
+    <thead>
+     <tr class="tl">
+         <th style="text-align:left">业务员</th>
+         <th style="text-align:left">金额</th>
+         <th style="text-align:left">付款方式</th>
+         <th style="text-align:left">时间</th>
+     </tr>
+    </thead>
+    <tbody>
+    <% finances.forEach(x => { %>
+    <tr id="<%= x._id %>">
+        <td><%= x.user.name %></td>
+        <td>¥<%= x.price.toFixed(2) %></td>
+        <td><%= x.payMethod %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<script>
+    window.print();
+</script>

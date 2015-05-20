@@ -1,16 +1,17 @@
 <h2>
     <%=title%>
     <% if (permission.call.modify) { %>
-    <a class="add" href="/call/create">添加来电信息</a>
+    <a class="add" href="/call/create">添加来电/投诉信息</a>
     <% } %>
 </h2>
 <form class="search">
-    检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8 nullable" name="user" placeholder="业务员" />&nbsp;
+    检索：<input type="text" id="txtCallSearchUser" class="textbox w-0-8 nullable" name="user" placeholder="业务员" value="<%= req.query.user %>" />&nbsp;
     <select name="needFeedback"  id="slCallSearchNeedFeedback">
           <option value="">选择是否回访</option>
           <option value="0">否</option>
           <option value="1">是</option>
     </select>&nbsp;
+    <input type="text" class="textbox w-0-8 nullable" placeholder="热线编码" name="type" value="<%= req.query.type %>" />
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" value="过滤" class="button green" style="margin: 0" value="过滤" />
@@ -20,6 +21,7 @@
     <thead>
        <tr class="tl">
            <th>热线员</th>
+           <th>热线编码</th>
            <th>订单</th>
            <th>备注</th>
            <th>内容</th>
@@ -31,12 +33,13 @@
     <% calls.forEach(x => { %>
     <tr id="<%= x._id %>">
         <td><%= x.user.name %></td>
+        <td><%= x.type %></td>
         <td><%= x.order.number %></td>
         <td><%- x.hint %></td>
         <td><%- x.content %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
-            <a href="/call/show/<%= x._id %>">来电信息详情</a>
+            <a href="/call/show/<%= x._id %>">来电/投诉详情</a>
             <% if (permission.order.modify) { %>
             <a href="javascript:deleteDialog('/call/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
             <% } %>

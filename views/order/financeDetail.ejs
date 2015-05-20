@@ -4,12 +4,12 @@
     <table class="detail-table">
         <tr>
             <td class="row-title">业务员</td>
-            <td><a href="/general/employee/<%=finance.user._id%>"><%= finance.user.name %><%= finance.user.jobNumber %></a></td>
+            <td><a href="/general/employee/<%=finance.user._id%>"><%= finance.user.name %>(<%= finance.user.jobNumber %>)</a></td>
         </tr>
         <tr>
             <td class="row-title">金额</td>
             <td>
-                <%= finance.price %>
+                ¥<%= finance.price.toFixed(2) %>
             </td>
         </tr>
         <tr>

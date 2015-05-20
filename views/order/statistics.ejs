@@ -2,12 +2,24 @@
     <%= title %>
 </h2>
 
-<form class="search" id="frmStatisticsSearch">
-    <select name="department" id="slStatisticsDepartment">
-    </select>&nbsp;
-    <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
-    <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
-    <input type="button" class="button green" style="margin: 0" value="生成报表" id="btnGetFinanceStatistics" />
+<form class="search">
+    <input type="text" class="textbox w-2 datetime" placeholder="查询日期" name="time" value="<%= req.query.time %>" />&nbsp;
+    <input type="submit" class="button green" style="margin: 0" value="统计余额" />
 </form>
 
-
+<% if (req.query.time) { %>
+<table class="detail-table">
+    <tr>
+        <td>奶品分类</td>
+        <td>奶品余额(瓶)</td>
+    </tr>
+    <% for (var x in statistics) { %>
+    <tr>
+        <td><%= x %></td>
+        <td><%= statistics[x] %></td>
+    </tr>
+    <% } %>
+</table>
+<% } else { %>
+<h3>请填写起止日期以计算余额</h3>
+<% } %>

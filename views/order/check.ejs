@@ -1,0 +1,18 @@
+<h2>核对账单</h2>
+<form action="/order/checkresult" method="get">
+    <table class="detail-table">
+        <tr>
+            <td>工号(必填)</td>
+            <td><input type="text" name="jn" class="textbox" /></td>
+        </tr>
+        <tr>
+            <td>起始日期</td>
+            <td><input type="text" name="begin" class="textbox nullable datetime" /></td>
+        </tr>
+        <tr>
+            <td>结束日期</td>
+            <td><input type="text" name="end" class="textbox nullable datetime" /></td>
+        </tr>
+    </table>
+    <input type="submit" class="button green" />
+</form>
