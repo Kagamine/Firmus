@@ -72,6 +72,11 @@
         <% } if (permission.call.query) { %>
         <li><a href="/call/statistic">查询统计</a></li>
         <% } } %>
+
+        <% if (milkBox) { %>
+        <% if (permission.deposit.query) { %>
+        <li><a href="/call">押金管理</a></li>
+        <% } } %>
     </ul>
 </div>
 <div class="main">

@@ -37,9 +37,9 @@
         <td><%= x.content %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
-            <a href="/call/show/<%= x._id %>">订单详情</a>
+            <a href="/call/show/<%= x._id %>">来电信息详情</a>
             <% if (permission.order.modify) { %>
-            <a href="/call/delete/<%= x._id %>">删除</a>
+            <a href="javascript:deleteDialog('/call/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
             <% } %>
         </td>
     </tr>

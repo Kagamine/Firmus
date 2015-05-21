@@ -29,9 +29,9 @@
         <td><%= x.payMethod %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
-            <a href="/order/finance/show/<%= x._id %>">订单详情</a>
+            <a href="/order/finance/show/<%= x._id %>">财务信息详情</a>
             <% if (permission.order.modify) { %>
-            <a href="/order/finance/delete/<%= x._id %>">删除</a>
+            <a href="javascript:deleteDialog('/order/finance/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
             <% } %>
         </td>
     </tr>

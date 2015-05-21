@@ -28,5 +28,6 @@ var depositSchema = new Schema({
     }
 });
 
+
 var deposit = mongodb.mongoose.model('deposits', depositSchema);
 module.exports = deposit;

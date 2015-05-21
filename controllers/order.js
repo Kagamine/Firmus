@@ -467,11 +467,11 @@ router.post('/finance/edit/:id',auth.checkRole('finance','modify'), function (re
 });
 
 // 删除财务  by nele
-router.get('/finance/delete/:id',auth.checkRole('finance','modify'), function (req, res, next) {
+router.post('/finance/delete/:id',auth.checkRole('finance','modify'), function (req, res, next) {
     db.finances.remove({ _id: req.params.id })
         .exec()
         .then(function () {
-            res.redirect('/order/finance');
+            res.send('OK');
         })
         .then(null, next);
 });
@@ -483,18 +483,14 @@ router.get('/statistics',auth.checkRole('finance','modify'), function (req , res
 
 //  生成报表  by nele
 router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , res, next) {
-         /*var aggregate = db.finances.aggregate();
+        let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+         var aggregate = db.finances.aggregate();
          if(req.query.department){
-             console.log(req.query.department);
-             var pipeline= { $match: { 'user.department' : req.query.department }};
-           //  var pipeline= { $match: { user : '5555a34e8558d1df04d221a6' }};
-             //aggregate.match({'user.department':req.query.department});
-             aggregate.append(pipeline);
-         }*/
-
-         db.finances.aggregate()
-             .match({ user : '5555a34e8558d1df04d221a6' })
-         .group({_id:{user:'$user'},count: { $sum: '$price' }})
+                 console.log(req.query.department);
+                var pipeline= { $match: { 'user.department': ObjectID(req.query.department)}};
+                aggregate.append(pipeline);
+         }
+         aggregate.group({_id:{user:'$user'},count: { $sum: '$price' }})
         .exec()
         .then(function (data) {
                console.log(data);

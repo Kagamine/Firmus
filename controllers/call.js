@@ -148,11 +148,11 @@ router.post('/edit/:id', auth.checkRole('call','modify'), function (req, res, ne
 });
 
 //   删除来电  by nele
-router.get('/delete/:id',auth.checkRole('call','modify'), function ( req, res, next) {
+router.post('/delete/:id',auth.checkRole('call','modify'), function ( req, res, next) {
     db.calls.remove({ _id: req.params.id })
         .exec()
         .then(function () {
-            res.redirect('/call');
+            res.send('OK');
         })
         .then(null,next);
 });
