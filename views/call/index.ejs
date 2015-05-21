@@ -30,7 +30,7 @@
     </thead>
     <tbody>
     <% calls.forEach(x => { %>
-    <tr>
+    <tr id="<%= x._id %>">
         <td><%= x.user.name %></td>
         <td><%= x.order.number %></td>
         <td><%= x.hint %></td>

@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <% finances.forEach(x => { %>
-    <tr >
+    <tr id="<%= x._id %>">
         <td><%= x.user.name %></td>
         <td><%= x.price %></td>
         <td><%= x.payMethod %></td>
