@@ -222,8 +222,7 @@ router.post('/createPostpone',auth.checkRole('call','query') , function (req ,re
                 type: enums.orderChangeType.顺延,
                 begin: req.body.begin,
                 end: req.body.end,
-                hint: req.body.hint,
-                count: req.body.count
+                hint: req.body.hint
             }
         }
     },{multi: true})
