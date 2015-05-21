@@ -45,7 +45,7 @@
 <div class="pager">
     <a class="pager-item" href="/milkBox/deposit/?p=1&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
     <% for(var i = start; i <= end; i++) { %>
-    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/milkBox/deposit/?p=<%= i %>&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/milkBox/deposit/?p=<%= i %>&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>"><%= i %></a>
     <% } %>
     <a class="pager-item" href="/milkBox/deposit/?p=<%= pageCount || 1 %>&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">»</a>
 </div>

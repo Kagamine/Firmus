@@ -54,7 +54,7 @@
         %>
         <tr id="trCallFeedbackResult">
             <td class="row-title">拆箱时间</td>
-            <td><%=deposit.time%></td>
+            <td><%= moment(deposit.giveBackTime).format('YYYY-MM-DD') %></td>
         </tr>
         <%
         }}

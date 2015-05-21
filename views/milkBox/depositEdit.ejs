@@ -1,0 +1,70 @@
+<% include depositMenu %>
+<form class="block" method="post">
+    <h3><%= title %></h3>
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">
+                订单号
+            </td>
+            <td>
+                <input type="text" name="number" class="textbox w-3" value="<%=deposit.number%>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <span id="showOrderAddress"> <%=deposit.address.city%> <%=deposit.address.district%><%=deposit.address.address%></span>
+                <a href="javascript:createOrderSelectAddress();" id="btnSetAddress">点击设置地址</a>
+                <input type="hidden" name="address" id="orderAddress" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">是否需要回访</td>
+            <td>
+                <select name="giveBackFlag" id="slDepositGiveBackFlag">
+                    <%
+                    if(deposit.giveBackFlag){
+                    %>
+                    <option value="1" selected>是</option>
+                    <option value="0">否</option>
+                    <%
+                    }else{
+                    %>
+                    <option value="0" selected>否</option>
+                    <option value="1">是</option>
+                    <%
+                    }
+                    %>
+                </select>
+            </td>
+        </tr>
+
+        <tr style="display: <%=deposit.giveBackFlag?"yes":"none"%>" id="trDepositGiveBackDone">
+            <td class="row-title">是否已经回访</td>
+            <td>
+                <select name="giveBackDone" id="slDepositGiveBackDone">
+                    <%
+                    if(deposit.giveBackDone){
+                    %>
+                    <option value="1" selected>是</option>
+                    <option value="0">否</option>
+                    <%
+                    }else{
+                    %>
+                    <option value="0" selected>否</option>
+                    <option value="1">是</option>
+                    <%
+                    }
+                    %>
+                </select>
+            </td>
+        </tr>
+
+        <tr style="display: <%=deposit.giveBackDone?"yes":"none"%>" id="trDepositTime">
+            <td class="row-title">拆箱时间</td>
+            <td><input type="text" class="textbox w-3 datetime" name="giveBackTime" value="<%= moment(deposit.giveBackTime).format('YYYY-MM-DD') %>" /></td>
+        </tr>
+    </table>
+    <p><input type="submit" value="增加押金单" class="button blue" /></p>
+</form>

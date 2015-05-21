@@ -235,20 +235,20 @@ $(document).ready(function () {
     });
 
 
-    $('#slAddDepositGiveBackFlag').change(function () {
+    $('#slDepositGiveBackFlag').change(function () {
         if($(this).val()=='1'){
-            $('#trAddDepositGiveBackDone').show();
+            $('#trDepositGiveBackDone').show();
         }else{
-            $('#trAddDepositTime').hide();
-            $('#trAddDepositTime').val('');
+            $('#trDepositTime').hide();
+            $('#txtDepositTime').val('');
         }
     });
 
-    $('#slAddDepositGiveBackDone').change(function () {
+    $('#slDepositGiveBackDone').change(function () {
         if($(this).val()=='1'){
-            $('#trAddDepositTime').show();
+            $('#trDepositTime').show();
         }else{
-            $('#trAddDepositTime').val('');
+            $('#txtDepositTime').val('');
         }
     });
 });
