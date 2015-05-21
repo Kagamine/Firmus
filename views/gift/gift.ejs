@@ -14,8 +14,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th>礼品名称</th>
-        <th>剩余数量</th>
+        <th class="tl">礼品名称</th>
+        <th class="tl">剩余数量</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -24,7 +24,7 @@
     <tr>
         <td><%= x.title %></td>
         <td><%= x.count %></td>
-        <td>
+        <td class="tc">
             <a href="/gift/gift/<%= x._id %>">查看详情</a>
             <a href="/gift/gift/store/<%= x._id %>">管理库存</a>
             <a href="#">删除</a>
