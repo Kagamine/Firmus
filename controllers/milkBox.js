@@ -71,6 +71,17 @@ router.get('/deposit/show/:id',auth.checkRole('deposit','query'), function (req,
 
 //  修改押金单页面  by nele
 router.get('/deposit/edit/:id',auth.checkRole('deposit','query'), function (req, res, next) {
+    db.deposits.findById(req.params.id)
+        .populate('address')
+        .exec()
+        .then(function (deposit) {
+            res.render('milkBox/depositEdit', { title: '押金单修改', deposit: deposit });
+        })
+        .then(null, next);
+});
+
+//  修改押金单页面  by nele
+router.post('/deposit/edit/:id',auth.checkRole('deposit','modify'), function (req, res, next) {
     db.deposits.update({ _id: req.params.id },{
         number:req.body.number,
         address:req.body.address,
@@ -82,9 +93,8 @@ router.get('/deposit/edit/:id',auth.checkRole('deposit','query'), function (req,
         .then(function () {
             res.send('ok');
         })
-    .then(null,next);
+        .then(null,next);
 });
-
 
 
 //  回收押金单 by nele
