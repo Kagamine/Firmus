@@ -225,6 +225,7 @@ $(document).ready(function () {
         });
     }
 
+    // 得到财务报表  by nele
     $('#btnGetFinanceStatistics').click(function () {
         var department = $('#slStatisticsDepartment').val();
         var begin = $('#begin').val();
@@ -234,7 +235,7 @@ $(document).ready(function () {
         });
     });
 
-
+    // 押金单是否拆箱改变  by nele
     $('#slDepositGiveBackFlag').change(function () {
         if($(this).val()=='1'){
             $('#trDepositGiveBackDone').show();
@@ -244,6 +245,7 @@ $(document).ready(function () {
         }
     });
 
+    // 押金单是否已经拆箱改变  by nele
     $('#slDepositGiveBackDone').change(function () {
         if($(this).val()=='1'){
             $('#trDepositTime').show();
@@ -333,11 +335,16 @@ function saveOrder(id) {
 // 修改财务  by nele
 function saveFinance(id) {
     $.post('/order/finance/edit/' + id, $('#frmEditFinance').serialize(), function () {
-        popMsg('订单信息修改成功');
+        popMsg('财务信息修改成功');
     });
 }
 
-
+// 修改押金单  by nele
+function saveDeposit(id) {
+    $.post('/milkBox/deposit/edit/' + id, $('#frmEditDeposit').serialize(), function () {
+        popMsg('押金单信息修改成功');
+    });
+}
 
 //  保存来电修改 by nele
 function saveCall(id) {

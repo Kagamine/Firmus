@@ -71,13 +71,31 @@ router.get('/deposit/show/:id',auth.checkRole('deposit','query'), function (req,
 
 //  修改押金单页面  by nele
 router.get('/deposit/edit/:id',auth.checkRole('deposit','query'), function (req, res, next) {
-    db.deposits.findById(req.params.id)
-        .populate('address')
+    db.deposits.update({ _id: req.params.id },{
+        number:req.body.number,
+        address:req.body.address,
+        giveBackFlag:req.body.giveBackFlag,
+        giveBackDone:req.body.giveBackDone,
+        giveBackTime:req.body.giveBackTime
+    })
         .exec()
-        .then(function (deposit) {
-            res.render('milkBox/depositEdit', { title: '修改押金单', deposit: deposit });
+        .then(function () {
+            res.send('ok');
         })
-        .then(null, next);
+    .then(null,next);
 });
+
+
+
+//  回收押金单 by nele
+router.post('/deposit/delete/:id',auth.checkRole('deposit','query'), function (req, res, next) {
+    db.deposits.remove({ _id: req.params.id })
+        .exec()
+        .then(function () {
+            res.send('OK');
+        })
+        .then(null,next);
+});
+
 
 module.exports = router;

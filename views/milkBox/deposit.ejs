@@ -34,7 +34,7 @@
         <td>
             <a href="/milkBox/deposit/show/<%= x._id %>">押金单详情</a>
             <% if (permission.order.modify) { %>
-            <a href="javascript:deleteDialog('/call/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
+            <a href="javascript:deleteDialog('/milkBox/deposit/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
             <% } %>
         </td>
     </tr>

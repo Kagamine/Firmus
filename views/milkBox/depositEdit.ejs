@@ -1,5 +1,5 @@
 <% include depositMenu %>
-<form class="block" method="post">
+<form class="block" method="post" id="frmEditDeposit">
     <h3><%= title %></h3>
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
     <table class="detail-table">
@@ -66,5 +66,5 @@
             <td><input type="text" class="textbox w-3 datetime" name="giveBackTime" value="<%= moment(deposit.giveBackTime).format('YYYY-MM-DD') %>" /></td>
         </tr>
     </table>
-    <p><input type="submit" value="增加押金单" class="button blue" /></p>
+    <p><input type="button" onclick="saveDeposit('<%=deposit._id%>')" value="保存" class="button blue" /></p>
 </form>
