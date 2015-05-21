@@ -22,6 +22,7 @@ db.giftDelivers = require('./giftDeliver');
 db.orders = require('./order');
 db.news = require('./news');
 db.finances = require('./finance');
+db.postponeRecords = require('./postponeRecord');
 db.Schema = Schema;
 db.fs = fs;
 db.mongoose = mongodb.mongoose;

@@ -1,0 +1,7 @@
+<h2><%= title %></h2>
+<div class="submenu">
+    <a href="/milkBox/deposit/show/<%= deposit._id || req.params.id %>" class="submenu-item">押金单详情</a>
+    <% if (permission.order.modify) { %>
+    <a href="/milkBox/deposit/edit/<%= deposit._id || req.params.id %>" class="submenu-item">修改押金单</a>
+    <% } %>
+</div>

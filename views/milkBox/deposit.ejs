@@ -1,7 +1,7 @@
 <h2>
     <%=title%>
     <% if (permission.deposit.modify) { %>
-    <a class="add" href="/milkBox/createDeposit">押金单</a>
+    <a class="add" href="/milkBox/createDeposit">增加押金单</a>
     <% } %>
 </h2>
 <form class="search">
@@ -26,7 +26,28 @@
     </tr>
     </thead>
     <tbody>
+    <% deposits.forEach(x => { %>
+    <tr id="<%= x._id %>">
+        <td><%= x.number %></td>
+        <td><%= x.address.address %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+        <td>
+            <a href="/milkBox/deposit/show/<%= x._id %>">押金单详情</a>
+            <% if (permission.order.modify) { %>
+            <a href="javascript:deleteDialog('/call/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
+            <% } %>
+        </td>
+    </tr>
+    <% }) %>
     </tbody>
 </table>
+
+<div class="pager">
+    <a class="pager-item" href="/milkBox/deposit/?p=1&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/milkBox/deposit/?p=<%= i %>&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
+    <% } %>
+    <a class="pager-item" href="/milkBox/deposit/?p=<%= pageCount || 1 %>&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">»</a>
+</div>
 
 

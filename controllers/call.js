@@ -206,12 +206,12 @@ router.get('/postpone',auth.checkRole('call','query'), function ( req, res, next
 
 // 增加顺延  by  nele
 router.get('/createPostpone',auth.checkRole('call','query') , function (req ,res ,next) {
-    res.render('call/CreatePostpone',{ title: '增加顺延' });
+    res.render('call/createPostpone',{ title: '增加顺延' });
 });
 
 // 增加顺延  by  nele
 router.post('/createPostpone',auth.checkRole('call','query') , function (req ,res ,next) {
-      let now = Date.now(); //TODO: 计算最后一天送奶日
+    let now = Date.now(); //TODO: 计算最后一天送奶日
     let query = db.orders.find();
     query.where('begin').lte(now);
     db.orders.update(query,{

@@ -8,12 +8,63 @@ router.use(function (req, res, next) {
 });
 
 
-router.get('/',auth.checkRole('deposit','query'), function ( req, res,next) {
-    let query = db.departments.find();
-    if(req.query.giveBackFlag){
+router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,next) {
+    let query = db.deposits.find();
+    if(req.query.giveBackFlag)
+        query =  query.where({'giveBackFlag':req.query.giveBackFlag});
+    if (req.query.begin)
+        query = query.where('time').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('time').lte(Date.parse(req.query.end));
 
-    }
-    res.render('milkBox/deposit',{title:'押金管理'});
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .populate('address')
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (deposits) {
+            res.locals.deposits = deposits;
+            res.render('milkBox/deposit',{title:'押金管理'});
+        })
+        .then(null,next);
+
+});
+
+// 创建押金单页面 by nele
+router.get('/createDeposit',auth.checkRole('deposit','modify'), function (req, res, next) {
+     res.render('milkBox/createDeposit',{title:'创建押金单'});
+});
+
+// 增加押金单 by nele
+router.post('/createDeposit',auth.checkRole('deposit','modify'), function (req, res, next) {
+    let deposit = new db.deposits();
+    deposit.number = req.body.number;
+    deposit.address= req.body.address;
+    deposit.giveBackFlag=req.body.giveBackFlag;
+    deposit.giveBackDone=req.body.giveBackDone;
+    deposit.time=Date.now();
+    deposit.save(function (err, deposit) {
+        res.redirect('/deposit/show/' + deposit._id);
+    });
+});
+
+router.get('/deposit/show/:id',auth.checkRole('deposit','query'), function (req, res, next) {
+    db.deposits.findById(req.params.id)
+        .populate('address')
+        .exec()
+        .then(function (deposit) {
+            res.render('milkBox/depositDetail', { title: '押金单详情', deposit: deposit });
+        })
+        .then(null, next);
 });
 
 

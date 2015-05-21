@@ -46,11 +46,11 @@ var orderSchema = new Schema({
         index: true,
         enum: enums.payMethod
     },
-    address: {
+
+    orderType: { address: {
         type: Schema.Types.ObjectId,
         ref: 'addresses'
     },
-    orderType: {
         type: String,
         index: true
     },

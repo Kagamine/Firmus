@@ -1,0 +1,48 @@
+<form class="block" method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">
+                订单号
+            </td>
+            <td>
+                <input type="text" name="number" class="textbox w-3" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <span id="showOrderAddress"></span>
+                <a href="javascript:createOrderSelectAddress();" id="btnSetAddress">点击设置地址</a>
+                <input type="hidden" name="address" id="orderAddress" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">是否拆箱</td>
+            <td>
+                <select id="slAddDepositGiveBackFlag" name="giveBackFlag">
+                    <option value="">是否已经拆箱</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="trAddDepositGiveBackDone" style="display: none;">
+            <td class="row-title">是否已经拆箱</td>
+            <td>
+                <select id="slAddDepositGiveBackDone" name="giveBackDone">
+                    <option value="">是否已经拆箱</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="trAddDepositTime" style="display: none;">
+            <td class="row-title">拆箱时间</td>
+            <td>
+                <input type="text" name="time" class="textbox w-3 datetime" />
+            </td>
+        </tr>
+    </table>
+    <p><input type="submit" value="增加押金单" class="button blue" /></p>
+</form>

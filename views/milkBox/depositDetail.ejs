@@ -1,0 +1,63 @@
+<% include depositMenu %>
+<form class="block" method="post">
+    <h3><%= title %></h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">
+                订单号
+            </td>
+            <td>
+                <%=deposit.number%>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+               <%=deposit.address.city%> <%=deposit.address.district%><%=deposit.address.address%>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="row-title">是否拆箱</td>
+            <td>
+                <% if(deposit.giveBackFlag){
+                %>
+                <span>是</span>
+                <%
+                }else{
+                %>
+                <span>否</span>
+                <%
+                }%>
+            </td>
+        </tr>
+
+        <%
+        if(deposit.giveBackFlag){
+        %>
+        <tr id="trCallIsFeedbacked">
+            <td class="row-title">是否已经拆箱</td>
+            <td>
+                <% if(deposit.giveBackDone){
+                %>
+                <span>是</span>
+                <%
+                }else{
+                %>
+                <span>否</span>
+                <%
+                }%>
+            </td>
+        </tr>
+        <%
+        if(deposit.giveBackDone){
+        %>
+        <tr id="trCallFeedbackResult">
+            <td class="row-title">拆箱时间</td>
+            <td><%=deposit.time%></td>
+        </tr>
+        <%
+        }}
+        %>
+    </table>
+</form>

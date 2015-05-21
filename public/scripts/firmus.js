@@ -232,8 +232,25 @@ $(document).ready(function () {
         $.getJSON('/order/getStatistics',{department:department,begin:begin,end:end}, function (data) {
                console.log(data);
         });
-    })
+    });
 
+
+    $('#slAddDepositGiveBackFlag').change(function () {
+        if($(this).val()=='1'){
+            $('#trAddDepositGiveBackDone').show();
+        }else{
+            $('#trAddDepositTime').hide();
+            $('#trAddDepositTime').val('');
+        }
+    });
+
+    $('#slAddDepositGiveBackDone').change(function () {
+        if($(this).val()=='1'){
+            $('#trAddDepositTime').show();
+        }else{
+            $('#trAddDepositTime').val('');
+        }
+    });
 });
 
 function popMsg(txt) {
