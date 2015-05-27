@@ -100,6 +100,8 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
         .then(null, next);
 });
 
+
+
 // 编辑订单
 router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     db.orders.findById(req.params.id)
@@ -497,5 +499,19 @@ router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , 
         })
         .then(null,next);
 });
+
+
+// 查看订单详情
+router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    db.orders.findById(req.params.id)
+        .populate('address')
+        .populate('order')
+        .exec()
+        .then(function (order) {
+              res.json(order);
+        })
+        .then(null, next);
+});
+
 
 module.exports = router;

@@ -28,8 +28,6 @@
     <thead>
     <tr class="tl">
         <th>订单号</th>
-        <th>城市</th>
-        <th>区县</th>
         <th>奶站</th>
         <th>业务员</th>
         <th>奶品品相</th>
@@ -42,10 +40,8 @@
     </thead>
     <tbody>
     <% orders.forEach(x => { %>
-    <tr>
+    <tr id="<%= x._id %>" class="orderDataTr" data-id="<%= x._id %>">
         <td><%= x.number %></td>
-        <td><%= x.address ? x.address.city : '' %></td>
-        <td><%= x.address ? x.address.district : '' %></td>
         <td><% if (x.milkStation) { %><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a><% } %></td>
         <td><% if (x.user) { %><a href="/general/employee/<%= x.user._id %>"><%= x.user.name %></a>(<%= x.user.jobNumber %>)<% } %></td>
         <td><%= x.milkType %></td>
@@ -64,7 +60,8 @@
     <% }) %>
     </tbody>
 </table>
-
+<div id="divInfo" style="display:none;background-color:#0782C1;width: 300px;position: absolute;">
+</div>
 <div class="pager">
     <a class="pager-item" href="/order/?p=1&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
     <% for(var i = start; i <= end; i++) { %>

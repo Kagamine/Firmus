@@ -253,6 +253,29 @@ $(document).ready(function () {
             $('#txtDepositTime').val('');
         }
     });
+
+    $('.orderDataTr').mouseover(function () {
+        var top = $(this).position().top;
+        var orderId = $(this).attr('data-id');
+        var str='';
+        $.getJSON('/order/getById/'+orderId, function (data) {
+                for(var i =0 ;i<data.length;i++){
+
+                }
+        });
+        $("#divInfo").css("z-index",999);//让层浮动
+
+        $("#divInfo").css("top",top+30);//设置提示div的位置
+
+        $("#divInfo").css("left",300);
+
+
+        $("#divInfo").css("display","block");
+    });
+
+    $('.orderDataTr').mouseout(function () {
+        $("#divInfo").css("display","none");
+    });
 });
 
 function popMsg(txt) {
@@ -456,3 +479,4 @@ function createOrderSelectAddress(){
         });
     })
 }
+
