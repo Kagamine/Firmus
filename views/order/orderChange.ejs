@@ -5,7 +5,7 @@
         <tr>
             <td class="row-title">变更类型</td>
             <td>
-                <select name="type">
+                <select name="type" id="slOrderChangeType">
                     <option>停送</option>
                     <option>加送</option>
                     <option>顺延</option>
@@ -20,8 +20,8 @@
             <td class="row-title">变更结束时间</td>
             <td><input type="text" name="end" class="textbox w-3 datetime" /></td>
         </tr>
-        <tr>
-            <td class="row-title">变动数量（每次）</td>
+        <tr id="trOrderChangeCount">
+            <td class="row-title" id="txtOrderChangeCount">变动数量（每次）</td>
             <td><input type="text" name="count" class="textbox w-3" /></td>
         </tr>
         <tr>

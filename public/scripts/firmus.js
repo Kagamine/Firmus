@@ -254,12 +254,13 @@ $(document).ready(function () {
         }
     });
 
+    //鼠标移动订单上去 显示详情  by nele
     $('.orderDataTr').mouseover(function () {
         var top = $(this).position().top;
         var orderId = $(this).attr('data-id');
         var str='';
         $.getJSON('/order/getById/'+orderId, function (data) {
-             console.log(data);
+          //   console.log(data);
             str+='订单号：'+data['number']+'价格：'+data['price']+'地址：' + data['address']+'<br />';
             str+='配送方式：'+data['distributeMethod'] + '订单类型：' + data['distributeMethod'] +'订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'<br />';
             str+='业务员：'+data['user']['name'];
@@ -270,10 +271,21 @@ $(document).ready(function () {
             $("#divInfo").css("display","block");
         });
     });
-
     $('.orderDataTr').mouseout(function () {
         $("#divInfo").css("display","none");
     });
+
+
+    $('#slOrderChangeType').change(function () {
+        var value =  $('#slOrderChangeType').val();
+        if(value=='顺延'){
+          $('#trOrderChangeCount').hide();
+        }else{
+            $('#trOrderChangeCount').show();
+        }
+    });
+
+
 });
 
 function popMsg(txt) {
