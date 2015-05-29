@@ -504,8 +504,7 @@ router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , 
 // 查看订单详情
 router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res, next) {
     db.orders.findById(req.params.id)
-        .populate('address')
-        .populate('order')
+        .populate('address user')
         .exec()
         .then(function (order) {
               res.json(order);

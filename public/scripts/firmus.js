@@ -259,18 +259,16 @@ $(document).ready(function () {
         var orderId = $(this).attr('data-id');
         var str='';
         $.getJSON('/order/getById/'+orderId, function (data) {
-                for(var i =0 ;i<data.length;i++){
-
-                }
+             console.log(data);
+            str+='订单号：'+data['number']+'价格：'+data['price']+'地址：' + data['address']+'<br />';
+            str+='配送方式：'+data['distributeMethod'] + '订单类型：' + data['distributeMethod'] +'订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'<br />';
+            str+='业务员：'+data['user']['name'];
+            $("#divInfo").css("z-index",999);//让层浮动
+            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("left",300);
+            $('#divInfo').html(str);
+            $("#divInfo").css("display","block");
         });
-        $("#divInfo").css("z-index",999);//让层浮动
-
-        $("#divInfo").css("top",top+30);//设置提示div的位置
-
-        $("#divInfo").css("left",300);
-
-
-        $("#divInfo").css("display","block");
     });
 
     $('.orderDataTr').mouseout(function () {
