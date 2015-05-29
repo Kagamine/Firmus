@@ -275,7 +275,7 @@ $(document).ready(function () {
         $("#divInfo").css("display","none");
     });
 
-
+    //  变更 顺延数量隐藏 by nele
     $('#slOrderChangeType').change(function () {
         var value =  $('#slOrderChangeType').val();
         if(value=='顺延'){
@@ -285,6 +285,27 @@ $(document).ready(function () {
         }
     });
 
+
+    //鼠标移动职工上去 显示详情  by nele
+    $('.employeeDataTr').mouseover(function () {
+        var top = $(this).position().top;
+        var orderId = $(this).attr('data-id');
+        var str='';
+        $.getJSON('/general/getEmployeeById/'+orderId, function (data) {
+              console.log(data);
+            str+='工号：'+data['jobNumber']+'姓名：'+data['name']+'角色：' + data['role']+'<br />';
+            str+='部门：'+data['department'] + '性别：' + data['sex'] +'电话：'+data['phone']+'<br />';
+            str+='入职时间：'+moment(data['takeOfficeTime']).format('YYYY-MM-DD');
+            $("#divInfo").css("z-index",999);//让层浮动
+            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("left",300);
+            $('#divInfo').html(str);
+            $("#divInfo").css("display","block");
+        });
+    });
+    $('.employeeDataTr').mouseout(function () {
+        $("#divInfo").css("display","none");
+    });
 
 });
 

@@ -36,7 +36,7 @@
     </thead>
     <tbody>
     <% users.forEach(x => { %>
-    <tr>
+    <tr class="employeeDataTr" data-id="<%= x._id %>">
         <td><%= x.jobNumber %></td>
         <td><a href="/general/employee/<%= x._id %>"><%= x.name %> (<%= x.username %>)</a></td>
         <td><%= x.role %></td>
@@ -51,7 +51,8 @@
     <% }) %>
     </tbody>
 </table>
-
+<div id="divInfo">
+</div>
 <div class="pager">
     <a class="pager-item" href="/general/employee?p=1&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>&milkbox=<%= req.query.milkbox %>">«</a>
     <% for(var i = start; i <= end; i++) { %>

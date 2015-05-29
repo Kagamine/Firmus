@@ -821,4 +821,16 @@ router.get('/user/getCallUserByName',auth.checkRole('permission','query'), funct
         })
         .then(null,next);
 });
+
+
+// 得到职工信息 返回json   by nele
+router.get('/getEmployeeById/:id', auth.checkRole('employee', 'query'), function (req, res, next) {
+    db.users.findById(req.params.id)
+        .populate({ path: 'department', select: '_id title' })
+        .exec()
+        .then(function (user) {
+             res.json(user);
+        })
+        .then(null, next);
+});
 module.exports = router;
