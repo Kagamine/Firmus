@@ -25,6 +25,19 @@ var depositSchema = new Schema({
     giveBackDone: {
         type: Boolean,
         index: true
+    },
+
+    boxedFlag:{
+        type: Boolean,
+        index: true
+    },
+    boxedTime:{
+        type: Date,
+        index: true
+    },
+    boxedDone:{
+        type: Boolean,
+        index: true
     }
 });
 

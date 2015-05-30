@@ -18,7 +18,7 @@
         </tr>
 
         <tr>
-            <td class="row-title">是否拆箱</td>
+            <td class="row-title">是否需要拆箱</td>
             <td>
                 <% if(deposit.giveBackFlag){
                 %>
@@ -35,7 +35,7 @@
         <%
         if(deposit.giveBackFlag){
         %>
-        <tr id="trCallIsFeedbacked">
+        <tr id="trDepositGiveBackDone">
             <td class="row-title">是否已经拆箱</td>
             <td>
                 <% if(deposit.giveBackDone){
@@ -52,9 +52,52 @@
         <%
         if(deposit.giveBackDone){
         %>
-        <tr id="trCallFeedbackResult">
+        <tr id="trDepositTime">
             <td class="row-title">拆箱时间</td>
             <td><%= moment(deposit.giveBackTime).format('YYYY-MM-DD') %></td>
+        </tr>
+        <%
+        }}
+        %>
+
+        <tr>
+            <td class="row-title">是否需要装箱</td>
+            <td>
+                <% if(deposit.boxedFlag){
+                %>
+                <span>是</span>
+                <%
+                }else{
+                %>
+                <span>否</span>
+                <%
+                }%>
+            </td>
+        </tr>
+
+        <%
+        if(deposit.boxedFlag){
+        %>
+        <tr id="trDepositBoxedDone">
+            <td class="row-title">是否已经装箱</td>
+            <td>
+                <% if(deposit.boxedDone){
+                %>
+                <span>是</span>
+                <%
+                }else{
+                %>
+                <span>否</span>
+                <%
+                }%>
+            </td>
+        </tr>
+        <%
+        if(deposit.boxedDone){
+        %>
+        <tr id="trDepositBoxedTime">
+            <td class="row-title">装箱时间</td>
+            <td><%= moment(deposit.boxedTime).format('YYYY-MM-DD') %></td>
         </tr>
         <%
         }}

@@ -1,3 +1,5 @@
+<h2><%= title %></h2>
+
 <form class="block" method="post">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
     <table class="detail-table">
@@ -43,6 +45,35 @@
                 <input type="text" name="giveBackTime" id="txtDepositTime" class="textbox w-3 datetime" />
             </td>
         </tr>
+
+        <tr>
+            <td class="row-title">是否需要装箱</td>
+            <td>
+                <select id="slDepositBoxedFlag" name="boxedFlag">
+                    <option value="">是否需要装箱</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="trDepositBoxedDone" style="display: none;">
+            <td class="row-title">是否已经装箱</td>
+            <td>
+                <select id="slDepositBoxedDone" name="boxedDone">
+                    <option value="">是否已经装箱</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="trDepositBoxedTime" style="display: none;">
+            <td class="row-title">装箱时间</td>
+            <td>
+                <input type="text" name="boxedTime" id="txtDepositBoxedTime" class="textbox w-3 datetime" />
+            </td>
+        </tr>
+
+
     </table>
     <p><input type="submit" value="增加押金单" class="button blue" /></p>
 </form>

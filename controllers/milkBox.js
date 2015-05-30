@@ -52,6 +52,11 @@ router.post('/createDeposit',auth.checkRole('deposit','modify'), function (req, 
     deposit.giveBackFlag=req.body.giveBackFlag;
     deposit.giveBackDone=req.body.giveBackDone;
     deposit.giveBackTime=req.body.giveBackTime;
+
+    deposit.boxedFlag=req.body.boxedFlag;
+    deposit.boxedTime=req.body.boxedTime;
+    deposit.boxedDone=req.body.boxedDone;
+
     deposit.time=Date.now();
     deposit.save(function (err, deposit) {
         res.redirect('/milkBox/deposit/show/' + deposit._id);
@@ -87,7 +92,10 @@ router.post('/deposit/edit/:id',auth.checkRole('deposit','modify'), function (re
         address:req.body.address,
         giveBackFlag:req.body.giveBackFlag,
         giveBackDone:req.body.giveBackDone,
-        giveBackTime:req.body.giveBackTime
+        giveBackTime:req.body.giveBackTime,
+        boxedFlag:req.body.boxedFlag,
+        boxedTime:req.body.boxedTime,
+        boxedDone:req.body.boxedDone
     })
         .exec()
         .then(function () {

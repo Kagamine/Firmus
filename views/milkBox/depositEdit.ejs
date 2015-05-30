@@ -20,7 +20,7 @@
             </td>
         </tr>
         <tr>
-            <td class="row-title">是否需要回访</td>
+            <td class="row-title">是否需要拆箱</td>
             <td>
                 <select name="giveBackFlag" id="slDepositGiveBackFlag">
                     <%
@@ -41,7 +41,7 @@
         </tr>
 
         <tr style="display: <%=deposit.giveBackFlag?"yes":"none"%>" id="trDepositGiveBackDone">
-            <td class="row-title">是否已经回访</td>
+            <td class="row-title">是否已经拆箱</td>
             <td>
                 <select name="giveBackDone" id="slDepositGiveBackDone">
                     <%
@@ -64,6 +64,53 @@
         <tr style="display: <%=deposit.giveBackDone?"yes":"none"%>" id="trDepositTime">
             <td class="row-title">拆箱时间</td>
             <td><input type="text" class="textbox w-3 datetime" name="giveBackTime" value="<%= moment(deposit.giveBackTime).format('YYYY-MM-DD') %>" /></td>
+        </tr>
+
+        <tr>
+            <td class="row-title">是否需要装箱</td>
+            <td>
+                <select name="boxedFlag" id="slDepositBoxedFlag">
+                    <%
+                    if(deposit.boxedFlag){
+                    %>
+                    <option value="1" selected>是</option>
+                    <option value="0">否</option>
+                    <%
+                    }else{
+                    %>
+                    <option value="0" selected>否</option>
+                    <option value="1">是</option>
+                    <%
+                    }
+                    %>
+                </select>
+            </td>
+        </tr>
+
+        <tr style="display: <%=deposit.boxedFlag?"yes":"none"%>" id="trDepositBoxedDone">
+            <td class="row-title">是否已经装箱</td>
+            <td>
+                <select name="boxedDone" id="slDepositBoxedDone">
+                    <%
+                    if(deposit.boxedDone){
+                    %>
+                    <option value="1" selected>是</option>
+                    <option value="0">否</option>
+                    <%
+                    }else{
+                    %>
+                    <option value="0" selected>否</option>
+                    <option value="1">是</option>
+                    <%
+                    }
+                    %>
+                </select>
+            </td>
+        </tr>
+
+        <tr style="display: <%=deposit.boxedDone?"yes":"none"%>" id="trDepositBoxedTime">
+            <td class="row-title">装箱时间</td>
+            <td><input type="text" class="textbox w-3 datetime" name="boxedTime" value="<%= moment(deposit.boxedTime).format('YYYY-MM-DD') %>" /></td>
         </tr>
     </table>
     <p><input type="button" onclick="saveDeposit('<%=deposit._id%>')" value="保存" class="button blue" /></p>

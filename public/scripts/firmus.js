@@ -240,6 +240,8 @@ $(document).ready(function () {
         if($(this).val()=='1'){
             $('#trDepositGiveBackDone').show();
         }else{
+            $('#trDepositGiveBackDone').hide();
+            $('#slDepositGiveBackDone').val('');
             $('#trDepositTime').hide();
             $('#txtDepositTime').val('');
         }
@@ -250,7 +252,30 @@ $(document).ready(function () {
         if($(this).val()=='1'){
             $('#trDepositTime').show();
         }else{
+            $('#trDepositTime').hide();
             $('#txtDepositTime').val('');
+        }
+    });
+
+    // 押金单是否装箱改变  by nele
+    $('#slDepositBoxedFlag').change(function () {
+        if($(this).val()=='1'){
+            $('#trDepositBoxedDone').show();
+        }else{
+            $('#trDepositBoxedDone').hide();
+            $('#slDepositBoxedDone').val('');
+            $('#trDepositBoxedTime').hide();
+            $('#txtBoxedTime').val('');
+        }
+    });
+
+    // 押金单是否已经装箱改变  by nele
+    $('#slDepositBoxedDone').change(function () {
+        if($(this).val()=='1'){
+            $('#trDepositBoxedTime').show();
+        }else{
+            $('#trDepositBoxedTime').hide();
+            $('#txtBoxedTime').val('');
         }
     });
 
