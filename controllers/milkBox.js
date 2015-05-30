@@ -108,4 +108,15 @@ router.post('/deposit/delete/:id',auth.checkRole('deposit','query'), function (r
 });
 
 
+// 显示押金单 返回json  by nele
+router.get('/deposit/getDepositById/:id',auth.checkRole('deposit','query'), function (req, res, next) {
+    db.deposits.findById(req.params.id)
+        .populate('address')
+        .exec()
+        .then(function (deposit) {
+             res.json(deposit);
+        })
+        .then(null, next);
+});
+
 module.exports = router;

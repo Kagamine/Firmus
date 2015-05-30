@@ -27,7 +27,7 @@
     </thead>
     <tbody>
     <% deposits.forEach(x => { %>
-    <tr id="<%= x._id %>">
+    <tr id="<%= x._id %>" class="depositDataTr" data-id="<%= x._id %>">
         <td><%= x.number %></td>
         <td><%= x.address.address %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
@@ -41,7 +41,8 @@
     <% }) %>
     </tbody>
 </table>
-
+<div id="divInfo">
+</div>
 <div class="pager">
     <a class="pager-item" href="/milkBox/deposit/?p=1&giveBackFlag=<%= req.query.giveBackFlag %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
     <% for(var i = start; i <= end; i++) { %>

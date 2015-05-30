@@ -330,6 +330,27 @@ $(document).ready(function () {
     $('.addressDataTr').mouseleave(function () {
         $("#divInfo").css("display","none");
     });
+
+
+    // 鼠标移动押金单上去 显示详情  by nele
+    $('.depositDataTr').mouseenter(function () {
+        var top = $(this).position().top;
+        var dId = $(this).attr('data-id');
+        var str='';
+        $.getJSON('/milkBox/deposit/getDepositById/'+dId, function (data) {
+            console.log(data);
+            str+='订单号：'+data['number']+'地址：'+data['address']['city'] + data['address']['district']+data['address']['address']+'<br />';
+            str+='时间：'+moment(data['time']).format('YYYY-MM-DD');
+            $("#divInfo").css("z-index",999);//让层浮动
+            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("left",300);
+            $('#divInfo').html(str);
+            $("#divInfo").css("display","block");
+        });
+    });
+    $('.depositDataTr').mouseleave(function () {
+        $("#divInfo").css("display","none");
+    });
 });
 
 function popMsg(txt) {
