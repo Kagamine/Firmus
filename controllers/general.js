@@ -434,7 +434,7 @@ router.post('/address/create', auth.checkRole('address', 'modify'), function (re
     address.phone = req.body.phone;
     address.blockOut = false;
     address.save(function (err, address) {
-        res.redirect('/address/edit/' + address._id);
+        res.redirect('/general/address/edit/' + address._id);
     });
 });
 
@@ -846,14 +846,23 @@ router.get('/getAddressById/:id', auth.checkRole('address', 'query'), function (
         .then(null, next);
 });
 
-// 职工信息
+//  地址信息 by nele
 router.get('/address/:id', auth.checkRole('address', 'query'), function (req, res, next) {
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     db.addresses.findById(req.params.id)
         .populate({ path: 'milkStation', select: '_id title' })
         .populate({path:'service',select:'_id username jobNumber'})
         .exec()
         .then(function (address) {
-            res.render('general/addressDetail', { title: address.address, address: address });
+            db.orders
+                .aggregate()
+                .match({'address': ObjectID (address._id)})
+                .group({ _id: { number: '$number', _id: '$_id',time:'$time' } })
+                .exec()
+                .then(function (orders) {
+                    res.locals.orders = orders;
+                    res.render('general/addressDetail', { title: address.address, address: address });
+                })
         })
         .then(null, next);
 });

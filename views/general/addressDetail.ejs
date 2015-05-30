@@ -44,4 +44,22 @@
             <td><%= address.storey %></td>
         </tr>
     </table>
+
+    <h3>所有订单</h3>
+    <table class="table">
+       <thead>
+         <tr>
+            <td>订单号</td>
+             <td>时间</td>
+         </tr>
+       </thead>
+        <tbody>
+        <% orders.forEach(x => { %>
+         <tr>
+            <td class="tl"><a href="/order/show/<%=x._id._id%>"><%= x._id.number%></a></td>
+            <td class="tl"><%= moment(x._id.time).format('YYYY/MM') %></td>
+         </tr>
+        <% }) %>
+        </tbody>
+    </table>
 </table>

@@ -90,6 +90,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.distributeMethod = req.body.distributeMethod;
     order.distributeCount = req.body.distributeCount;
     order.save(function (err, order) {
+        console.log(order);
         res.redirect('/order/show/' + order._id);
     });
 });

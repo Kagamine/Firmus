@@ -47,13 +47,16 @@ var orderSchema = new Schema({
         enum: enums.payMethod
     },
 
-    orderType: { address: {
-        type: Schema.Types.ObjectId,
-        ref: 'addresses'
-    },
+    orderType: {
         type: String,
         index: true
     },
+
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: 'addresses'
+    },
+
     customServiceFlag: {
         index: true,
         type: Boolean,
