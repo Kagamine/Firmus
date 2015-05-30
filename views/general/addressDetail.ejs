@@ -1,0 +1,47 @@
+<h2><%= title %></h2>
+<table class="table">
+    <h3>基本资料</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">城市</td>
+            <td><%= address.city %></td>
+        </tr>
+        <tr>
+            <td class="row-title">区县</td>
+            <td><%= address.district %></td>
+        </tr>
+
+        <tr>
+            <td class="row-title">详细地址</td>
+            <td><%= address.address %></td>
+        </tr>
+        <tr>
+            <td class="row-title">联系人</td>
+            <td><%= address.name %></td>
+        </tr>
+        <tr>
+            <td class="row-title">电话</td>
+            <td><%= address.phone %></td>
+        </tr>
+        <tr>
+            <td class="row-title">部门</td>
+            <% if (address.milkStation) { %>
+            <td><a href="/general/department/<%= address.milkStation._id %>" target="_blank"><%= address.milkStation.title %></a></td>
+            <% } else { %>
+            <td>未指派</td>
+            <% } %>
+        </tr>
+        <tr>
+            <td class="row-title">服务人员</td>
+            <% if (address.service) { %>
+            <td><a href="/general/employee/<%= address.service._id %>" target="_blank"><%= uaddress.service.username %></a></td>
+            <% } else { %>
+            <td>未指派</td>
+            <% } %>
+        </tr>
+        <tr>
+            <td class="row-title">楼层</td>
+            <td><%= address.storey %></td>
+        </tr>
+    </table>
+</table>

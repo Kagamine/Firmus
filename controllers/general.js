@@ -511,6 +511,7 @@ router.get('/address/milkStationMember', auth.checkRole('address', 'modify'), fu
         .then(null, next);
 });
 
+
 // 配送车辆信息
 router.get('/car', auth.checkRole('car', 'query'), function (req, res, next) {
     let query = db.cars.find({
@@ -841,6 +842,18 @@ router.get('/getAddressById/:id', auth.checkRole('address', 'query'), function (
         .exec()
         .then(function (address) {
             res.json(address);
+        })
+        .then(null, next);
+});
+
+// 职工信息
+router.get('/address/:id', auth.checkRole('address', 'query'), function (req, res, next) {
+    db.addresses.findById(req.params.id)
+        .populate({ path: 'milkStation', select: '_id title' })
+        .populate({path:'service',select:'_id username jobNumber'})
+        .exec()
+        .then(function (address) {
+            res.render('general/addressDetail', { title: address.address, address: address });
         })
         .then(null, next);
 });
