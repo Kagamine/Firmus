@@ -833,4 +833,16 @@ router.get('/getEmployeeById/:id', auth.checkRole('employee', 'query'), function
         })
         .then(null, next);
 });
+
+// 得到地址信息信息 返回json   by nele
+router.get('/getAddressById/:id', auth.checkRole('address', 'query'), function (req, res, next) {
+    db.addresses.findById(req.params.id)
+        .populate('deposit')
+        .exec()
+        .then(function (address) {
+            res.json(address);
+        })
+        .then(null, next);
+});
+
 module.exports = router;

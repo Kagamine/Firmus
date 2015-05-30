@@ -412,6 +412,7 @@ table {
 
 .table tbody tr:hover {
     background-color: rgb(255,248,233);
+    cursor: pointer;
 }
 
 .tl {

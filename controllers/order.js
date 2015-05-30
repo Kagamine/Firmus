@@ -30,6 +30,12 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
         query = query.where('end').lte(Date.parse(req.query.end));
     if (req.query.user)
         query = query.where({ 'user.name': new RegExp('.*' + req.query.user + '.*') });
+    if(req.query.milkType)
+       query=query.where({'milkType':req.query.milkType});
+    if(req.query.orderType)
+        query=query.where({'orderType':req.query.orderType});
+    if(req.query.distributeMethod)
+        query=query.where({'distributeMethod':req.query.distributeMethod});
     _.clone(query)
         .count()
         .exec()

@@ -47,7 +47,7 @@
     </thead>
     <tbody>
     <% addresses.forEach(x => { %>
-    <tr>
+    <tr class="addressDataTr" data-id="<%= x._id %>">
         <td><%= x.city %></td>
         <td><%= x.district %></td>
         <td><%= x.address %></td>
@@ -70,7 +70,8 @@
     <% }) %>
     </tbody>
 </table>
-
+<div id="divInfo">
+</div>
 <div class="pager">
     <a class="pager-item" href="/general/address?p=1&name=<%= req.query.name %>&phone=<%= req.query.phone %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>">«</a>
     <% for(var i = start; i <= end; i++) { %>

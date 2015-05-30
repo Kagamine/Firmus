@@ -287,14 +287,14 @@ $(document).ready(function () {
 
 
     //鼠标移动职工上去 显示详情  by nele
-    $('.employeeDataTr').mouseover(function () {
+    $('.employeeDataTr').mouseenter(function () {
         var top = $(this).position().top;
-        var orderId = $(this).attr('data-id');
+        var employeeId = $(this).attr('data-id');
         var str='';
-        $.getJSON('/general/getEmployeeById/'+orderId, function (data) {
+        $.getJSON('/general/getEmployeeById/'+employeeId, function (data) {
               console.log(data);
             str+='工号：'+data['jobNumber']+'姓名：'+data['name']+'角色：' + data['role']+'<br />';
-            str+='部门：'+data['department'] + '性别：' + data['sex'] +'电话：'+data['phone']+'<br />';
+            str+='部门：'+ ((data['department']==null)?"没有设置奶站": (data['department']['title']))+ '性别：' + data['sex'] +'电话：'+data['phone']+'<br />';
             str+='入职时间：'+moment(data['takeOfficeTime']).format('YYYY-MM-DD');
             $("#divInfo").css("z-index",999);//让层浮动
             $("#divInfo").css("top",top+30);//设置提示div的位置
@@ -303,10 +303,33 @@ $(document).ready(function () {
             $("#divInfo").css("display","block");
         });
     });
-    $('.employeeDataTr').mouseout(function () {
+    $('.employeeDataTr').mouseleave(function () {
         $("#divInfo").css("display","none");
     });
 
+    $('.table').mouseleave(function () {
+        $("#divInfo").css("display","none");
+    })
+
+    // 鼠标移动地址上去 显示详情  by nele
+    $('.addressDataTr').mouseenter(function () {
+        var top = $(this).position().top;
+        var orderId = $(this).attr('data-id');
+        var str='';
+        $.getJSON('/general/getAddressById/'+orderId, function (data) {
+           // console.log(data);
+            str+='城市：'+data['city']+'县区：'+data['district']+'联系人：' + data['name']+'<br />';
+            str+='联系电话：'+ data['phone']+ '楼层：' + data['storey'] +'<br />';
+            $("#divInfo").css("z-index",999);//让层浮动
+            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("left",300);
+            $('#divInfo').html(str);
+            $("#divInfo").css("display","block");
+        });
+    });
+    $('.addressDataTr').mouseleave(function () {
+        $("#divInfo").css("display","none");
+    });
 });
 
 function popMsg(txt) {

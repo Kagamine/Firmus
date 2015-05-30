@@ -20,6 +20,14 @@
     </select>&nbsp;
     <input type="text" placeholder="详细地址" name="address" class="textbox w-1" />&nbsp;
     <input type="text" name="user" class="textbox w-0-6" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="milkType" class="textbox w-0-6" placeholder="奶品品相" value="<%= req.query.milkType %>" />&nbsp;
+    <input type="text" name="orderType" class="textbox w-0-6" placeholder="订单类型" value="<%= req.query.orderType %>" />&nbsp;
+    <select name="distributeMethod" class="w-0-6">
+        <option value="">选择配送方式</option>
+        <option>天天送</option>
+        <option>隔日送</option>
+        <option>周末停送</option>
+    </select>
     <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
