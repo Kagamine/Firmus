@@ -21,6 +21,9 @@
     <tr class="tl">
         <th>单号</th>
         <th>地址</th>
+        <th>联系人</th>
+        <th>电话</th>
+        <th>是否需要拆箱</th>
         <th>时间</th>
         <th>操作</th>
     </tr>
@@ -29,7 +32,10 @@
     <% deposits.forEach(x => { %>
     <tr id="<%= x._id %>" class="depositDataTr" data-id="<%= x._id %>">
         <td><%= x.number %></td>
-        <td><%= x.address.address %></td>
+        <td><%= x.address.city %><%= x.address.district %><%= x.address.address %></td>
+        <td><%= x.address.name %></td>
+        <td><%= x.address.phone %></td>
+        <td><%= (x.giveBackFlag)?"是":"否"%></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
             <a href="/milkBox/deposit/show/<%= x._id %>">押金单详情</a>
