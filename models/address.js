@@ -41,6 +41,10 @@ var addressSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
+    balance: {
+        type: Number,
+        default: 0
+    },
     blankOut: {
         type: Boolean,
         index: true,
