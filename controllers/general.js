@@ -719,6 +719,24 @@ router.get('/address/getAddressByName',auth.checkRole('address','query'),functio
         .then(null, next);
 });
 
+// 根据联系人匹配地址 by nele
+router.get('/address/getAddressByUserName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ name: new RegExp('.*' + req.query.data + '.*')  })
+        .group({_id:{name:'$name',id:'$_id'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+                return {
+                    id:x._id.id,
+                    name:x._id.name
+                }
+            }));
+        })
+        .then(null, next);
+});
+
 
 // 根据城市 县区得到奶站
 router.get('/address/getDeparmentByCity',auth.checkRole('address','query'),function(req,res,next){
@@ -866,5 +884,19 @@ router.get('/address/:id', auth.checkRole('address', 'query'), function (req, re
         })
         .then(null, next);
 });
+
+//  地址信息返回josn by nele
+router.get('/address/getAddressById/:id', auth.checkRole('address', 'query'), function (req, res, next) {
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+    db.addresses.findById(req.params.id)
+        .populate({ path: 'milkStation', select: '_id title' })
+        .populate({path:'service',select:'_id username jobNumber'})
+        .exec()
+        .then(function (address) {
+             res.json(address);
+        })
+        .then(null, next);
+});
+
 
 module.exports = router;

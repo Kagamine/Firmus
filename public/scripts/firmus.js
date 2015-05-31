@@ -510,13 +510,13 @@ function saveOrderAddress(){
 
 // 增加订单设置地址  by nele
 function createOrderSelectAddress(){
-    var html = '<div class="dialog">' +
+    var html = '<div class="dialog"><input id="txtAid" type="hidden" />' +
         '<h3 class="dialog-title">编辑地址</h3>' +
         '<table class="detail-table">' +
+        '<tr id="trOrderSetUser"><td>联系人</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetUser" /></td></tr>' +
         '<tr><td>城市</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetCity" /></td></tr>' +
         '<tr><td>区县</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetDistrict" /></td></tr>' +
         '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr>' +
-        '<tr id="trOrderSetUser" style="display: none"><td>联系人</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetUser" /></td></tr>' +
         '<tr id="trOrderSetPhone" style="display: none"><td>电话</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetPhone" /></td></tr>' +
         '<tr id="trOrderSetStorey" style="display: none"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
         '<tr id="trOrderSetMilkStation" style="display: none"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
@@ -534,6 +534,7 @@ function createOrderSelectAddress(){
     $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
     $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtOrderSetDistrict').droptxt('/general/address/getDistrictsByName','data');
+    $('#txtOrderSetUser').dropaddress('/general/address/getAddressByUserName','data');
 
     $('#txtOrderSetCity').on('keyup',function(){
         if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
