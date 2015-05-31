@@ -286,11 +286,11 @@ $(document).ready(function () {
         var str='';
         $.getJSON('/order/getById/'+orderId, function (data) {
           //   console.log(data);
-            str+='订单号：'+data['number']+'价格：'+data['price']+'地址：' + data['address']+'<br />';
-            str+='配送方式：'+data['distributeMethod'] + '订单类型：' + data['distributeMethod'] +'订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'<br />';
-            str+='业务员：'+data['user']['name'];
+            str+='<span>订单号：'+data['number']+'</span><br/><span>价格：'+data['price']+'</span><br/><span>地址：' + data['address']['city']+data['address']['district']+data['address']['address']+'</span><br />';
+            str+='<span>配送方式：'+data['distributeMethod'] + '</span><br /><span>订单类型：' + data['distributeMethod'] +'</span><br /><span>订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'</span><br />';
+            str+='<span>业务员：'+data['user']['name']+'</span>';
             $("#divInfo").css("z-index",999);//让层浮动
-            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("top",top+35);//设置提示div的位置
             $("#divInfo").css("left",300);
             $('#divInfo').html(str);
             $("#divInfo").css("display","block");
@@ -318,11 +318,11 @@ $(document).ready(function () {
         var str='';
         $.getJSON('/general/getEmployeeById/'+employeeId, function (data) {
               console.log(data);
-            str+='工号：'+data['jobNumber']+'姓名：'+data['name']+'角色：' + data['role']+'<br />';
-            str+='部门：'+ ((data['department']==null)?"没有设置奶站": (data['department']['title']))+ '性别：' + data['sex'] +'电话：'+data['phone']+'<br />';
+            str+='工号：'+data['jobNumber']+'<br />姓名：'+data['name']+'<br />角色：' + data['role']+'<br />';
+            str+='部门：'+ ((data['department']==null)?"没有设置奶站": (data['department']['title']))+ '<br />性别：' + data['sex'] +'<br />电话：'+data['phone']+'<br />';
             str+='入职时间：'+moment(data['takeOfficeTime']).format('YYYY-MM-DD');
             $("#divInfo").css("z-index",999);//让层浮动
-            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("top",top+35);//设置提示div的位置
             $("#divInfo").css("left",300);
             $('#divInfo').html(str);
             $("#divInfo").css("display","block");
@@ -343,10 +343,10 @@ $(document).ready(function () {
         var str='';
         $.getJSON('/general/getAddressById/'+orderId, function (data) {
            // console.log(data);
-            str+='城市：'+data['city']+'县区：'+data['district']+'联系人：' + data['name']+'<br />';
-            str+='联系电话：'+ data['phone']+ '楼层：' + data['storey'] +'<br />';
+            str+='城市：'+data['city']+'<br />县区：'+data['district']+'<br />联系人：' + data['name']+'<br />';
+            str+='联系电话：'+ data['phone']+ '<br />楼层：' + data['storey'] +'<br />';
             $("#divInfo").css("z-index",999);//让层浮动
-            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("top",top+35);//设置提示div的位置
             $("#divInfo").css("left",300);
             $('#divInfo').html(str);
             $("#divInfo").css("display","block");
@@ -364,10 +364,10 @@ $(document).ready(function () {
         var str='';
         $.getJSON('/milkBox/deposit/getDepositById/'+dId, function (data) {
             console.log(data);
-            str+='订单号：'+data['number']+'地址：'+data['address']['city'] + data['address']['district']+data['address']['address']+'<br />';
+            str+='订单号：'+data['number']+'<br />地址：'+data['address']['city'] + data['address']['district']+data['address']['address']+'<br />';
             str+='时间：'+moment(data['time']).format('YYYY-MM-DD');
             $("#divInfo").css("z-index",999);//让层浮动
-            $("#divInfo").css("top",top+30);//设置提示div的位置
+            $("#divInfo").css("top",top+35);//设置提示div的位置
             $("#divInfo").css("left",300);
             $('#divInfo').html(str);
             $("#divInfo").css("display","block");
