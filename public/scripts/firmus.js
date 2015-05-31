@@ -481,7 +481,8 @@ function saveOrderAddress(){
     var city = $('#txtOrderSetCity').val();
     var district = $('#txtOrderSetDistrict').val();
     var address = $('#txtOrderSetAddress').val();
-    $.get('/order/verifyAddress',{city:city,district:district,address:address}, function (data) {
+    var name = $('#txtOrderSetUser').val();
+    $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address}, function (data) {
         console.log(data);
         if(data=='no') {
             $('#trOrderSetUser').show();

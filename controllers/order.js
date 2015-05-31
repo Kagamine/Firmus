@@ -347,8 +347,9 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
     var district = req.query.district;
     var city = req.query.city;
     var address = req.query.address;
+    var name = req.query.name;
     db.addresses
-        .findOne({city:city,district:district,address:address})
+        .findOne({city:city,district:district,address:address,name:name})
         .exec()
         .then(function(address){
             if(address==null){
