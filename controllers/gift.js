@@ -45,7 +45,7 @@ router.post('/promotion/create', auth.checkRole('promotion', 'modify'), function
     activity.end = Date.now();
     activity.gifts = [];
     activity.save(function (err, activity) {
-        res.redirect('/promotion/edit/' + activity._id);
+        res.redirect('/gift/promotion/edit/' + activity._id);
     });
 });
 
