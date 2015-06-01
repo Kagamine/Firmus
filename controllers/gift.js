@@ -81,6 +81,7 @@ router.post('/promotion/edit/:id', auth.checkRole('promotion', 'modify'), functi
                 });
                 db.fs.createReadStream(req.files.file.path).pipe(writestream);
                 writestream.on('close', function (file) {
+                    db.activities.update({ _id: req.params._id }, { icon: file._id }).exec();
                     db.fs.unlink(req.files.file.path);
                     return Promise.resolve();
                 });
