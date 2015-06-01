@@ -13,31 +13,32 @@ var orderSchema = new Schema({
         index: true
     },
     price: Number,
-
-    milkType: {
-        type: String,
-        index: true
-    },
-    count: {
-        type: Number,
-        index: true
-    },
-    time: {
-        type: Date,
-        index: true
-    },
-    begin: {
-        type: Date,
-        index: true
-    },
-    end: {
-        type: Date,
-        index: true
-    },
-    distributeCount: {
-        type: Number,
-        index: true
-    },
+    orders: [{
+        milkType: {
+            type: String,
+            index: true
+        },
+        count: {
+            type: Number,
+            index: true
+        },
+        time: {
+            type: Date,
+            index: true
+        },
+        begin: {
+            type: Date,
+            index: true
+        },
+        end: {
+            type: Date,
+            index: true
+        },
+        distributeCount: {
+            type: Number,
+            index: true
+        }
+    }],
     payMethod: {
         type: String,
         index: true,
