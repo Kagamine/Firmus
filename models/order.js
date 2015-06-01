@@ -44,17 +44,14 @@ var orderSchema = new Schema({
         index: true,
         enum: enums.payMethod
     },
-
     orderType: {
         type: String,
         index: true
     },
-
     address: {
         type: Schema.Types.ObjectId,
         ref: 'addresses'
     },
-
     customServiceFlag: {
         index: true,
         type: Boolean,
@@ -72,6 +69,7 @@ var orderSchema = new Schema({
     changes: [{
         begin: Date,
         end: Date,
+        milkType: String,
         type: {
             type: String,
             enum: enums.orderChangeType
