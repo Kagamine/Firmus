@@ -10,8 +10,11 @@ router.use(function (req, res, next) {
 
 router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,next) {
     let query = db.deposits.find();
+
     if(req.query.giveBackFlag)
         query =  query.where({'giveBackFlag':req.query.giveBackFlag});
+    if(req.query.boxedFlag)
+        query =  query.where({'boxedFlag':req.query.boxedFlag});
     if (req.query.begin)
         query = query.where('time').gte(Date.parse(req.query.begin));
     if (req.query.end)
@@ -33,7 +36,7 @@ router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,nex
         })
         .then(function (deposits) {
             res.locals.deposits = deposits;
-            res.render('milkBox/deposit',{title:'押金管理'});
+            res.render('milkBox/deposit',{title:'押金单管理'});
         })
         .then(null,next);
 
