@@ -730,7 +730,25 @@ router.get('/address/getAddressByUserName',auth.checkRole('address','query'),fun
             res.json(data.map(x=>{
                 return {
                     id:x._id.id,
-                    name:x._id.name
+                    data:x._id.name
+                }
+            }));
+        })
+        .then(null, next);
+});
+
+// 根据联系人匹配地址 by nele
+router.get('/address/getAddressByPhone',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ phone : new RegExp('.*' + req.query.data + '.*')  })
+        .group({_id:{phone:'$phone',id:'$_id'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+                return {
+                    id:x._id.id,
+                    data:x._id.phone
                 }
             }));
         })

@@ -485,8 +485,6 @@ function saveOrderAddress(){
     $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address}, function (data) {
         console.log(data);
         if(data=='no') {
-            $('#trOrderSetUser').show();
-            $('#trOrderSetPhone').show();
             $('#trOrderSetStorey').show();
             $('#trOrderSetMilkStation').show();
             $.getJSON('/general/getDepartments',function(data){
@@ -515,10 +513,10 @@ function createOrderSelectAddress(){
         '<h3 class="dialog-title">编辑地址</h3>' +
         '<table class="detail-table">' +
         '<tr id="trOrderSetUser"><td>联系人</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetUser" /></td></tr>' +
+        '<tr id="trOrderSetPhone"><td>电话</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetPhone" /></td></tr>' +
         '<tr><td>城市</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetCity" /></td></tr>' +
         '<tr><td>区县</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetDistrict" /></td></tr>' +
         '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr>' +
-        '<tr id="trOrderSetPhone" style="display: none"><td>电话</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetPhone" /></td></tr>' +
         '<tr id="trOrderSetStorey" style="display: none"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
         '<tr id="trOrderSetMilkStation" style="display: none"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
         '</table>' +
@@ -535,7 +533,9 @@ function createOrderSelectAddress(){
     $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
     $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtOrderSetDistrict').droptxt('/general/address/getDistrictsByName','data');
-    $('#txtOrderSetUser').dropaddress('/general/address/getAddressByUserName','data');
+    $('#txtOrderSetUser').dropjson('/general/address/getAddressByUserName','data');
+
+    $('#txtOrderSetPhone').dropjson('/general/address/getAddressByPhone','data');
 
     $('#txtOrderSetCity').on('keyup',function(){
         if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){

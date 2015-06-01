@@ -5,6 +5,8 @@ function selector(aid){
         $('#txtOrderSetCity').val(data['city']);
         $('#txtOrderSetDistrict').val(data['district']);
         $('#txtOrderSetAddress').val(data['address']);
+        $('#txtOrderSetPhone').val(data['phone']);
+        $('#txtOrderSetUser').val(data['name']);
         $('#btnAddOrderAddress').attr('disabled',false);
    });
 }
@@ -44,7 +46,7 @@ function selector(aid){
         });
     }
 
-    $.fn.dropaddress = function(url, field){
+    $.fn.dropjson = function(url, field){
         var selector = this.selector;
         this.attr('autocomplete', 'Off');
         var txt = this;
@@ -57,7 +59,7 @@ function selector(aid){
             $.getJSON(url, args, function (data) {
                 var html = '<div class="codecomb-droptxt-outer" data-parent="' + selector + '">';
                 for (var i = 0; i < data.length && i < 10; i++) {
-                    html += '<div class="codecomb-droptxt-item" onclick="$(\'' + selector + '\').val($(this).text()); $(\'.codecomb-droptxt-outer\').remove();selector($(this).next().val())">' + data[i].name + '</div><input type="hidden" value="'+data[i].id+'"/>'
+                    html += '<div class="codecomb-droptxt-item" onclick="$(\'' + selector + '\').val($(this).text()); $(\'.codecomb-droptxt-outer\').remove();selector($(this).next().val())">' + data[i].data + '</div><input type="hidden" value="'+data[i].id+'"/>'
                 }
                 html += '</div>';
                 var dom = $(html);
