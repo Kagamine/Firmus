@@ -7,6 +7,51 @@ router.use(function (req, res, next) {
     next();
 });
 
+router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
+    let query = db.departments.find();
+    if (req.query.title)
+        query = query.where({ title: new RegExp('.*' + req.query.title + '.*') });
+    query  =  query.where({type: '奶箱仓库'});
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.query.p || 1;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .skip(50 * (page - 1))
+                .limit(50)
+                .populate('user')
+                .exec();
+        })
+        .then(function (departments) {
+            res.locals.departments = departments;
+            return Promise.all(departments.map(x => {
+                return db.users.findOne({ department: x._id, role: '部门主管' }).select('name').exec();
+            }));
+        })
+        .then(function (users) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i])
+                    res.locals.departments[i].master = users[i].name;
+                else
+                    res.locals.departments[i].master = '未指派';
+            }
+            return Promise.all(res.locals.departments.map(x => {
+                return db.users.find({ department: x._id }).count().exec();
+            }));
+        })
+        .then(function (counts) {
+            for (let i = 0; i < counts.length; i++) {
+                res.locals.departments[i].count = counts[i];
+            }
+            res.render('milkBox/index', { title: '奶箱管理' });
+        })
+        .then(null, next);
+});
+
 
 router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,next) {
     let query = db.deposits.find();
