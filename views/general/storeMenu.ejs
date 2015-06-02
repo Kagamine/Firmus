@@ -1,0 +1,7 @@
+<h2><%= title %></h2>
+<div class="submenu">
+    <a class="submenu-item" href="/general/department/store/show/<%= store._id %>">存储信息</a>
+    <% if (permission.store.modify) { %>
+    <a class="submenu-item" href="/general/department/store/edit/<%= store._id %>">修改</a>
+    <% } %>
+</div>

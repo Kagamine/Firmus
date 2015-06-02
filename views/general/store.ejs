@@ -1,0 +1,42 @@
+<h2>仓库管理
+    <% if (permission.store.modify) { %>
+    <a href="/general/department/store/create/<%=departemtID%>" class="add">录入</a>
+    <% } %>
+</h2>
+<form class="search">
+    检索:
+    <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
+    <input type="submit" value="过滤" class="button green" />
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">操作类型</th>
+        <th class="tl">数量</th>
+        <th class="tl">时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% stores.forEach(x => { %>
+    <tr>
+        <td><%=x.operateType %></td>
+        <td><%=x.count %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+        <td class="tc">
+            <a href="/general/department/store/show/<%= x._id %>">详细资料</a>
+            <a href="/general/departemtn/store/edit/<%= x._id %>">编辑</a>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<div class="pager">
+    <a class="pager-item" href="/general/department/order/<%=departemtID%>?p=1&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>&milkbox=<%= req.query.milkbox %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/general/department /order/<%=departemtID%>?p=<%= i %>&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/general/department/order/<%=departemtID%>?p=<%= pageCount || 1 %>&name=<%= req.query.name %>&role=<%= req.query.role %>&department=<%= req.query.department %>&jobNumber=<%= req.query.jobNumber %>">»</a>
+</div>

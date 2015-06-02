@@ -1,0 +1,30 @@
+<h2><%= title %></h2>
+<div class="block">
+    <form method="post" action="/general//department/store/create">
+        <input type="hidden" value="<%= csrf %>" name="_csrf" />
+        <h3>入库信息</h3>
+        <input type="hidden" name="department" value="<%=departemtID%>" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">操作类型</td>
+                <td>
+                    <select name="operateType" id="">
+                        <option value="入库">入库</option>
+                        <option value="出库">出库</option>
+                        <option value="转入">转入</option>
+                        <option value="转出">转出</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">数量</td>
+                <td><input type="text" class="textbox w-3" name="count" /></td>
+            </tr>
+            <tr>
+                <td class="row-title">备注</td>
+                <td><input type="text" class="textbox w-3" name="hint" /></td>
+            </tr>
+        </table>
+        <p><input type="submit" class="button blue" value="录入" /></p>
+    </form>
+</div>

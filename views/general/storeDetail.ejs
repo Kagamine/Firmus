@@ -1,0 +1,29 @@
+<% include storeMenu %>
+<div class="block">
+    <h3>基本资料</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">操作类型</td>
+            <td><%= store.operateType %></td>
+        </tr>
+        <tr>
+            <td class="row-title">数量</td>
+            <td><%= store.count %></td>
+        </tr>
+        <tr>
+            <td class="row-title">部门</td>
+            <td><%=store.department.title%></td>
+        </tr>
+        <% if (store.gift) { %>
+        <tr>
+            <td class="row-title">赠品</td>
+            <td><%=store.gift.title%>/td>
+        </tr>
+        <% } %>
+
+        <tr>
+            <td class="row-title">时间</td>
+            <td><%= moment(store.time).format('YYYY-MM-DD') %></td>
+        </tr>
+    </table>
+</div>

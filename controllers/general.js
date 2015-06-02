@@ -396,17 +396,88 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
         .then(null, next);
 });
 
+// 奶站仓库管理  by nele
+router.get('/department/store/:id',auth.checkRole('store','query'), function ( req, res, next) {
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+    let query = db.stores.find({department:ObjectID(req.params.id)});
+    if (req.query.begin)
+        query = query.where('time').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('time').lte(Date.parse(req.query.end));
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query.populate({ path: 'department', select: 'title _id' }).skip(50 * (page - 1)).limit(50).exec();
+        })
+        .then(function (stores) {
+            res.locals.stores = stores;
+            res.locals.departemtID = req.params.id;
+            res.render('general/store', { title: '仓库管理' });
+        })
+        .then(null, next);
+});
 
 
-// 奶站订单列表
-router.get('/department/order/:id', auth.checkRole('order', 'query'), function (req, res, next) {
-    db.orders.find({
-        'address.department': req.params.id
+// 仓库储存的的显示 by nele
+router.get('/department/store/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    db.stores.findById(req.params.id)
+        .populate({ path: 'department', select: '_id title' })
+        .populate({ path: 'gift', select: '_id title' })
+        .exec()
+        .then(function (store) {
+            res.locals.store = store;
+            res.render('general/storeDetail', { title: '存储信息显示' });
+        })
+        .then(null, next);
+});
+
+
+
+// 创建存储信息  by nele
+router.get('/department/store/create/:id',auth.checkRole('store','modify'), function ( req, res, next) {
+     res.locals.departemtID = req.params.id;
+     res.render('general/storeCreate', { title: '录入' });
+});
+
+// 创建存储信息  by nele
+router.post('/department/store/create',auth.checkRole('store','modify'), function ( req, res, next) {
+    let store = new db.stores();
+     store.operateType = req.body.operateType;
+     store.count = req.body.count;
+     store.department =req.body.department;
+     store.hint = req.body.hint;
+     store.save(function (err, store) {
+        res.redirect('/general/department/store/' + store.department);
+    });
+});
+
+// 仓库储存的的修改 by nele
+router.get('/department/store/edit/:id', auth.checkRole('store', 'modify'), function (req, res, next) {
+    db.stores.findById(req.params.id)
+        .populate({ path: 'department', select: '_id title' })
+        .populate({ path: 'gift', select: '_id title' })
+        .exec()
+        .then(function (store) {
+            res.locals.store = store;
+            res.render('general/storeEdit', { title: '存储信息修改' });
+        })
+        .then(null, next);
+});
+
+// 仓库储存的的修改 by nele
+router.post('/department/store/edit/:id',auth.checkRole('store','modify'), function ( req, res, next) {
+    db.stores.update({ _id: req.params.id }, {
+        operateType: req.body.operateType,
+        count: req.body.count
     })
         .exec()
-        .populate({ path: 'address', select: 'department' })
-        .then(function (orders) {
-            res.send(orders);
+        .then(function () {
+            res.redirect('/general/department/store/show/' + req.params.id);
         })
         .then(null, next);
 });
@@ -915,6 +986,7 @@ router.get('/address/getAddressById/:id', auth.checkRole('address', 'query'), fu
         })
         .then(null, next);
 });
+
 
 
 module.exports = router;

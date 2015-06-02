@@ -1,0 +1,25 @@
+<% include storeMenu %>
+<div class="block">
+    <h3>基本资料</h3>
+    <form method="post">
+        <input type="hidden" value="<%= csrf %>" name="_csrf" />
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">操作类型</td>
+                <td>
+                    <select name="operateType">
+                        <option value="入库" <%=store.operateType=='入库'?"selected":""%>>入库</option>
+                        <option value="出库" <%=store.operateType=='出库'?"selected":""%>>出库</option>
+                        <option value="转入" <%=store.operateType=='转入'?"selected":""%>>转入</option>
+                        <option value="转出" <%=store.operateType=='转出'?"selected":""%>>转出</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="row-title">数量</td>
+                <td><input type="text" class="textbox w-3" value="<%= store.count %>"/></td>
+            </tr>
+        </table>
+        <p><input type="submit" class="button blue" value="保存" /></p>
+    </form>
+</div>
