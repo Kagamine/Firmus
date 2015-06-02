@@ -107,6 +107,10 @@ router.post('/createDeposit',auth.checkRole('deposit','modify'), function (req, 
 
     deposit.time=Date.now();
     deposit.save(function (err, deposit) {
+        db.addresses.update({_id:req.body.address},{
+              deposit:deposit._id
+        })
+        .exec();
         res.redirect('/milkBox/deposit/show/' + deposit._id);
     });
 });
