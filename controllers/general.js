@@ -444,14 +444,48 @@ router.get('/department/store/create/:id',auth.checkRole('store','modify'), func
      res.render('general/storeCreate', { title: '录入' });
 });
 
+// 根据类型获取部门列表 by nele
+router.get('/getDepartmentsByType',auth.checkRole('store','modify'), function (req,res,next) {
+       var type = req.query.dtype;
+       db.departments
+       .aggregate()
+       .match({type:type})
+           .group({ _id: { id: '$_id', title: '$title' } })
+           .exec()
+           .then(function (departments) {
+               res.json(departments.map(x => {
+                   return {
+                       id: x._id.id,
+                       title: x._id.title
+                   }}));
+           })
+           .then(null,next);
+});
+
 // 创建存储信息  by nele
 router.post('/department/store/create',auth.checkRole('store','modify'), function ( req, res, next) {
-    let store = new db.stores();
+     let store = new db.stores();
      store.operateType = req.body.operateType;
      store.count = req.body.count;
      store.department =req.body.department;
      store.hint = req.body.hint;
      store.save(function (err, store) {
+         if(req.body.operateType=='转入'){
+             let _store  =new db.stores();
+             _store.operateType = '转出';
+             _store.count = req.body.count;
+             _store.department =req.body.exportDepartment;
+             _store.hint = req.body.hint;
+             _store.save();
+         }
+         if(req.body.operateType=='转出'){
+             let _store  =new db.stores();
+             _store.operateType = '转入';
+             _store.count = req.body.count;
+             _store.department =req.body.importDepartment;
+             _store.hint = req.body.hint;
+             _store.save();
+         }
         res.redirect('/general/department/store/' + store.department);
     });
 });

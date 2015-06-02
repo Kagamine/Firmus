@@ -376,6 +376,31 @@ $(document).ready(function () {
     $('.depositDataTr').mouseleave(function () {
         $("#divInfo").css("display","none");
     });
+
+    $('#slCreateStoreOperateType').change(function () {
+         if($('#slCreateStoreOperateType').val()=='转入'){
+             $('#trExportDepartment').show();
+             $('#trImportDepartment').hide();
+             $.getJSON('/general/getDepartmentsByType',{ dtype:$('#txtAddStoreDepartmentType').val()}, function (data) {
+                            var str="<option value=''>请选择转出部门</option>";
+                           for(var i=0;i<data.length;i++){
+                               str+="<option value='"+data[i].id+"'>"+data[i].title+"</option>"
+                           }
+                      $('#slExportDepartment').html(str);
+             });
+         }
+         if($('#slCreateStoreOperateType').val()=='转出'){
+             $('#trImportDepartment').show();
+             $('#trExportDepartment').hide();
+             $.getJSON('/general/getDepartmentsByType',{ dtype:$('#txtAddStoreDepartmentType').val()}, function (data) {
+                 var str="<option value=''>请选择转入部门</option>";
+                 for(var i=0;i<data.length;i++){
+                     str+="<option value='"+data[i].id+"'>"+data[i].title+"</option>"
+                 }
+                 $('#slImportDepartment').html(str);
+             });
+         }
+    });
 });
 
 function popMsg(txt) {
