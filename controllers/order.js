@@ -184,34 +184,139 @@ router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (r
         .then(null, next);
 });
 
-// 获取订单某日需配送瓶数
-function getDistributeCount (order, time) {
-    let ret = order.distributeCount;
+// 计算订单结束日期
+function getEndDistributeDate (order, changes)
+{
     let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
-    let dend = new Date(order.end.getFullYear(), order.end.getMonth(), order.end.getDate());
-    let tmp = new Date();
-    let today = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
-    dend.setDate(dend.getDate() + 1);
-    if (order.type == '天天送') {
-        order.changes.forEach(x => {
-            if (x.type == '停送') {
-                if (dbeg <= time && time < dend)
-                    ret -= x.count;
-            } else if (x.type == '加送') {
-                if (dbeg <= time && time < dend)
-                    ret += x.count;
-            }
-        });
-    } else if (order.type == '隔天送') {
-        let i = 0;
-        while (_.clone(dbeg).setDate(dbeg.getDate() + i) <= today) {
-            if (i % 2 == 1 && _.clone(dbeg).setDate(dbeg.getDate() + i) == today)
-                ret = 0;
+    let ret;
+    let count = order.count;
+    if (order.distributeMethod == '天天送')
+    {
+        for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
+        {
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            tmp.forEach(x => {
+                if (x.type == '加送')
+                    count -= (order.distributeCount + x.count);
+                else if (x.type == '停送')
+                    count -= (order.distributeCount - x.count);
+            });
         }
-    } else {
-
+    }
+    else if (order.distributeMethod == '隔日送')
+    {
+        for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 2))
+        {
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            tmp.forEach(x => {
+                if (x.type == '加送')
+                    count -= (order.distributeCount + x.count);
+                else if (x.type == '停送')
+                    count -= (order.distributeCount - x.count);
+            });
+        }
+    }
+    else
+    {
+        for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
+        {
+            if (ret.getDay() == 6 || ret.getDay() == 7)
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            tmp.forEach(x => {
+                if (x.type == '加送')
+                    count -= (order.distributeCount + x.count);
+                else if (x.type == '停送')
+                    count -= (order.distributeCount - x.count);
+            });
+        }
     }
     return ret;
+}
+
+// 获取订单某日需配送瓶数
+function getDistributeCount (order, changes, time) {
+    let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
+    let tmp = new Date();
+    time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+    let ret;
+    let count = order.count;
+    if (order.distributeMethod == '天天送')
+    {
+        for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
+        {
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            tmp.forEach(x => {
+                let cnt = order.distributeCount;
+                if (x.type == '加送')
+                {
+                    count -= (order.distributeCount + x.count);
+                    cnt += x.count;
+                }
+                else if (x.type == '停送')
+                {
+                    count -= (order.distributeCount - x.count);
+                    cnt -= x.count;
+                }
+                else
+                {
+                    cnt = 0;
+                }
+                if (i == time) return cnt;
+            });
+        }
+    }
+    else if (order.distributeMethod == '隔日送')
+    {
+        for (let i = dbeg; count > 0; i.setDate(i.getDate() + 2))
+        {
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            tmp.forEach(x => {
+                let cnt = order.distributeCount;
+                if (x.type == '加送')
+                {
+                    count -= (order.distributeCount + x.count);
+                    cnt += x.count;
+                }
+                else if (x.type == '停送')
+                {
+                    count -= (order.distributeCount - x.count);
+                    cnt -= x.count;
+                }
+                else
+                {
+                    cnt = 0;
+                }
+                if (i == time) return cnt;
+            });
+        }
+    }
+    else
+    {
+        for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
+        {
+            if (i.getDay() == 6 || i.getDay() == 7)
+                let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            tmp.forEach(x => {
+                let cnt = order.distributeCount;
+                if (x.type == '加送')
+                {
+                    count -= (order.distributeCount + x.count);
+                    cnt += x.count;
+                }
+                else if (x.type == '停送')
+                {
+                    count -= (order.distributeCount - x.count);
+                    cnt -= x.count;
+                }
+                else
+                {
+                    cnt = 0;
+                }
+                if (i == time) return cnt;
+            });
+        }
+    }
+    return 0;
 }
 
 // 配送日报

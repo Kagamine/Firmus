@@ -7,11 +7,6 @@ var orderSchema = new Schema({
         type: String,
         index: true
     },
-    distributeMethod: {
-        type: String,
-        enum: enums.distributeMethod,
-        index: true
-    },
     price: Number,
     orders: [{
         milkType: {
@@ -36,6 +31,11 @@ var orderSchema = new Schema({
         },
         distributeCount: {
             type: Number,
+            index: true
+        },
+        distributeMethod: {
+            type: String,
+            enum: enums.distributeMethod,
             index: true
         }
     }],

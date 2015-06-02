@@ -16,8 +16,7 @@ var departmentSchema = new Schema({
         type: String,
         index: true,
         enum: enums.departmentType
-    },
-    store: Number
+    }
 });
 
 var department = mongodb.mongoose.model('departments', departmentSchema);
