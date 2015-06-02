@@ -45,7 +45,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
-                .populate('address milkStation')
+                .populate('address milkStation user')
                 .skip(50 * (page - 1))
                 .limit(50)
                 .exec();
