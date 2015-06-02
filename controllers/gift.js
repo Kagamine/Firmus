@@ -290,4 +290,24 @@ router.get('/deliver', auth.checkRole('deliver', 'query'), function (req, res, n
         .then(null, next);
 });
 
+
+// 根据赠品的标题获取增品返回json  by nele
+router.get('/getGiftByName',auth.checkRole('gift','query'), function ( req, res, next) {
+    db.gifts
+        .aggregate()
+        .match({ title: new RegExp('.*' + req.query.data + '.*')  })
+        .group({_id:{title:'$title',id:'$_id'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+                return {
+                    id:x._id.id,
+                    data:x._id.title
+                }
+            }));
+        })
+        .then(null, next);
+});
+
+
 module.exports = router;

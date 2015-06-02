@@ -399,6 +399,7 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
 // 奶站仓库管理  by nele
 router.get('/department/store/:id',auth.checkRole('store','query'), function ( req, res, next) {
     let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+    res.locals.type=req.query.type;
     let query = db.stores.find({department:ObjectID(req.params.id)});
     if (req.query.begin)
         query = query.where('time').gte(Date.parse(req.query.begin));
@@ -470,6 +471,7 @@ router.post('/department/store/create',auth.checkRole('store','modify'), functio
      store.count = req.body.count;
      store.department =req.body.department;
      store.hint = req.body.hint;
+     store.gift =req.body.gift;
      store.save(function (err, store) {
          if(req.body.operateType=='转入'){
              let _store  =new db.stores();
@@ -477,6 +479,7 @@ router.post('/department/store/create',auth.checkRole('store','modify'), functio
              _store.count = req.body.count;
              _store.department =req.body.exportDepartment;
              _store.hint = req.body.hint;
+             _store.gift =req.body.gift;
              _store.save();
          }
          if(req.body.operateType=='转出'){
@@ -485,6 +488,7 @@ router.post('/department/store/create',auth.checkRole('store','modify'), functio
              _store.count = req.body.count;
              _store.department =req.body.importDepartment;
              _store.hint = req.body.hint;
+             _store.gift =req.body.gift;
              _store.save();
          }
         res.redirect('/general/department/store/' + store.department);

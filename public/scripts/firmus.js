@@ -401,6 +401,10 @@ $(document).ready(function () {
              });
          }
     });
+
+
+    //  赠品下拉  by nele
+    $('#txtStoreGift').dropGiftJson('/gift/getGiftByName','data');
 });
 
 function popMsg(txt) {
