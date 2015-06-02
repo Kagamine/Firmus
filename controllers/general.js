@@ -418,7 +418,13 @@ router.get('/department/store/:id',auth.checkRole('store','query'), function ( r
         .then(function (stores) {
             res.locals.stores = stores;
             res.locals.departemtID = req.params.id;
-            res.render('general/store', { title: '仓库管理' });
+            db.departments.findById( req.params.id)
+            .exec()
+            .then(function (department) {
+                    res.locals.departemt =department.title;
+                    res.render('general/store', { title: '仓库管理' });
+                });
+
         })
         .then(null, next);
 });
