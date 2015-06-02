@@ -220,7 +220,7 @@ function getEndDistributeDate (order, changes)
     {
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
         {
-            if (ret.getDay() == 6 || ret.getDay() == 7)
+            if (ret.getDay() == 6 || ret.getDay() == 7) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -294,8 +294,8 @@ function getDistributeCount (order, changes, time) {
     {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
         {
-            if (i.getDay() == 6 || i.getDay() == 7)
-                let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            if (i.getDay() == 6 || i.getDay() == 7) continue;
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
             tmp.forEach(x => {
                 let cnt = order.distributeCount;
                 if (x.type == '加送')
