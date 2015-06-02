@@ -4,7 +4,7 @@
         <input type="hidden" value="<%= csrf %>" name="_csrf" />
         <h3>入库信息</h3>
         <input type="hidden" name="department" value="<%=departemtID%>" />
-        <input type="hidden" name="type" value="奶箱仓库" id="txtAddStoreDepartmentType" />
+        <input type="hidden" name="type" value="<%=type%>" id="txtAddStoreDepartmentType" />
         <table class="detail-table">
             <tr>
                 <td class="row-title">操作类型</td>
@@ -30,6 +30,9 @@
                     <select name="importDepartment" id="slImportDepartment">
                     </select>
                 </td>
+            </tr>
+            <tr style="display: <%=type%>=="">
+
             </tr>
             <tr>
                 <td class="row-title">数量</td>

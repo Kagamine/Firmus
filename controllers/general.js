@@ -441,6 +441,7 @@ router.get('/department/store/show/:id', auth.checkRole('order', 'query'), funct
 // 创建存储信息  by nele
 router.get('/department/store/create/:id',auth.checkRole('store','modify'), function ( req, res, next) {
      res.locals.departemtID = req.params.id;
+     res.locals.type = req.query.type;
      res.render('general/storeCreate', { title: '录入' });
 });
 
