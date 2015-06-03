@@ -310,9 +310,13 @@ $(document).ready(function () {
     $('#slOrderChangeType').change(function () {
         var value =  $('#slOrderChangeType').val();
         if(value=='顺延'){
-          $('#trOrderChangeCount').hide();
+            $('#trOrderChangeCount').hide();
+            $('#trOrderChangeMilkType').hide();
+            $('#txtOrderChangeMilkType').val('');
+            $('#txtOrderChangeCount').val('');
         }else{
             $('#trOrderChangeCount').show();
+            $('#trOrderChangeMilkType').show();
         }
     });
 

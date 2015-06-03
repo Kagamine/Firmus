@@ -180,17 +180,17 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         user: req.session.uid,
                         time: Date.now(),
                         type: req.body.type,
+                        milkType:req.body.milkType,
                         begin: req.body.begin,
                         end: req.body.end,
                         hint: req.body.hint,
                         count: req.body.count
                     }
-                },
-                end: end
+                }
             }).exec();
         })
         .then(function () {
-            res.redirect('/order/' + req.params.id);
+            res.redirect('/order/show/' + req.params.id);
         })
         .then(null, next);
 });
@@ -651,7 +651,7 @@ router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res,
         .populate('address user')
         .exec()
         .then(function (order) {
-              
+
               res.json(order);
         })
         .then(null, next);
