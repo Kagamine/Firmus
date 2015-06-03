@@ -20,14 +20,6 @@
             </td>
         </tr>
         <tr>
-            <td class="row-title">奶品品相</td>
-            <td><input type="text" class="textbox w-3" name="milkType" /> 品相编码</td>
-        </tr>
-        <tr>
-            <td class="row-title">总瓶数</td>
-            <td><input type="text" class="textbox w-3" name="count" /> 例如: 30</td>
-        </tr>
-        <tr>
             <td class="row-title">金额</td>
             <td><input type="text" class="textbox w-3" name="price" /> 例如: 38.5</td>
         </tr>
@@ -44,6 +36,7 @@
             <td class="row-title">POS单号</td>
             <td><input type="text" class="textbox w-3" name="pos" /></td>
         </tr>
+        <!--
         <tr>
             <td class="row-title">开始配送日期</td>
             <td><input type="text" class="textbox w-3 datetime" name="begin" /></td>
@@ -61,6 +54,43 @@
         <tr>
             <td class="row-title">每次配送瓶数</td>
             <td><input type="text" class="textbox w-3" name="distributeCount" /></td>
+        </tr>
+        -->
+        <tr>
+            <td class="row-title">
+                订单详情
+            </td>
+            <td>
+                <table>
+                   <thead>
+                      <tr>
+                          <td>品相</td>
+                          <td>总瓶数</td>
+                          <td>起送时间</td>
+                          <td>配送方式</td>
+                          <td>每次配送瓶数</td>
+                          <td>操作</td>
+                      </tr>
+                   </thead>
+                    <tbody class="lstOrder">
+                      <tr>
+                          <td><input type="text" class="textbox w-0-6" name="milkType" /></td>
+                          <td><input type="text" class="textbox w-0-6"  name="count" /></td>
+                          <td><input type="text" class="textbox datetime w-0-6" name="begin" /></td>
+                          <td>
+                              <select name="distributeMethod">
+                                  <option>天天送</option>
+                                  <option>隔日送</option>
+                                  <option>周末停送</option>
+                              </select>
+                          </td>
+                          <td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>
+                          <td></td>
+                      </tr>
+                    </tbody>
+                </table>
+                <a href="javascript:void(0);" class="btnAddTr">增加</a>
+            </td>
         </tr>
     </table>
     <p><input type="submit" value="创建订单" class="button blue" /></p>

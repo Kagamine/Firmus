@@ -73,6 +73,7 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
+    console.log(req.body.milkType);
     let order = new db.orders();
     order.time = Date.now();
     order.user = req.session.uid;
@@ -89,10 +90,10 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     // order.end = ;
     order.distributeMethod = req.body.distributeMethod;
     order.distributeCount = req.body.distributeCount;
-    order.save(function (err, order) {
-        console.log(order);
-        res.redirect('/order/show/' + order._id);
-    });
+    //order.save(function (err, order) {
+    //    console.log(order);
+    //    res.redirect('/order/show/' + order._id);
+    //});
 });
 
 // 查看订单详情

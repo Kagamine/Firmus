@@ -405,6 +405,26 @@ $(document).ready(function () {
 
     //  赠品下拉  by nele
     $('#txtStoreGift').dropGiftJson('/gift/getGiftByName','data');
+
+
+
+    $('.btnAddTr').click(function () {
+       var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6" name="milkType" /></td><td><input type="text" class="textbox w-0-6"  name="count" /></td>'+
+        '<td><input type="text" class="textbox datetime w-0-6" name="begin" /></td>'+
+        '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option>'+
+        '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>'+
+        '<td><a href="javascript:void(0);" class="btnDeltr">删除</a></td></tr>';
+        $('.lstOrder').append(str);
+
+        //  订单详情删除行
+        $('.btnDeltr').unbind().click(function () {
+            $(this).parents('.trOrderDetail').remove();
+        });
+        
+    });
+
+
+
 });
 
 function popMsg(txt) {
