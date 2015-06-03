@@ -149,12 +149,35 @@ router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, n
 // 编辑订单
 router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     let end = Date.now(); //TODO: 计算最后一天送奶日期
+    let orders = [];
+    if(typeof(req.body.milkType)!='string'){
+        for(var i =0;i<req.body.milkType.length;i++){
+            orders.push({
+                milkType: req.body.milkType[i],
+                count:req.body.count[i],
+                distributeCount:req.body.distributeCount[i],
+                distributeMethod:req.body.distributeMethod[i],
+                time:Date.now(),
+                begin:req.body.begin[i]
+            });
+        }
+    }else{
+        orders.push({
+            milkType: req.body.milkType,
+            count:req.body.count,
+            distributeCount:req.body.distributeCount,
+            distributeMethod:req.body.distributeMethod,
+            time:Date.now(),
+            begin:req.body.begin
+        });
+    }
     db.orders.update({ _id: req.params.id }, {
         orderType: req.body.orderType,
         address: req.body.address,
-        milkType: req.body.milkType,
-        begin: req.body.begin,
-        end: end
+        price:req.body.price,
+        payMethod:req.body.payMethod,
+        pos:req.body.pos,
+        orders:orders
     })
         .exec()
         .then(function () {

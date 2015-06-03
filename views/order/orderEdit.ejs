@@ -30,7 +30,7 @@
             </td>
         </tr>
         <tr>
-            <td>付款方式</td>
+            <td class="row-title">付款方式</td>
             <td>
                 <select name="payMethod" id="lstPaymentMethod">
                     <%
@@ -52,6 +52,47 @@
         <tr id="pos-number-row" style="display: none;">
             <td class="row-title">POS单号</td>
             <td><input type="text" class="textbox w-3" name="pos" /></td>
+        </tr>
+
+        <tr>
+            <td class="row-title">订单详情</td>
+            <td>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>品相</td>
+                        <td>总瓶数</td>
+                        <td>起送时间</td>
+                        <td>配送方式</td>
+                        <td>每次配送瓶数</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody class="lstOrder">
+                        <%
+                            for(var i = 0;i<order.orders.length;i++){
+                         %>
+                        <tr class="trOrderDetail">
+                            <td><input type="text" class="textbox w-0-6" name="milkType" value="<%=order.orders[i].milkType%>" /></td>
+                            <td><input type="text" class="textbox w-0-6"  name="count" value="<%=order.orders[i].count%>" /></td>
+                            <td><input type="text" class="textbox datetime w-0-6" name="begin" value="<%= moment(order.orders[i].begin).format('YYYY-MM-DD')%>" /></td>
+                            <td>
+                                <select name="distributeMethod">
+                                    <option <%=order.orders[i].distributeMethod=='天天送'?'selected':''%> >天天送</option>
+                                    <option <%=order.orders[i].distributeMethod=='隔日送'?'selected':''%>>隔日送</option>
+                                    <option <%=order.orders[i].distributeMethod=='周末停送'?'selected':''%>>周末停送</option>
+                                </select>
+                            </td>
+                            <td><input type="text" class="textbox w-0-6" name="distributeCount"  value="<%=order.orders[i].distributeCount%>" /></td>
+                            <td><a href="javascript:void(0);" class="btnDeltr">删除</a></td>
+                        </tr>
+                         <%
+                            }
+                          %>
+                    </tbody>
+                </table>
+                <a href="javascript:void(0);" class="btnAddTr">增加</a>
+            </td>
         </tr>
     </table>
     <p><input type="button" value="保存修改" class="button blue" onclick="saveOrder('<%= order._id %>')" /></p>
