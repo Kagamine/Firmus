@@ -172,7 +172,7 @@ $(document).ready(function () {
     // 创建订单付款方式的改变隐藏或显示POS号 by nele
     $('#lstPaymentMethod').change(function () {
         var method = $('#lstPaymentMethod').val();
-        if(method == '0'){
+        if(method == '现金'){
             $('#pos-number-row').hide();
         }
         else{
@@ -289,7 +289,7 @@ $(document).ready(function () {
             str+='<span>订单号：'+data['number']+'</span><br/><span>价格：'+data['price']+'</span><br/><span>地址：' + data['address']['city']+data['address']['district']+data['address']['address']+'</span><br />';
             str+='<span>订单类型：' + data['orderType'] +'</span><br /><span>订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'</span><br />';
             str+='<span>业务员：'+data['user']['name']+'</span>';
-            str+='<table class="table-inline"><thead><tr class="tl"><td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td></tr></thead>'
+            str+='<table class="table-inline"><thead><tr class="tl"><th>品相</th><th>总瓶数</th><th>起送时间</th><th>配送方式</th><th>每次配送瓶数</th></tr></thead>'
             for(var i=0;i<data.orders.length;i++){
                 str+='<tbody><tr><td>'+data.orders[i].milkType+'</td><td>'+data.orders[i].count+'</td><td>'+moment(data.orders[i].begin).format('YYYY-MM-DD')+'</td><td>'+data.orders[i].distributeMethod+'</td><td>'+data.orders[i].distributeCount+'</td></tr>'
             }

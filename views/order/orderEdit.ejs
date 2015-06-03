@@ -24,12 +24,34 @@
             </td>
         </tr>
         <tr>
-            <td class="row-title">奶品品相</td>
-            <td><input type="text" class="textbox w-3" name="milkType" value="<%= order.milkType %>" /> 品相编码</td>
+            <td class="row-title">金额</td>
+            <td>
+                <input type="text" class="textbox w-3" name="price" value="<%= order.price %>" />
+            </td>
         </tr>
         <tr>
-            <td class="row-title">开始配送日期</td>
-            <td><input type="text" class="textbox w-3 datetime" name="begin" value="<%= moment(order.begin).format('YYYY-MM-DD') %>" /></td>
+            <td>付款方式</td>
+            <td>
+                <select name="payMethod" id="lstPaymentMethod">
+                    <%
+                        if(order.payMethod=='现金'){
+                     %>
+                    <option selected>现金</option>
+                    <option>POS</option>
+                     <%
+                        }else{
+                     %>
+                    <option>现金</option>
+                    <option selected>POS</option>
+                     <%
+                        }
+                      %>
+                </select>
+            </td>
+        </tr>
+        <tr id="pos-number-row" style="display: none;">
+            <td class="row-title">POS单号</td>
+            <td><input type="text" class="textbox w-3" name="pos" /></td>
         </tr>
     </table>
     <p><input type="button" value="保存修改" class="button blue" onclick="saveOrder('<%= order._id %>')" /></p>
