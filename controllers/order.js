@@ -73,7 +73,6 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
-    console.log(req.body.payMethod);
     let order = new db.orders();
     order.time = Date.now();
     order.user = req.session.uid;
@@ -88,9 +87,6 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     // order.end = ;
     order.distributeMethod = req.body.distributeMethod;
     order.distributeCount = req.body.distributeCount;
-    console.log(req.body.distributeMethod);
-    console.log(req.body.milkType.length);
-
     if(typeof(req.body.milkType)!='string'){
         for(var i =0;i<req.body.milkType.length;i++){
             order.orders.push({
@@ -112,9 +108,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
             begin:req.body.begin
         });
     }
-
     order.save(function (err, order) {
-         console.log(err);
           res.redirect('/order/show/' + order._id);
     });
 });
@@ -657,6 +651,7 @@ router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res,
         .populate('address user')
         .exec()
         .then(function (order) {
+              
               res.json(order);
         })
         .then(null, next);

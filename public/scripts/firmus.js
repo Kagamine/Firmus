@@ -287,8 +287,13 @@ $(document).ready(function () {
         $.getJSON('/order/getById/'+orderId, function (data) {
           //   console.log(data);
             str+='<span>订单号：'+data['number']+'</span><br/><span>价格：'+data['price']+'</span><br/><span>地址：' + data['address']['city']+data['address']['district']+data['address']['address']+'</span><br />';
-            str+='<span>配送方式：'+data['distributeMethod'] + '</span><br /><span>订单类型：' + data['distributeMethod'] +'</span><br /><span>订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'</span><br />';
+            str+='<span>订单类型：' + data['distributeMethod'] +'</span><br /><span>订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'</span><br />';
             str+='<span>业务员：'+data['user']['name']+'</span>';
+            str+='<table class="table"><thead><tr class="tl"><td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td></tr></thead>'
+            for(var i=0;i<data.orders.length;i++){
+                str+='<tbody><tr><td>'+data.orders[i].milkType+'</td><td>'+data.orders[i].milkType+'</td><td>'+moment(data.orders[i].begin).format('YYYY-MM-DD')+'</td><td>'+data.orders[i].distributeMethod+'</td><td>'+data.orders[i].distributeCount+'</td></tr>'
+            }
+            str+='</tbody></table>';
             $("#divInfo").css("z-index",999);//让层浮动
             $("#divInfo").css("top",top+35);//设置提示div的位置
             $("#divInfo").css("left",300);
@@ -296,6 +301,7 @@ $(document).ready(function () {
             $("#divInfo").css("display","block");
         });
     });
+
     $('.orderDataTr').mouseout(function () {
         $("#divInfo").css("display","none");
     });
