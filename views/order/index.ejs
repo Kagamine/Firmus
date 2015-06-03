@@ -55,7 +55,9 @@
             <a href="/order/show/<%= x._id %>">订单详情</a>
             <% if (permission.order.modify) { %>
             <a href="/order/change/<%= x._id %>">变更</a>
-            <a href="/order/delete/<%= x._id %>">删除</a>
+            <% if (permission.order.modify) { %>
+            <a href="javascript:deleteDialog('/order/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
+            <% } %>
             <% } %>
         </td>
     </tr>

@@ -73,27 +73,50 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
-    console.log(req.body.milkType);
+    console.log(req.body.payMethod);
     let order = new db.orders();
     order.time = Date.now();
     order.user = req.session.uid;
     order.address = req.body.address;
     order.number = req.body.number;
-    order.milkType = req.body.milkType;
-    order.count = req.body.count;
-    order.price = req.body.price;
+
     order.payMethod = req.body.payMethod;
     order.pos = req.body.pos || '';
-    order.begin = Date.parse(req.body.begin);
     order.orderType = req.body.orderType;
+    order.price = req.body.price;
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.distributeMethod = req.body.distributeMethod;
     order.distributeCount = req.body.distributeCount;
-    //order.save(function (err, order) {
-    //    console.log(order);
-    //    res.redirect('/order/show/' + order._id);
-    //});
+    console.log(req.body.distributeMethod);
+    console.log(req.body.milkType.length);
+
+    if(typeof(req.body.milkType)!='string'){
+        for(var i =0;i<req.body.milkType.length;i++){
+            order.orders.push({
+                milkType: req.body.milkType[i],
+                count:req.body.count[i],
+                distributeCount:req.body.distributeCount[i],
+                distributeMethod:req.body.distributeMethod[i],
+                time:Date.now(),
+                begin:req.body.begin[i]
+            });
+        }
+    }else{
+        order.orders.push({
+            milkType: req.body.milkType,
+            count:req.body.count,
+            distributeCount:req.body.distributeCount,
+            distributeMethod:req.body.distributeMethod,
+            time:Date.now(),
+            begin:req.body.begin
+        });
+    }
+
+    order.save(function (err, order) {
+         console.log(err);
+          res.redirect('/order/show/' + order._id);
+    });
 });
 
 // 查看订单详情
@@ -104,6 +127,16 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
         .exec()
         .then(function (order) {
             res.render('order/orderDetail', { title: '订单详情', order: order });
+        })
+        .then(null, next);
+});
+
+// 删除订单 by nele
+router.post('/delete/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    db.orders.remove({ _id: req.params.id })
+        .exec()
+        .then(function () {
+            res.send('OK');
         })
         .then(null, next);
 });

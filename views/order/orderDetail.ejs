@@ -39,14 +39,6 @@
             </td>
         </tr>
         <tr>
-            <td class="row-title">奶品品相</td>
-            <td><%= order.milkType %></td>
-        </tr>
-        <tr>
-            <td class="row-title">总瓶数</td>
-            <td><%= order.count %></td>
-        </tr>
-        <tr>
             <td class="row-title">金额</td>
             <td><%= order.price %></td>
         </tr>
@@ -64,22 +56,6 @@
             <td><%= order.pos %></td>
         </tr>
         <% } %>
-        <tr>
-            <td class="row-title">开始配送日期</td>
-            <td><%= moment(order.begin).format('YYYY-MM-DD') %></td>
-        </tr>
-        <tr>
-            <td class="row-title">配送结束时间</td>
-            <td><%= moment(order.end).format('YYYY-MM-DD') %></td>
-        </tr>
-        <tr>
-            <td class="row-title">配送方式</td>
-            <td><%= order.distributeMethod %></td>
-        </tr>
-        <tr>
-            <td class="row-title">每次配送瓶数</td>
-            <td><%= order.distributeCount %></td>
-        </tr>
     </table>
 </div>
 <div class="block">
