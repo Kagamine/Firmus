@@ -108,8 +108,6 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
         .then(null, next);
 });
 
-
-
 // 编辑订单
 router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     db.orders.findById(req.params.id)

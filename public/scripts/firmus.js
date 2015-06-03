@@ -415,7 +415,7 @@ $(document).ready(function () {
         '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>'+
         '<td><a href="javascript:void(0);" class="btnDeltr">删除</a></td></tr>';
         $('.lstOrder').append(str);
-
+        $('.datetime').datetimepicker();
         //  订单详情删除行
         $('.btnDeltr').unbind().click(function () {
             $(this).parents('.trOrderDetail').remove();
