@@ -420,7 +420,7 @@ $(document).ready(function () {
         $('.btnDeltr').unbind().click(function () {
             $(this).parents('.trOrderDetail').remove();
         });
-        
+
     });
 
 
