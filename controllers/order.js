@@ -333,14 +333,16 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
             let ret = {};
             for (let x in tmp) {
                 ret[x] = {};
-                tmp[x].forEach(y => {
-                    let cnt = getDistributeCount(y, Date.now());
-                    if (cnt > 0) {
-                        if (!ret[x][y.milkType])
-                            ret[x][y.milkType] = cnt;
-                        else
-                            ret[x][y.milkType] += cnt;
-                    }
+                tmp[x].forEach(z => {
+                    z.orders.forEach(y => {
+                        let cnt = getDistributeCount(y, Date.now());
+                        if (cnt > 0) {
+                            if (!ret[x][y.milkType])
+                                ret[x][y.milkType] = cnt;
+                            else
+                                ret[x][y.milkType] += cnt;
+                        }
+                    });
                 });
             }
             res.render('order/distribute', { title: '配送管理', report: ret });
@@ -371,12 +373,14 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
                 tmp[x].forEach(y => {
                     if (!ret[x][y.line]) ret[x][y.line] = {};
                     let o = orders.filter(z => y.stations.some(a => a == z.address.milkStation));
-                    o.forEach(z => {
-                        let cnt = getDistributeCount(z, Date.now());
-                        if (cnt > 0) {
-                            if (!ret[x][y][z.milkType]) ret[x][y][z.milkType] = 0;
-                            ret[x][y][z.milkType] += cnt;
-                        }
+                    o.forEach(m => {
+                        m.orders.foreach(z => {
+                            let cnt = getDistributeCount(z, Date.now());
+                            if (cnt > 0) {
+                                if (!ret[x][y][z.milkType]) ret[x][y][z.milkType] = 0;
+                                ret[x][y][z.milkType] += cnt;
+                            }
+                        });
                     });
                 });
             }
@@ -402,15 +406,16 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
             console.log(orders);
             for (let x in tmp) {
                 if (!ret[x]) ret[x] = {};
-                tmp[x].forEach(y => {
-                    let cnt = getDistributeCount(y, Date.now());
-                    if (cnt > 0) {
-                        if (!ret[x][y.milkType]) ret[x][y.milkType] = 0;
-                        ret[x][y.milkType] += cnt;
-                    }
+                tmp[x].forEach(z => {
+                    z.forEach(y => {
+                        let cnt = getDistributeCount(y, Date.now());
+                        if (cnt > 0) {
+                            if (!ret[x][y.milkType]) ret[x][y.milkType] = 0;
+                            ret[x][y.milkType] += cnt;
+                        }
+                    });
                 });
             }
-            console.log(ret);
             res.render('order/distributeStation', { title: '奶站配送日报', report: ret });
         })
         .then(null, next);
