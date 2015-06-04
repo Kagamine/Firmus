@@ -11,6 +11,7 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
     let query = db.departments.find();
     if (req.query.title)
         query = query.where({ title: new RegExp('.*' + req.query.title + '.*') });
+
     query  =  query.where({type: '奶箱仓库'});
     _.clone(query)
         .count()
@@ -55,7 +56,6 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
 
 router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,next) {
     let query = db.deposits.find();
-
     if(req.query.giveBackFlag)
         query =  query.where({'giveBackFlag':req.query.giveBackFlag});
     if(req.query.boxedFlag)
@@ -64,6 +64,16 @@ router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,nex
         query = query.where('time').gte(Date.parse(req.query.begin));
     if (req.query.end)
         query = query.where('time').lte(Date.parse(req.query.end));
+    if (req.query.address) {
+        query = query.where({ 'address.address': new RegExp('.*' + req.query.address + '.*') });
+    }
+    if (req.query.phone) {
+        query = query.where({ 'address.phone': new RegExp('.*' + req.query.phone + '.*') });
+    }
+    if (req.query.name) {
+        console.log(req.query.name);
+        query = query.where({ 'address.name': new RegExp('.*' + req.query.name + '.*') });
+    }
 
     _.clone(query)
         .count()
