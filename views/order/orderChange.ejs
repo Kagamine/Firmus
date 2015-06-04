@@ -25,11 +25,12 @@
         </tr>
         <tr id="trOldOrder" style="display: none;">
             <td class="row-title">原有订单</td>
-            <td>
+            <td id="tdOldOrder">
             </td>
         </tr>
         <tr id="trNewOrder" style="display: none;">
             <td class="row-title">新订单</td>
+            <td id="tdNewOrder"></td>
         </tr>
         <tr id="trBalance" style="display: none;">
             <td class="row-title">差价</td>
@@ -37,11 +38,11 @@
                 <input type="text" class="textbox" name="balance"/>
             </td>
         </tr>
-        <tr>
+        <tr id="trOrderChangeBegin">
             <td class="row-title">变更起始时间</td>
             <td><input type="text" name="begin" class="textbox w-3 datetime" /></td>
         </tr>
-        <tr>
+        <tr id="trOrderChangeEnd">
             <td class="row-title">变更结束时间</td>
             <td><input type="text" name="end" class="textbox w-3 datetime" /></td>
         </tr>
@@ -53,7 +54,7 @@
             <td class="row-title" >变动数量（每次）</td>
             <td><input type="text" id="txtOrderChangeCount" name="count" class="textbox w-3" /></td>
         </tr>
-        <tr>
+        <tr id="trOrderChangeHint">
             <td class="row-title">备注</td>
             <td>
                 <textarea name="hint" class="ckeditor"></textarea>

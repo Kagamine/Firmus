@@ -190,28 +190,70 @@ router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res,
 
 // 添加订单变更
 router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
-    db.orders.findById(req.params.id)
-        .exec()
-        .then(function (order) {
-            return db.orders.update({ _id: req.params.id }, {
-                $push: {
-                    changes: {
-                        user: req.session.uid,
-                        time: Date.now(),
-                        type: req.body.type,
-                        milkType:req.body.milkType,
-                        begin: req.body.begin,
-                        end: req.body.end,
-                        hint: req.body.hint,
-                        count: req.body.count
-                    }
+    if(req.body.type=='品相变更'){
+        var ordersTemp = [];
+        var oid  =req.body.oid;
+        db.orders.findById(req.params.id)
+            .exec()
+            .then(function (order) {
+                let tmp = order.orders.filter(x=>x._id==oid);
+                tmp.milkType = req.body.omilkType;
+                tmp.count  = req.body.ocount;
+                tmp.begin = req.body.obegin;
+                tmp.distributeMethod = req.body.distributeMethod;
+                tmp.distributeCount = req.body.distributeCount;
+                ordersTemp = order.orders;
+                for(var i =0;i<ordersTemp.length;i++){
+                     if(oid==ordersTemp[i]._id){
+                          ordersTemp[i] = tmp;
+                     }
                 }
-            }).exec();
-        })
-        .then(function () {
-            res.redirect('/order/show/' + req.params.id);
-        })
-        .then(null, next);
+                db.orders.update({ _id: req.params.id }, {
+                    orders:ordersTemp
+                })
+                    .exec()
+                    .then(function () {
+                           db.orders.findById(req.params.id)
+                           .exec()
+                           .then(function (order) {
+                                   console.log(order);
+                                   db.addresses.update({_id:order.address},{
+                                       balance:req.body.balance
+                                   })
+                                       .exec()
+                                       .then(function () {
+                                           res.redirect('/order/show/' + req.params.id);
+                                       });
+                               })
+                    })
+            })
+            .then(null, next);
+    }else{
+        db.orders.findById(req.params.id)
+            .exec()
+            .then(function (order) {
+                return db.orders.update({ _id: req.params.id }, {
+                    $push: {
+                        changes: {
+                            user: req.session.uid,
+                            time: Date.now(),
+                            type: req.body.type,
+                            milkType:req.body.milkType,
+                            begin: req.body.begin,
+                            end: req.body.end,
+                            hint: req.body.hint,
+                            count: req.body.count
+                        }
+                    }
+                })
+                    .exec()
+                    .then(function () {
+                        res.redirect('/order/show/' + req.params.id);
+                    });
+            })
+            .then(null, next);
+    }
+
 });
 
 // 删除变更
