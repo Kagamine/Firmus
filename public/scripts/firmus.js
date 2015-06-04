@@ -312,9 +312,54 @@ $(document).ready(function () {
         if(value=='顺延'){
             $('#trOrderChangeCount').hide();
             $('#trOrderChangeMilkType').hide();
+            $('#trOrders').hide();
             $('#txtOrderChangeMilkType').val('');
             $('#txtOrderChangeCount').val('');
-        }else{
+        }
+        if(value=='品相变更'){
+            $('#trOrders').show();
+            $('#trOrderChangeCount').hide();
+            $('#trOrderChangeMilkType').hide();
+            $('#txtOrderChangeMilkType').val('');
+            $('#txtOrderChangeCount').val('');
+            var orderId = $('#orderId').val();
+            $.getJSON('/order/getOrdersById/'+orderId, function (data) {
+                var str='<option value="">选择品相</option>';
+                for(var i=0;i<data.length;i++){
+                  str+='<option value="'+data[i]._id+'">'+data[i].milkType+'</option>'
+                }
+                $('#lsChangeOreders').html(str);
+            });
+
+           $('#lsChangeOreders').change(function () {
+               var orderId = $('#orderId').val();
+               var oid = $('#lsChangeOreders').val();
+               $.getJSON('/order/getOneOrderById/'+orderId,{oid:oid}, function (data) {
+                   var str=' <table><thead><tr><td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td><td>操作</td>'+
+                         '</tr></thead><tbody class="lstOrder"><tr><td><input type="text" class="textbox w-0-6" name="milkType"  /></td>'+
+                         '<td><input type="text" class="textbox w-0-6"  name="count" /></td><td><input type="text" class="textbox datetime w-0-6" name="begin" /></td>'+
+                         '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option>option>周末停送</option></select>'+
+                         '</td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td><td></td>'+
+                         '</tr></tbody></table>';
+               });
+               if($('#lsChangeOreders').val()!=''){
+                   $('#trOldOrder').show();
+                   $('#trNewOrder').show();
+                   $('#trBalance').show();
+
+               }
+               else{
+                   $('#trOldOrder').hide();
+                   $('#trNewOrder').hide();
+                   $('#trBalance').hide();
+               }
+           });
+        }
+        else{
+            $('#trOrders').hide();
+            $('#trOldOrder').hide();
+            $('#trNewOrder').hide();
+            $('#trBalance').hide();
             $('#trOrderChangeCount').show();
             $('#trOrderChangeMilkType').show();
         }

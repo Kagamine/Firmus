@@ -1,6 +1,7 @@
 <% include orderMenu %>
 <form class="block" method="post">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <input type="hidden" id="orderId" value="<%=orderId%>" />
     <table class="detail-table">
         <tr>
             <td class="row-title">变更类型</td>
@@ -9,7 +10,31 @@
                     <option>停送</option>
                     <option>加送</option>
                     <option>顺延</option>
+                    <option>品相变更</option>
                 </select>
+            </td>
+        </tr>
+        <tr style="display: none;" id="trOrders">
+            <td class="row-title">
+                选择要的变更品相：
+            </td>
+            <td>
+                <select name="lsChangeOreders" id="lsChangeOreders">
+                </select>
+            </td>
+        </tr>
+        <tr id="trOldOrder" style="display: none;">
+            <td class="row-title">原有订单</td>
+            <td>
+            </td>
+        </tr>
+        <tr id="trNewOrder" style="display: none;">
+            <td class="row-title">新订单</td>
+        </tr>
+        <tr id="trBalance" style="display: none;">
+            <td class="row-title">差价</td>
+            <td>
+                <input type="text" class="textbox" name="balance"/>
             </td>
         </tr>
         <tr>

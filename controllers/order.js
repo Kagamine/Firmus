@@ -184,6 +184,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
 
 // 添加订单变更
 router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    res.locals.orderId = req.params.id;
     res.render('order/orderChange', { title: '订单变更' });
 });
 
@@ -734,6 +735,31 @@ router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res,
               res.json(order);
         })
         .then(null, next);
+});
+
+// 根据id获取orders by nele
+router.get('/getOrdersById/:id',auth.checkRole('order','query'), function (req, res, next) {
+    var orders =[];
+    db.orders.findById(req.params.id)
+     .exec()
+     .then(function (order) {
+            orders=order.orders;
+            res.json(orders);
+        })
+    .then(null,next);
+});
+
+// 根据id获取orders by nele
+router.get('/getOneOrderById/:id',auth.checkRole('order','query'), function (req, res, next) {
+    var orders =[];
+    var oid =  req.query.oid;
+    db.orders.findById(req.params.id)
+        .exec()
+        .then(function (order) {
+             let tmp = order.orders.filter(x=>x._id==oid);
+             res.send(tmp);
+        })
+        .then(null,next);
 });
 
 
