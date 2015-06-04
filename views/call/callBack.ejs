@@ -17,12 +17,12 @@
 <table class="table">
     <thead>
     <tr class="tl">
-        <td>业务员</td>
-        <td>订单</td>
-        <td>备注</td>
-        <td>内容</td>
-        <td>时间</td>
-        <td>操作</td>
+        <th>业务员</th>
+        <th>订单</th>
+        <th>备注</th>
+        <th>内容</th>
+        <th>时间</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -30,8 +30,8 @@
     <tr>
         <td><%= x.user.name %></td>
         <td><%= x.order.number %></td>
-        <td><%= x.hint %></td>
-        <td><%= x.content %></td>
+        <td><%- x.hint %></td>
+        <td><%- x.content %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
             <a href="/call/show/<%= x._id %>">订单详情</a>

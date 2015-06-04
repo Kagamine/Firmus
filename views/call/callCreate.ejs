@@ -1,3 +1,4 @@
+<script src="/scripts/ckeditor/ckeditor.js"></script>
 <h2><%= title %></h2>
 <form method="post" class="block">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
@@ -35,11 +36,11 @@
         </tr>
         <tr>
             <td class="row-title">备注</td>
-            <td><input type="text" class="textbox w-3" name="hint" /></td>
+            <td><textarea name="hint" class="textbox" style="height: 60px;"></textarea></td>
         </tr>
         <tr>
             <td class="row-title">内容</td>
-            <td><input type="text" class="textbox w-3" name="content" /></td>
+            <td><textarea name="content" class="textbox" style="height: 60px;"></textarea></td>
         </tr>
         <tr>
             <td class="row-title">热线类型编码</td>

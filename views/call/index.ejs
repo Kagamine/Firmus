@@ -32,8 +32,8 @@
     <tr id="<%= x._id %>">
         <td><%= x.user.name %></td>
         <td><%= x.order.number %></td>
-        <td><%= x.hint %></td>
-        <td><%= x.content %></td>
+        <td><%- x.hint %></td>
+        <td><%- x.content %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td>
             <a href="/call/show/<%= x._id %>">来电信息详情</a>

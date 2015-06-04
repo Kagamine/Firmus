@@ -1,4 +1,5 @@
 <% include callMenu %>
+<script src="/scripts/ckeditor/ckeditor.js"></script>
 <form method="post" class="block" id="frmEditCall">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
     <h3>来电信息修改</h3>
@@ -60,11 +61,11 @@
 
         <tr>
             <td class="row-title">备注</td>
-            <td><input type="text" class="textbox w-3" name="hint" value="<%=call.hint%>" /></td>
+            <td><textarea  class="textbox" name="hint" style="height: 60px;"><%-call.hint%></textarea></td>
         </tr>
         <tr>
             <td class="row-title">内容</td>
-            <td><input type="text" class="textbox w-3" name="content" value="<%=call.content%>" /></td>
+            <td><textarea  class="textbox" name="content" style="height: 60px;"><%-call.content%></textarea></td>
         </tr>
         <tr>
             <td class="row-title">热线类型编码</td>

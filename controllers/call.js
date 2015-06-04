@@ -113,10 +113,9 @@ router.get('/edit/:id',auth.checkRole('call','modify'), function ( req, res, nex
 
 //  修改来电信息  by  nele
 router.post('/edit/:id', auth.checkRole('call','modify'), function (req, res, next) {
-    var user =  "";
     db.users
         .aggregate()
-        .match({name:req.body.user,role:'业务员'})
+        .match({name:req.body.user,role:'热线员'})
         .group({_id:{name:'$name',id:'$_id'}})
         .exec()
         .then(function (user) {
@@ -126,8 +125,8 @@ router.post('/edit/:id', auth.checkRole('call','modify'), function (req, res, ne
                 .match({number:req.body.order})
                 .group({_id:{id:'$_id'}})
                 .exec()
-                .then(function (calls) {
-                    var order =calls[0]._id.id;
+                .then(function (orders) {
+                    var order =orders[0]._id.id;
                     db.calls.update({ _id: req.params.id },{
                         user:user,
                         order:order,
