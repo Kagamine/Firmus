@@ -18,7 +18,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
     if (req.query.city)
         query = query.where({ 'address.city': req.query.city });
     if (req.query.district)
-            query = query.where({ 'address.district': req.query.district });
+        query = query.where({ 'address.district': req.query.district });
     if (req.query.milkStation)
         query = query.where({ 'milkStation': req.query.milkStation });
     if (req.query.address) {
@@ -196,7 +196,6 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
     db.orders.findById(req.params.id)
         .exec()
         .then(function (order) {
-            let end = Date.now(); //TODO: 计算最后一天送奶日
             return db.orders.update({ _id: req.params.id }, {
                 $push: {
                     changes: {
@@ -244,11 +243,14 @@ function getEndDistributeDate (order, changes)
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
-                    count -= (order.distributeCount + x.count);
+                    count -= x.count;
                 else if (x.type == '停送')
-                    count -= (order.distributeCount - x.count);
+                    count += x.count;
+                else
+                    count += order.distributeCount;
             });
         }
     }
@@ -257,11 +259,14 @@ function getEndDistributeDate (order, changes)
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 2))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
-                    count -= (order.distributeCount + x.count);
+                    count -= x.count;
                 else if (x.type == '停送')
-                    count -= (order.distributeCount - x.count);
+                    count += x.count;
+                else
+                    count += order.distributeCount;
             });
         }
     }
@@ -271,11 +276,14 @@ function getEndDistributeDate (order, changes)
         {
             if (ret.getDay() == 6 || ret.getDay() == 7) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
-                    count -= (order.distributeCount + x.count);
+                    count -= x.count;
                 else if (x.type == '停送')
-                    count -= (order.distributeCount - x.count);
+                    count += x.count;
+                else
+                    count += order.distributeCount;
             });
         }
     }
@@ -287,31 +295,33 @@ function getDistributeCount (order, changes, time) {
     let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
     let tmp = new Date();
     time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
-    let ret;
+    let ret, cnt = 0;
     let count = order.count;
     if (order.distributeMethod == '天天送')
     {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            count -= order.distributeCount;
+            cnt = order.distributeCount;
             tmp.forEach(x => {
-                let cnt = order.distributeCount;
                 if (x.type == '加送')
                 {
-                    count -= (order.distributeCount + x.count);
+                    count -= x.count;
                     cnt += x.count;
                 }
                 else if (x.type == '停送')
                 {
-                    count -= (order.distributeCount - x.count);
+                    count += x.count;
                     cnt -= x.count;
                 }
                 else
                 {
                     cnt = 0;
+                    count += order.distributeCount;
                 }
-                if (i == time) return cnt;
             });
+            if (i.getTime() === time.getTime()) return cnt;
         }
     }
     else if (order.distributeMethod == '隔日送')
@@ -319,24 +329,26 @@ function getDistributeCount (order, changes, time) {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 2))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            count -= order.distributeCount;
+            cnt = order.distributeCount;
             tmp.forEach(x => {
-                let cnt = order.distributeCount;
                 if (x.type == '加送')
                 {
-                    count -= (order.distributeCount + x.count);
+                    count -= x.count;
                     cnt += x.count;
                 }
                 else if (x.type == '停送')
                 {
-                    count -= (order.distributeCount - x.count);
+                    count += x.count;
                     cnt -= x.count;
                 }
                 else
                 {
                     cnt = 0;
+                    count += order.distributeCount;
                 }
-                if (i == time) return cnt;
             });
+            if (i.getTime() === time.getTime()) return cnt;
         }
     }
     else
@@ -345,24 +357,26 @@ function getDistributeCount (order, changes, time) {
         {
             if (i.getDay() == 6 || i.getDay() == 7) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            count -= order.distributeCount;
+            cnt = order.distributeCount;
             tmp.forEach(x => {
-                let cnt = order.distributeCount;
                 if (x.type == '加送')
                 {
-                    count -= (order.distributeCount + x.count);
+                    count -= x.count;
                     cnt += x.count;
                 }
                 else if (x.type == '停送')
                 {
-                    count -= (order.distributeCount - x.count);
+                    count += x.count;
                     cnt -= x.count;
                 }
                 else
                 {
                     cnt = 0;
+                    count += order.distributeCount;
                 }
-                if (i == time) return cnt;
             });
+            if (i.getTime() === time.getTime()) return cnt;
         }
     }
     return 0;
@@ -371,8 +385,7 @@ function getDistributeCount (order, changes, time) {
 // 配送日报
 router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, res, next) {
     db.orders.find({
-        begin: { $lte: Date.now() },
-        end: { $gte: Date.now() }
+        //begin: { $lte: Date.now() }
     })
         .where('address').ne(null)
         .populate('address')
@@ -384,7 +397,8 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
                 ret[x] = {};
                 tmp[x].forEach(z => {
                     z.orders.forEach(y => {
-                        let cnt = getDistributeCount(y, Date.now());
+                        let cnt = getDistributeCount(y, z.changes, new Date());
+                        console.log(cnt);
                         if (cnt > 0) {
                             if (!ret[x][y.milkType])
                                 ret[x][y.milkType] = cnt;
@@ -403,8 +417,7 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
 router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (req, res, next) {
     let orders;
     db.orders.find({
-        begin: { $lte: Date.now() },
-        end: { $gte: Date.now() }
+        //begin: { $lte: Date.now() }
     })
         .where('address').ne(null)
         .where('address.city').ne(null)
@@ -424,7 +437,7 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
                     let o = orders.filter(z => y.stations.some(a => a == z.address.milkStation));
                     o.forEach(m => {
                         m.orders.foreach(z => {
-                            let cnt = getDistributeCount(z, Date.now());
+                            let cnt = getDistributeCount(z, m.changes, new Date());
                             if (cnt > 0) {
                                 if (!ret[x][y][z.milkType]) ret[x][y][z.milkType] = 0;
                                 ret[x][y][z.milkType] += cnt;
@@ -442,8 +455,7 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
 // 奶站配送日报
 router.get('/distribute/station', auth.checkRole('distribute', 'query'), function (req, res, next) {
     db.orders.find({
-        begin: { $lte: Date.now() },
-        end: { $gte: Date.now() }
+        //begin: { $lte: Date.now() }
     })
         .where('address').ne(null)
         .populate('address')
@@ -457,7 +469,7 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
                 if (!ret[x]) ret[x] = {};
                 tmp[x].forEach(z => {
                     z.forEach(y => {
-                        let cnt = getDistributeCount(y, Date.now());
+                        let cnt = getDistributeCount(y, z.changes, new Date());
                         if (cnt > 0) {
                             if (!ret[x][y.milkType]) ret[x][y.milkType] = 0;
                             ret[x][y.milkType] += cnt;
@@ -475,8 +487,7 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
     let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
     time.setDate(time.getDate() + (parseInt(req.query.day) || 3));
     db.orders.find({
-        begin: { $lte: time },
-        end: { $gte: time }
+        //begin: { $lte: time }
     })
         .where('address').ne(null)
         .populate('address')
@@ -486,14 +497,16 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
             let ret = {};
             for (let x in tmp) {
                 ret[x] = {};
-                tmp[x].forEach(y => {
-                    let cnt = getDistributeCount(y, time);
-                    if (cnt > 0) {
-                        if (!ret[x][y.milkType])
-                            ret[x][y.milkType] = cnt;
-                        else
-                            ret[x][y.milkType] += cnt;
-                    }
+                tmp[x].forEach(z => {
+                    z.orders.forEach(y => {
+                        let cnt = getDistributeCount(y, z.changes, time);
+                        if (cnt > 0) {
+                            if (!ret[x][y.milkType])
+                                ret[x][y.milkType] = cnt;
+                            else
+                                ret[x][y.milkType] += cnt;
+                        }
+                    });
                 });
             }
             res.render('order/produce', { title: '生产预报', report: ret });
