@@ -54,8 +54,14 @@
             <tr>
                 <td class="row-title">奶站</td>
                 <td>
-                    <select name="milkStation" id="lstEditAddressMilkStation">
-                        <option value="">未指定</option>
+                    <select name="milkStation">
+                        <%
+                           for(var i =0 ;i<departments.length;i++){
+                        %>
+                          <option value="<%=departments[i]._id%>" <%=departments[i]._id==address.milkStation?'select':''%>><%=departments[i].title%></option>
+                        <%
+                           }
+                        %>
                     </select>
                 </td>
             </tr>
