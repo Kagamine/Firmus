@@ -464,12 +464,11 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
         .exec()
         .then(function (orders) {
             let ret = {};
-            let tmp = _.groupBy(orders.filter(x => x.milkStation), x => x.address.milkStation.title + '(' + x.address.milkStation.city + ')');
-            console.log(orders);
+            let tmp = _.groupBy(orders.filter(x => x.address.milkStation), x => x.address.milkStation.city + ' - ' + x.address.milkStation.title);
             for (let x in tmp) {
                 if (!ret[x]) ret[x] = {};
                 tmp[x].forEach(z => {
-                    z.forEach(y => {
+                    z.orders.forEach(y => {
                         let cnt = getDistributeCount(y, z.changes, new Date());
                         if (cnt > 0) {
                             if (!ret[x][y.milkType]) ret[x][y.milkType] = 0;
