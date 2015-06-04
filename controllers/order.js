@@ -420,7 +420,6 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
         //begin: { $lte: Date.now() }
     })
         .where('address').ne(null)
-        .where('address.city').ne(null)
         .populate('address')
         .exec()
         .then(function (_orders) {
@@ -434,15 +433,17 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
                 if (!ret[x]) ret[x] = {};
                 tmp[x].forEach(y => {
                     if (!ret[x][y.line]) ret[x][y.line] = {};
-                    let o = orders.filter(z => y.stations.some(a => a == z.address.milkStation));
-                    o.forEach(m => {
-                        m.orders.foreach(z => {
-                            let cnt = getDistributeCount(z, m.changes, new Date());
-                            if (cnt > 0) {
-                                if (!ret[x][y][z.milkType]) ret[x][y][z.milkType] = 0;
-                                ret[x][y][z.milkType] += cnt;
-                            }
-                        });
+                    orders.forEach(m => {
+                        if (y.stations.some(a => a.toString() == m.address.milkStation.toString()))
+                        {
+                            m.orders.forEach(z => {
+                                let cnt = getDistributeCount(z, m.changes, new Date());
+                                if (cnt > 0) {
+                                    if (!ret[x][y.line][z.milkType.toString()]) ret[x][y.line][z.milkType.toString()] = 0;
+                                    ret[x][y.line][z.milkType.toString()] += cnt;
+                                }
+                            });
+                        }
                     });
                 });
             }
@@ -631,7 +632,7 @@ router.post('/finance/edit/:id',auth.checkRole('finance','modify'), function (re
     var pos = req.body.pos;
 
     db.users
-        .findOne({name:name})
+        .findOne({ name: name })
         .exec()
         .then(function (user) {
             db.finances.update({ _id: req.params.id }, {
