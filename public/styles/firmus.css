@@ -655,4 +655,5 @@ table {
     width: 500px;
     position: absolute;
     padding: 10px;
+    border-left: 5px solid #119eea;
 }
