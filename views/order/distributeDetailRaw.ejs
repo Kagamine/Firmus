@@ -1,7 +1,13 @@
-<% include distributeMenu %>
-<p>
-    <a href="?raw=true" target="_blank" class="button green">打印预览</a>
-</p>
+<style>
+    td, th {
+        padding: 3px;
+    }
+    table {
+        font-size: 9px;
+        text-align: left;
+    }
+</style>
+<button onClick="window.print()">打印</button>
 <table class="table">
     <thead class="tl">
     <tr>
@@ -32,4 +38,3 @@
     <% }) %>
     </tbody>
 </table>
-<p>今日共 <%= report.length %> 条配送信息</p>

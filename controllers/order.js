@@ -517,7 +517,10 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
                     return x.address < y.address;
                 return y.count - x.count;
             });
-            res.render('order/distributeDetail', { title: '配送详单', report: ret });
+            if (!req.query.raw)
+                res.render('order/distributeDetail', { title: '配送详单', report: ret });
+            else
+                res.render('order/distributeDetailRaw', { layout: false, report: ret });
         })
         .then(null, next);
 });
