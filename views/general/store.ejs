@@ -13,6 +13,13 @@
 <table class="table">
     <thead>
     <tr>
+        <%
+          if(type=='赠品仓库'){
+        %>
+        <th class="tl">增品名称</th>
+        <%
+          }
+        %>
         <th class="tl">操作类型</th>
         <th class="tl">数量</th>
         <th class="tl">时间</th>
@@ -22,6 +29,13 @@
     <tbody>
     <% stores.forEach(x => { %>
     <tr>
+        <%
+            if(type=='赠品仓库'){
+        %>
+        <td><%= x.gift.title %></td>
+        <%
+        }
+        %>
         <td><%=x.operateType %></td>
         <td><%=x.count %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>

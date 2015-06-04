@@ -413,7 +413,7 @@ router.get('/department/store/:id',auth.checkRole('store','query'), function ( r
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-            return query.populate({ path: 'department', select: 'title _id' }).skip(50 * (page - 1)).limit(50).exec();
+            return query.populate({ path: 'department', select: 'title _id' }).populate({ path: 'gift', select: 'title _id' }).skip(50 * (page - 1)).limit(50).exec();
         })
         .then(function (stores) {
             res.locals.stores = stores;
