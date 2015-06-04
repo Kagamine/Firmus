@@ -482,6 +482,50 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
         .then(null, next);
 });
 
+router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function (req, res, next) {
+    db.orders.find({})
+        .where('address').ne(null)
+        .populate('address')
+        .deepPopulate('address.milkStation address.distributor')
+        .exec()
+        .then(function (orders) {
+            let ret = [];
+            let tmp = _.groupBy(orders.filter(x => x.address.milkStation), x => x.address.milkStation.city + ' - ' + x.address.milkStation.title);
+            for (let x in tmp) {
+                if (!ret[x]) ret[x] = {};
+                tmp[x].forEach(z => {
+                    z.orders.forEach(y => {
+                        let cnt = getDistributeCount(y, z.changes, new Date());
+                        if (cnt > 0) {
+                            ret.push({
+                                number: z.number,
+                                customer: z.address.name,
+                                tel: z.address.phone,
+                                milkType: y.milkType,
+                                count: cnt,
+                                address: z.address.address,
+                                storey: z.address.storey,
+                                milkStation: z.address.milkStation ? z.address.milkStation.title : '未指派',
+                                distributor: z.address.distributor ? z.address.distributor.name : '未指派'
+                            });
+                        }
+                    });
+                });
+            }
+            ret = ret.sort((x, y) => {
+                if (x.milkStation != y.milkStation)
+                    return x.milkStation < y.milkStation;
+                if (x.distributor != y.distributor)
+                    return x.distributor < y.distributor;
+                if (x.address != y.address)
+                    return x.address < y.address;
+                return y.count - x.count;
+            });
+            res.render('order/distributeDetail', { title: '配送详单', report: ret });
+        })
+        .then(null, next);
+});
+
 router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, next) {
     let now = new Date();
     let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());

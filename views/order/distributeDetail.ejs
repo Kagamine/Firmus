@@ -1,0 +1,32 @@
+<% include distributeMenu %>
+<table class="table">
+    <thead class="tl">
+    <tr>
+        <th>订单号</th>
+        <th>奶站</th>
+        <th>配送人员</th>
+        <th>客户姓名</th>
+        <th>奶品</th>
+        <th>数量</th>
+        <th>地址</th>
+        <th>联系电话</th>
+        <th>楼层标识</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% report.forEach(x => { %>
+    <tr>
+        <td><%= x.number %></td>
+        <td><%= x.milkStation %></td>
+        <td><%= x.distributor %></td>
+        <td><%= x.customer %></td>
+        <td><%= x.milkType %></td>
+        <td><%= x.count %></td>
+        <td><%= x.address %></td>
+        <td><%= x.phone %></td>
+        <td><%= x.storey %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<p>今日共 <%= report.length %> 条配送信息</p>
