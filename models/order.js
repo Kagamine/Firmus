@@ -82,7 +82,8 @@ var orderSchema = new Schema({
         },
         time: Date
     }],
-    pos: String
+    pos : String,
+    hint : String
 });
 
 orderSchema.plugin(deepPopulate, {});

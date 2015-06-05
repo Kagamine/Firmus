@@ -81,8 +81,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.price = req.body.price;
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
-    order.distributeMethod = req.body.distributeMethod;
-    order.distributeCount = req.body.distributeCount;
+    order.hint = req.body.hint;
     if(typeof(req.body.milkType)!='string'){
         for(var i =0;i<req.body.milkType.length;i++){
             order.orders.push({
