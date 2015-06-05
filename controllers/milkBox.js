@@ -109,10 +109,10 @@ router.post('/createDeposit',auth.checkRole('deposit','modify'), function (req, 
     deposit.address= req.body.address;
     deposit.giveBackFlag=req.body.giveBackFlag;
     deposit.giveBackDone=req.body.giveBackDone;
-    deposit.giveBackTime=req.body.giveBackTime  == 'datetime'?'':req.body.giveBackTime;
+    deposit.giveBackTime=req.body.giveBackDone?req.body.giveBackTime:'';
 
     deposit.boxedFlag=req.body.boxedFlag;
-    deposit.boxedTime=req.body.boxedTime == 'datetime' ?'' :req.body.boxedTime;
+    deposit.boxedTime=req.body.boxedDone?req.body.boxedTime:'';
     deposit.boxedDone=req.body.boxedDone;
 
     deposit.time=Date.now();

@@ -42,7 +42,7 @@
         <tr id="trDepositTime" style="display: none;">
             <td class="row-title">拆箱时间</td>
             <td>
-                <input type="text" name="giveBackTime" id="txtDepositTime" class="textbox w-3 datetime" value="datetime" />
+                <input type="text" name="giveBackTime" id="txtDepositTime" class="textbox w-3 datetime" value="<%= moment(Date.now()).format('YYYY-mm-DD HH:mm:ss')%>" />
             </td>
         </tr>
 
@@ -69,7 +69,7 @@
         <tr id="trDepositBoxedTime" style="display: none;">
             <td class="row-title">装箱时间</td>
             <td>
-                <input type="text" name="boxedTime" id="txtDepositBoxedTime" class="textbox w-3 datetime" value="datetime" />
+                <input type="text" name="boxedTime" id="txtDepositBoxedTime" class="textbox w-3 datetime" value="<%= moment(Date.now()).format('YYYY-mm-DD HH:mm:ss')%>" />
             </td>
         </tr>
 

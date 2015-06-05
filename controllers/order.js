@@ -237,11 +237,11 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                             user: req.session.uid,
                             time: Date.now(),
                             type: req.body.type,
-                            milkType:req.body.milkType,
+                            milkType: req.body.type == '顺延'?'':req.body.milkType,
                             begin: req.body.begin,
                             end: req.body.end,
                             hint: req.body.hint,
-                            count: req.body.count
+                            count: req.body.type == '顺延'?'':req.body.count
                         }
                     }
                 })

@@ -35,16 +35,16 @@
         <tr id="trBalance" style="display: none;">
             <td class="row-title">差价</td>
             <td>
-                <input type="text" class="textbox" name="balance"/>
+                <input type="text" class="textbox" name="balance" id="txtBalance" value="balance"/>
             </td>
         </tr>
         <tr id="trOrderChangeBegin">
             <td class="row-title">变更起始时间</td>
-            <td><input type="text" name="begin" class="textbox w-3 datetime" /></td>
+            <td><input type="text" name="begin" class="textbox w-3 datetime" value="<%=moment(Date.now()).format('YYYY-mm-DD HH:mm:ss')%>"/></td>
         </tr>
         <tr id="trOrderChangeEnd">
             <td class="row-title">变更结束时间</td>
-            <td><input type="text" name="end" class="textbox w-3 datetime" /></td>
+            <td><input type="text" name="end" class="textbox w-3 datetime" value="<%=moment(Date.now()).format('YYYY-mm-DD HH:mm:ss')%>" /></td>
         </tr>
         <tr id="trOrderChangeMilkType">
             <td class="row-title" >品相</td>

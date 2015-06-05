@@ -73,7 +73,7 @@ router.post('/create', auth.checkRole('call', 'modify'), function (req, res, nex
                     call.time = Date.now();
                     call.needFeedback = req.body.needFeedback;
                     call.isFeedbacked = req.body.isFeedbacked;
-                    call.feedbackResult = req.body.feedbackResult;
+                    call.feedbackResult = req.body.isFeedbacked?req.body.feedbackResult:'';
                     call.hint = req.body.hint;
                     call.content = req.body.content;
                     call.type = req.body.type;

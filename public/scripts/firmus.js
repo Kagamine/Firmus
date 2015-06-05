@@ -309,15 +309,21 @@ $(document).ready(function () {
     //  变更 顺延数量隐藏 by nele
     $('#slOrderChangeType').change(function () {
         var value =  $('#slOrderChangeType').val();
-        if(value=='顺延'){
-            $('#trOrderChangeCount').hide();
-            $('#trOrderChangeMilkType').hide();
+        if(value == '顺延'){
             $('#trOrders').hide();
-            $('#txtOrderChangeMilkType').val('');
-            $('#txtOrderChangeCount').val('');
+            $('#txtOrderChangeMilkType').val('milktype');
+            $('#txtOrderChangeCount').val('count');
             $('#trOrderChangeBegin').show();
             $('#trOrderChangeEnd').show();
             $('#trOrderChangeHint').show();
+            $('#trOrderChangeCount').hide();
+            $('#trOrderChangeMilkType').hide();
+
+            $('#txtOmilkType').val('milktype');
+            $('#txtOcount').val('count');
+            $('#txtObegin').val('begin');
+            $('#txtDistributeCount').val('count');
+            $('#txtBalance').val('balance');
         }
         if(value=='品相变更'){
             $('#trOrders').show();
@@ -356,14 +362,22 @@ $(document).ready(function () {
                    });
 
                    var str=' <table><thead><tr><td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td>'+
-                       '</tr></thead><tbody class="lstOrder"><tr><td><input type="text" class="textbox w-0-6" name="omilkType" /></td>'+
-                       '<td><input type="text" class="textbox w-0-6"  name="ocount" /></td><td><input type="text" class="textbox datetime w-0-6" name="obegin" /></td>'+
+                       '</tr></thead><tbody class="lstOrder"><tr><td><input type="text" class="textbox w-0-6" name="omilkType" id="txtOmilkType" /></td>'+
+                       '<td><input type="text" class="textbox w-0-6"  name="ocount" id="txtOcount" /></td><td><input type="text" class="textbox datetime w-0-6" name="obegin" id="txtObegin" /></td>'+
                        '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option></select>'+
-                       '</td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>'+
+                       '</td><td><input type="text" class="textbox w-0-6"  name="distributeCount" id="txtDistributeCount" /></td>'+
                        '</tr></tbody></table>';
 
                    $('#tdNewOrder').html(str);
                    $('.datetime').datetimepicker();
+
+                   $('#txtOrderChangeMilkType').val('milktype');
+                   $('#txtOrderChangeCount').val('count');
+                   $('#txtOmilkType').val('');
+                   $('#txtOcount').val('');
+                   $('#txtObegin').val('');
+                   $('#txtDistributeCount').val('');
+                   $('#txtBalance').val('');
                }
                else{
                    $('#trOldOrder').hide();
@@ -374,7 +388,7 @@ $(document).ready(function () {
                }
            });
         }
-        else{
+        else if(value =='停送' ||  value == '加送' ){
             $('#trOrders').hide();
             $('#trOldOrder').hide();
             $('#trNewOrder').hide();
@@ -384,6 +398,14 @@ $(document).ready(function () {
             $('#trOrderChangeBegin').show();
             $('#trOrderChangeEnd').show();
             $('#trOrderChangeHint').show();
+            $('#txtOrderChangeMilkType').val('');
+            $('#txtOrderChangeCount').val('');
+
+            $('#txtOmilkType').val('milktype');
+            $('#txtOcount').val('count');
+            $('#txtObegin').val('begin');
+            $('#txtDistributeCount').val('count');
+            $('#txtBalance').val('balance');
         }
     });
 
@@ -508,10 +530,6 @@ $(document).ready(function () {
     $("form").submit(function (e) {
         $.each($(this).find("input[type='text']"), function (i, item) {
             if ($(item).val() == "" && $(item).attr("name")!="undefined") {
-                if ($(item).attr("placeholder") != null && $(item).attr("placeholder") != "")
-                    alert($(item).attr("placeholder") + "不能为空！");
-                else
-                    alert($(item).attr("name") + " 不能为空！");
                 $(item).addClass('error');
                 e.preventDefault();
                 return false;
