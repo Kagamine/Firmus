@@ -501,7 +501,26 @@ $(document).ready(function () {
     });
 
 
+    $('input').focus(function () {
+        $(this).removeClass('error');
+    });
 
+    $("form").submit(function (e) {
+        $.each($(this).find("input[type='text']"), function (i, item) {
+            if ($(item).val() == "" && $(item).attr("name")!="undefined") {
+                if ($(item).attr("placeholder") != null && $(item).attr("placeholder") != "")
+                    alert($(item).attr("placeholder") + "不能为空！");
+                else
+                    alert($(item).attr("name") + " 不能为空！");
+                $(item).addClass('error');
+                e.preventDefault();
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
+    });
 });
 
 function popMsg(txt) {
@@ -707,4 +726,6 @@ function createOrderSelectAddress(){
         });
     })
 }
+
+
 
