@@ -912,11 +912,16 @@ router.get('/getServiceUserByDepartmentId',auth.checkRole('address','query'),fun
 });
 
 // 获取部门列表 by nele
-router.get('/getDepartments',auth.checkRole('department','query'), function (req,res,next){
-     db.departments.find()
+router.get('/getMilkStations',auth.checkRole('department','query'), function (req,res,next){
+     db.departments.find({ type: '奶站' })
     .exec()
     .then(function(departments){
-          res.json(departments.map(x=>x.title));
+             res.json(departments.map(x=>{
+                 return {
+                     id: x._id,
+                     title: x.title
+                 }
+             }));
          })
     .then(null,next);
 });

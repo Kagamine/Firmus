@@ -628,14 +628,13 @@ function saveOrderAddress(){
     var address = $('#txtOrderSetAddress').val();
     var name = $('#txtOrderSetUser').val();
     $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address}, function (data) {
-        console.log(data);
         if(data=='no') {
             $('#trOrderSetStorey').show();
             $('#trOrderSetMilkStation').show();
-            $.getJSON('/general/getDepartments',function(data){
+            $.getJSON('/general/getMilkStations',function(data){
                 var str='<option value="">选择奶站</option>';
                 for(var i=0;i<data.length;i++){
-                    str+='<option value='+data[i]+'>'+data[i]+'</option>'
+                    str+='<option value='+data[i].id+'>'+data[i].title+'</option>'
                 }
                 $('#lstOrderMilkStation').html(str);
 

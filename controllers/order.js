@@ -76,7 +76,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.number = req.body.number;
 
     order.payMethod = req.body.payMethod;
-    order.pos = req.body.pos || '';
+    order.pos = req.body.pos =='pos'?'': req.body.pos;
     order.orderType = req.body.orderType;
     order.price = req.body.price;
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
