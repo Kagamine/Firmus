@@ -559,10 +559,42 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
                     return x.address < y.address;
                 return y.count - x.count;
             });
+            res.locals.report = ret;
+            next();
+        })
+        .then(null, next);
+});
+
+router.get('/distribute/detail', function (req, res, next) {
+    db.orders.find({
+        //begin: { $lte: Date.now() }
+    })
+        .where('address').ne(null)
+        .populate('address')
+        .exec()
+        .then(function (orders) {
+            let tmp = _.groupBy(orders, x => x.address.city);
+            let ret = {};
+            for (let x in tmp) {
+                ret[x] = {};
+                tmp[x].forEach(z => {
+                    z.orders.forEach(y => {
+                        let cnt = getDistributeCount(y, z.changes, new Date());
+                        console.log(cnt);
+                        if (cnt > 0) {
+                            if (!ret[x][y.milkType])
+                                ret[x][y.milkType] = cnt;
+                            else
+                                ret[x][y.milkType] += cnt;
+                        }
+                    });
+                });
+            }
+            res.locals.report2 = ret;
             if (!req.query.raw)
-                res.render('order/distributeDetail', { title: '配送详单', report: ret });
+                res.render('order/distributeDetail', { title: '配送详单' });
             else
-                res.render('order/distributeDetailRaw', { layout: false, report: ret });
+                res.render('order/distributeDetailRaw', { layout: false });
         })
         .then(null, next);
 });
