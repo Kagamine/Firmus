@@ -113,6 +113,7 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
     db.orders.findById(req.params.id)
         .populate('address')
         .populate('order user')
+        .populate('logs.user')
         .exec()
         .then(function (order) {
             res.render('order/orderDetail', { title: '订单详情', order: order });

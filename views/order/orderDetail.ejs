@@ -108,3 +108,12 @@
         <% }) %>
     </ul>
 </div>
+
+<div class="block">
+  <h3>变更日志</h3>
+  <ul>
+      <% order.logs.forEach(x => { %>
+      <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <a href="general/employee/<%=x.user._id%>"><%= x.user.name %> (<%= x.user.jobNumber %>)</a>  办理了 <%= x.content %></li>
+      <% }) %>
+  </ul>
+</div>
