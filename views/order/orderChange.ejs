@@ -11,6 +11,7 @@
                     <option>加送</option>
                     <option>顺延</option>
                     <option>品相变更</option>
+                    <option>赠饮</option>
                 </select>
             </td>
         </tr>
@@ -23,6 +24,15 @@
                 </select>
             </td>
         </tr>
+
+        <tr style="display: none;" id="trGiftOrders">
+            <td class="row-title">选择品相</td>
+            <td>
+                <select name="lsGiftOreders" id="lsGiftOreders">
+                </select>
+            </td>
+        </tr>
+
         <tr id="trOldOrder" style="display: none;">
             <td class="row-title">原有订单</td>
             <td id="tdOldOrder">
@@ -30,7 +40,25 @@
         </tr>
         <tr id="trNewOrder" style="display: none;">
             <td class="row-title">新订单</td>
-            <td id="tdNewOrder"></td>
+            <td id="tdNewOrder">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td>
+                        </tr>
+                    </thead>
+                    <tbody class="lstOrder"><tr><td><input type="text" class="textbox w-0-6" name="omilkType" id="txtOmilkType" /></td>
+                        <td><input type="text" class="textbox w-0-6"  name="ocount" id="txtOcount" /></td><td><input type="text" class="textbox datetime w-0-6" name="obegin" id="txtObegin" /></td>
+                        <td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option></select>
+                        </td><td><input type="text" class="textbox w-0-6"  name="distributeCount" id="txtDistributeCount" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr id="trGiftCount" style="display: none;">
+            <td class="row-title">瓶数</td>
+            <td><input type="text" id="giftCount" name="giftCount" class="textbox"/></td>
         </tr>
         <tr id="trBalance" style="display: none;">
             <td class="row-title">差价</td>

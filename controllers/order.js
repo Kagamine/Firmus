@@ -227,7 +227,48 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     })
             })
             .then(null, next);
-    }else{
+    }
+    else if(req.body.type=='赠饮'){
+        var ordersTemp = [];
+         if(req.body.lsGiftOreders=='new'){
+             db.orders.update({ _id: req.params.id }, {
+                 $push: {
+                     orders: {
+                         milkType:req.body.omilkType,
+                         count:req.body.ocount,
+                         begin:req.body.obegin,
+                         distributeMethod:req.body.distributeMethod,
+                         distributeCount:req.body.distributeCount
+                     }
+                 }
+             })
+             .exec(function () {
+                     res.redirect('/order/show/' + req.params.id);
+                 })
+             .then(null,next);
+         }
+         else{
+             db.orders.findById(req.params.id)
+                 .exec()
+                 .then(function (order) {
+                     ordersTemp = order.orders;
+                     for(var i =0;i<ordersTemp.length;i++){
+                         if(req.body.lsGiftOreders==ordersTemp[i]._id){
+                             ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.giftCount);
+                         }
+                     }
+                     db.orders.update({ _id: req.params.id }, {
+                         orders:ordersTemp
+                     })
+                         .exec()
+                         .then(function () {
+                             res.redirect('/order/show/' + req.params.id);
+                         })
+                 })
+                 .then(null, next);
+         }
+    }
+    else{
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {
