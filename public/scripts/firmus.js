@@ -521,6 +521,14 @@ $(document).ready(function () {
                         $('#txtDistributeCount').val('');
                         $('#trGiftCount').hide();
                         $('#giftCount').val('giftCount');
+                    }else{
+                        $('#trNewOrder').hide();
+                        $('#txtOmilkType').val('txtOmilkType');
+                        $('#txtOcount').val('txtOcount');
+                        $('#txtObegin').val('txtObegin');
+                        $('#txtDistributeCount').val('txtDistributeCount');
+                        $('#trGiftCount').show();
+                        $('#giftCount').val('');
                     }
                 }));
         }

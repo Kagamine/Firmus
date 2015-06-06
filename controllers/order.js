@@ -229,6 +229,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             .then(null, next);
     }
     else if(req.body.type=='顺延'){
+        var temp;
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {
@@ -236,6 +237,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                 for(var i =0;i<ordersTemp.length;i++){
                     if(req.body.lsLengthenOreders==ordersTemp[i]._id){
                         ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.lengthenCount);
+                        var temp = ordersTemp[i].milkType;
                     }
                 }
                 db.orders.update({ _id: req.params.id }, {
@@ -243,7 +245,18 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                 })
                     .exec()
                     .then(function () {
-                        res.redirect('/order/show/' + req.params.id);
+                        db.orders.update({ _id: req.params.id }, {
+                            $push: {
+                                logs: {
+                                    user: req.session.uid,
+                                    content:'顺延了'+temp+'品相'+req.body.lengthenCount+'瓶'
+                                }
+                            }
+                        })
+                        .exec()
+                        .then(function () {
+                                res.redirect('/order/show/' + req.params.id);
+                            })
                     })
             })
             .then(null, next);
@@ -263,11 +276,23 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                  }
              })
              .exec(function () {
-                     res.redirect('/order/show/' + req.params.id);
+                     db.orders.update({ _id: req.params.id }, {
+                         $push: {
+                             logs: {
+                                 user: req.session.uid,
+                                 content:'赠送了'+req.body.omilkType+'品相'+req.body.ocount+'瓶'
+                             }
+                         }
+                     })
+                         .exec()
+                         .then(function () {
+                             res.redirect('/order/show/' + req.params.id);
+                         })
                  })
              .then(null,next);
          }
          else{
+             var temp;
              db.orders.findById(req.params.id)
                  .exec()
                  .then(function (order) {
@@ -275,6 +300,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                      for(var i =0;i<ordersTemp.length;i++){
                          if(req.body.lsGiftOreders==ordersTemp[i]._id){
                              ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.giftCount);
+                             temp = ordersTemp[i].milkType;
                          }
                      }
                      db.orders.update({ _id: req.params.id }, {
@@ -282,7 +308,18 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                      })
                          .exec()
                          .then(function () {
-                             res.redirect('/order/show/' + req.params.id);
+                             db.orders.update({ _id: req.params.id }, {
+                                 $push: {
+                                     logs: {
+                                         user: req.session.uid,
+                                         content:'赠送了'+temp+'品相'+req.body.giftCount+'瓶'
+                                     }
+                                 }
+                             })
+                                 .exec()
+                                 .then(function () {
+                                     res.redirect('/order/show/' + req.params.id);
+                                 })
                          })
                  })
                  .then(null, next);

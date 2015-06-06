@@ -83,7 +83,22 @@ var orderSchema = new Schema({
         time: Date
     }],
     pos : String,
-    hint : String
+    hint : String,
+    logs:[{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'users',
+            index: true
+        },
+        content:{
+            type:String,
+            index:true
+        },
+        time:{
+            type:Date,
+            default: Date.now()
+        }
+    }]
 });
 
 orderSchema.plugin(deepPopulate, {});
