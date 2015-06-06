@@ -736,12 +736,25 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
     var city = req.query.city;
     var address = req.query.address;
     var name = req.query.name;
+    var phone = req.query.phone;
+    var storey = req.query.storey;
+    var milkStation = req.query.milkStation;
     db.addresses
-        .findOne({city:city,district:district,address:address,name:name})
+        .findOne({city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation})
         .exec()
         .then(function(address){
             if(address==null){
-                 res.send('no');
+                let address  = new db.addresses();
+                address.city=city;
+                address.district=district;
+                address.address=req.query.address;
+                address.name=name;
+                address.phone=phone;
+                address.storey=storey;
+                address.milkStation=milkStation;
+                address.save(function (err,address) {
+                    res.send(address._id);
+                })
             }else{
                  res.send(address._id);
             }

@@ -848,12 +848,7 @@ router.get('/address/getAddressByUserName',auth.checkRole('address','query'),fun
         .group({_id:{name:'$name',id:'$_id'}})
         .exec()
         .then(function(data){
-            res.json(data.map(x=>{
-                return {
-                    id:x._id.id,
-                    data:x._id.name
-                }
-            }));
+            res.json(data.map(x=>x._id.name));
         })
         .then(null, next);
 });
@@ -866,12 +861,7 @@ router.get('/address/getAddressByPhone',auth.checkRole('address','query'),functi
         .group({_id:{phone:'$phone',id:'$_id'}})
         .exec()
         .then(function(data){
-            res.json(data.map(x=>{
-                return {
-                    id:x._id.id,
-                    data:x._id.phone
-                }
-            }));
+            res.json(data.map(x=>x._id.phone));
         })
         .then(null, next);
 });

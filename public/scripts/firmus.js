@@ -770,25 +770,14 @@ function saveOrderAddress(){
     var district = $('#txtOrderSetDistrict').val();
     var address = $('#txtOrderSetAddress').val();
     var name = $('#txtOrderSetUser').val();
-    $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address}, function (data) {
-        if(data=='no') {
-            $('#trOrderSetStorey').show();
-            $('#trOrderSetMilkStation').show();
-            $.getJSON('/general/getMilkStations',function(data){
-                var str='<option value="">选择奶站</option>';
-                for(var i=0;i<data.length;i++){
-                    str+='<option value='+data[i].id+'>'+data[i].title+'</option>'
-                }
-                $('#lstOrderMilkStation').html(str);
-                $('#btnAddOrderAddress').hide();
-                $('#btnAddOrderAddressNew').show();
-            });
-        }else{
+    var phone = $('#txtOrderSetPhone').val();
+    var storey= $('#lstOrderStorey').val();
+    var  milkStation =$('#lstOrderMilkStation').val();
+    $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address,phone:phone,storey:storey,milkStation:milkStation}, function (data) {
             $('#orderAddress').val(data);
             closeDialog();
             var str='<span>'+city+'  '+district+'   '+address+'</span>';
             $('#showOrderAddress').html(str);
-        }
     });
 }
 
@@ -806,40 +795,29 @@ function createOrderSelectAddress(){
         '<tr id="trOrderSetStorey"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
         '<tr id="trOrderSetMilkStation"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
         '</table>' +
-        '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" disabled="disabled" value="确定" />' +
-        '<input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddressNew" value="确定" style="display: none;" /><a href="javascript:closeDialog()" class="button">取消</a></div>' +
+        '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" value="确定" />' +
+        '<a href="javascript:closeDialog()" class="button">取消</a></div>' +
         '</div>';
     var dom = $(html);
     dom.css('margin-left', -(dom.outerWidth() / 2));
     $('body').append(dom);
     dom.addClass('active');
-
+    $.getJSON('/general/getMilkStations',function(data){
+        var str='<option value="">选择奶站</option>';
+        for(var i=0;i<data.length;i++){
+            str+='<option value='+data[i].id+'>'+data[i].title+'</option>'
+        }
+        $('#lstOrderMilkStation').html(str);
+    });
 
 
     $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
     $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtOrderSetDistrict').droptxt('/general/address/getDistrictsByName','data');
-    //$('#txtOrderSetUser').dropjson('/general/address/getAddressByUserName','data');
-
-    //$('#txtOrderSetPhone').dropjson('/general/address/getAddressByPhone','data');
-
+    $('#txtOrderSetUser').droptxt('/general/address/getAddressByUserName','data');
+    $('#txtOrderSetPhone').droptxt('/general/address/getAddressByPhone','data');
 
 
-    $('#btnAddOrderAddressNew').click(function(){
-        var city = $('#txtOrderSetCity').val();
-        var district = $('#txtOrderSetDistrict').val();
-        var address = $('#txtOrderSetAddress').val();
-        var name = $('#txtOrderSetUser').val();
-        var phone = $('#txtOrderSetPhone').val();
-        var storey = $('#lstOrderStorey').val();
-        var milkStation = $('#lstOrderMilkStation').val();
-        $.get('/general/address/orderAdd',{city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation},function(data){
-            $('#orderAddress').val(data);
-            closeDialog();
-            var str='<span>'+city+'  '+district+'   '+address+'</span>';
-            $('#showOrderAddress').html(str);
-        });
-    })
 }
 
 

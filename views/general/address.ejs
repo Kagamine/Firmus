@@ -47,7 +47,7 @@
     </thead>
     <tbody>
     <% addresses.forEach(x => { %>
-    <tr class="addressDataTr" data-id="<%= x._id %>">
+    <tr class="addressDataTr" data-id="<%= x._id %>" id="<%=x._id%>">
         <td><%= x.city %></td>
         <td><%= x.district %></td>
         <td><%= x.address %></td>
