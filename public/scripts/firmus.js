@@ -780,7 +780,6 @@ function saveOrderAddress(){
                     str+='<option value='+data[i].id+'>'+data[i].title+'</option>'
                 }
                 $('#lstOrderMilkStation').html(str);
-
                 $('#btnAddOrderAddress').hide();
                 $('#btnAddOrderAddressNew').show();
             });
@@ -799,13 +798,13 @@ function createOrderSelectAddress(){
     var html = '<div class="dialog"><input id="txtAid" type="hidden" />' +
         '<h3 class="dialog-title">编辑地址</h3>' +
         '<table class="detail-table">' +
-        '<tr id="trOrderSetUser"><td>联系人</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetUser" /></td></tr>' +
-        '<tr id="trOrderSetPhone"><td>电话</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetPhone" /></td></tr>' +
+        '<tr><td>联系人</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetUser" /></td></tr>' +
+        '<tr><td>电话</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetPhone" /></td></tr>' +
         '<tr><td>城市</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetCity" /></td></tr>' +
         '<tr><td>区县</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetDistrict" /></td></tr>' +
         '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr>' +
-        '<tr id="trOrderSetStorey" style="display: none"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
-        '<tr id="trOrderSetMilkStation" style="display: none"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
+        '<tr id="trOrderSetStorey"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
+        '<tr id="trOrderSetMilkStation"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
         '</table>' +
         '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" disabled="disabled" value="确定" />' +
         '<input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddressNew" value="确定" style="display: none;" /><a href="javascript:closeDialog()" class="button">取消</a></div>' +
@@ -820,37 +819,11 @@ function createOrderSelectAddress(){
     $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
     $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtOrderSetDistrict').droptxt('/general/address/getDistrictsByName','data');
-    $('#txtOrderSetUser').dropjson('/general/address/getAddressByUserName','data');
+    //$('#txtOrderSetUser').dropjson('/general/address/getAddressByUserName','data');
 
-    $('#txtOrderSetPhone').dropjson('/general/address/getAddressByPhone','data');
+    //$('#txtOrderSetPhone').dropjson('/general/address/getAddressByPhone','data');
 
-    $('#txtOrderSetCity').on('keyup',function(){
-        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
-            $('#btnAddOrderAddress').attr('disabled',false);
-            $('#btnAddOrderAddressNew').attr('disabled',false);
-        }
-    });
 
-    $('#txtOrderSetDistrict').on('keyup',function(){
-        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
-            $('#btnAddOrderAddress').attr('disabled',false);
-            $('#btnAddOrderAddressNew').attr('disabled',false);
-        }
-    });
-
-    $('#txtOrderSetAddress').on('keyup',function(){
-        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
-            $('#btnAddOrderAddress').attr('disabled',false);
-            $('#btnAddOrderAddressNew').attr('disabled',false);
-        }
-    });
-
-    $('#txtOrderSetUser').on('keyup',function(){
-        if($('#txtOrderSetCity').val()!="" && $('#txtOrderSetDistrict').val()!="" && $('#txtOrderSetAddress').val()!=""){
-            $('#btnAddOrderAddress').attr('disabled',false);
-            $('#btnAddOrderAddressNew').attr('disabled',false);
-        }
-    });
 
     $('#btnAddOrderAddressNew').click(function(){
         var city = $('#txtOrderSetCity').val();
