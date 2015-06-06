@@ -56,15 +56,9 @@ router.get('/create', auth.checkRole('call', 'modify'), function (req, res, next
 // 创建来电信息 by nele
 router.post('/create', auth.checkRole('call', 'modify'), function (req, res, next) {
     let call = new db.calls();
-    db.users
-    .aggregate()
-    .match({name:req.body.user,role:'热线员'})
-        .group({_id:{name:'$name',id:'$_id'}})
-    .exec()
-    .then(function (user) {
-            call.user = user[0]._id.id;
-            db.orders
-            .aggregate()
+    call.user = req.session.uid;
+    db.orders
+        .aggregate()
             .match({number:req.body.order})
             .group({_id:{id:'$_id'}})
             .exec()
@@ -80,9 +74,8 @@ router.post('/create', auth.checkRole('call', 'modify'), function (req, res, nex
                     call.save(function (err, calls) {
                         res.redirect('/call');
                     });
-                });
-        })
-    .then(null,next);
+                })
+        .then(null,next);
 
 });
 
