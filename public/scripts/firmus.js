@@ -306,10 +306,10 @@ $(document).ready(function () {
         $("#divInfo").css("display","none");
     });
 
-    //  变更 顺延数量隐藏 by nele
+    //  变更 整单停送数量隐藏 by nele
     $('#slOrderChangeType').change(function () {
         var value =  $('#slOrderChangeType').val();
-        if(value == '顺延'){
+        if(value == '整单停送'){
             $('#trOrders').hide();
             $('#txtOrderChangeMilkType').val('milktype');
             $('#txtOrderChangeCount').val('count');
@@ -326,9 +326,12 @@ $(document).ready(function () {
             $('#txtDistributeCount').val('count');
             $('#txtBalance').val('balance');
             $('#giftCount').val('giftcount');
+            $('#lengthenCount').val('lengthenCount');
             $('#trOldOrder').hide();
             $('#trNewOrder').hide();
             $('#trBalance').hide();
+            $('#trLengthenOrders').hide();
+            $('#trLengthenCount').hide();
         }
         if(value=='品相变更'){
             $('#trOrders').show();
@@ -340,6 +343,8 @@ $(document).ready(function () {
             $('#trOrderChangeHint').hide();
             $('#trGiftCount').hide();
             $('#trGiftOrders').hide();
+            $('#trLengthenOrders').hide();
+            $('#trLengthenCount').hide();
             $('#txtOrderChangeMilkType').val('');
             $('#txtOrderChangeCount').val('');
             $('#txtOmilkType').val('milktype');
@@ -348,7 +353,7 @@ $(document).ready(function () {
             $('#txtDistributeCount').val('count');
             $('#txtBalance').val('balance');
             $('#giftCount').val('giftcount');
-
+            $('#lengthenCount').val('lengthenCount');
             var orderId = $('#orderId').val();
             $.getJSON('/order/getOrdersById/'+orderId, function (data) {
                 var str='<option value="">选择品相</option>';
@@ -410,6 +415,8 @@ $(document).ready(function () {
             $('#trBalance').hide();
             $('#trGiftCount').hide();
             $('#trGiftOrders').hide();
+            $('#trLengthenOrders').hide();
+            $('#trLengthenCount').hide();
             $('#trOrderChangeCount').show();
             $('#trOrderChangeMilkType').show();
             $('#trOrderChangeBegin').show();
@@ -424,11 +431,59 @@ $(document).ready(function () {
             $('#txtDistributeCount').val('count');
             $('#txtBalance').val('balance');
             $('#giftCount').val('giftcount');
+            $('#lengthenCount').val('lengthenCount');
         }
-        else if(value =='赠饮'){
+        else if(value=='顺延'){
+            $('#trLengthenOrders').show();
+            $('#trLengthenCount').show();
+
             $('#trOrders').hide();
             $('#trOldOrder').hide();
             $('#trNewOrder').hide();
+            $('#trBalance').hide();
+            $('#trGiftCount').hide();
+            $('#trGiftOrders').hide();
+            $('#giftCount').val('giftcount');
+            $('#trOrderChangeCount').hide();
+            $('#trOrderChangeMilkType').hide();
+            $('#trOrderChangeBegin').hide();
+            $('#trOrderChangeEnd').hide();
+            $('#trOrderChangeHint').hide();
+            $('#txtOrderChangeMilkType').val('milktype');
+            $('#txtOrderChangeCount').val('count');
+            $('#giftCount').val('giftCount');
+            $('#lengthenCount').val('');
+            $('#txtOmilkType').val('milktype');
+            $('#txtOcount').val('count');
+            $('#txtObegin').val('begin');
+            $('#txtDistributeCount').val('count');
+            $('#txtBalance').val('balance');
+            $('#trOldOrder').hide();
+            $('#trNewOrder').hide();
+            var orderId = $('#orderId').val();
+            $.getJSON('/order/getOrdersById/'+orderId, function (data) {
+                var str='<option value="">选择品相</option>';
+                for(var i=0;i<data.length;i++){
+                    str+='<option value="'+data[i]._id+'">'+data[i].milkType+'</option>';
+                }
+                $('#lsLengthenOreders').html(str);
+            });
+            if($('#lsGiftOreders').change(function () {
+                    if($('#lsGiftOreders').val()=='new'){
+                        $('#trNewOrder').show();
+                        $('#txtOmilkType').val('');
+                        $('#txtOcount').val('');
+                        $('#txtObegin').val('');
+                        $('#txtDistributeCount').val('');
+                        $('#trGiftCount').hide();
+                        $('#giftCount').val('giftCount');
+                    }
+                }));
+        }
+        else if(value =='赠饮'){
+            $('#trLengthenOrders').hide();
+            $('#trLengthenCount').hide();
+            $('#trOrders').hide();
             $('#trBalance').hide();
             $('#trOrderChangeCount').hide();
             $('#trOrderChangeMilkType').hide();
@@ -438,6 +493,7 @@ $(document).ready(function () {
             $('#txtOrderChangeMilkType').val('milktype');
             $('#txtOrderChangeCount').val('count');
             $('#giftCount').val('');
+            $('#lengthenCount').val('lengthenCount');
             $('#txtOmilkType').val('milktype');
             $('#txtOcount').val('count');
             $('#txtObegin').val('begin');

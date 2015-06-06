@@ -9,9 +9,10 @@
                 <select name="type" id="slOrderChangeType">
                     <option>停送</option>
                     <option>加送</option>
-                    <option>顺延</option>
+                    <option>整单停送</option>
                     <option>品相变更</option>
                     <option>赠饮</option>
+                    <option>顺延</option>
                 </select>
             </td>
         </tr>
@@ -32,7 +33,13 @@
                 </select>
             </td>
         </tr>
-
+        <tr style="display: none;" id="trLengthenOrders">
+            <td class="row-title">选择品相</td>
+            <td>
+                <select name="lsLengthenOreders" id="lsLengthenOreders">
+                </select>
+            </td>
+        </tr>
         <tr id="trOldOrder" style="display: none;">
             <td class="row-title">原有订单</td>
             <td id="tdOldOrder">
@@ -59,6 +66,10 @@
         <tr id="trGiftCount" style="display: none;">
             <td class="row-title">瓶数</td>
             <td><input type="text" id="giftCount" name="giftCount" class="textbox"/></td>
+        </tr>
+        <tr id="trLengthenCount" style="display: none;">
+            <td class="row-title">瓶数</td>
+            <td><input type="text" id="lengthenCount" name="lengthenCount" class="textbox"/></td>
         </tr>
         <tr id="trBalance" style="display: none;">
             <td class="row-title">差价</td>

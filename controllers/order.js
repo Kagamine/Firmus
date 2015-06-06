@@ -228,6 +228,26 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             })
             .then(null, next);
     }
+    else if(req.body.type=='顺延'){
+        db.orders.findById(req.params.id)
+            .exec()
+            .then(function (order) {
+                ordersTemp = order.orders;
+                for(var i =0;i<ordersTemp.length;i++){
+                    if(req.body.lsLengthenOreders==ordersTemp[i]._id){
+                        ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.lengthenCount);
+                    }
+                }
+                db.orders.update({ _id: req.params.id }, {
+                    orders:ordersTemp
+                })
+                    .exec()
+                    .then(function () {
+                        res.redirect('/order/show/' + req.params.id);
+                    })
+            })
+            .then(null, next);
+    }
     else if(req.body.type=='赠饮'){
         var ordersTemp = [];
          if(req.body.lsGiftOreders=='new'){
@@ -278,11 +298,11 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                             user: req.session.uid,
                             time: Date.now(),
                             type: req.body.type,
-                            milkType: req.body.type == '顺延'?'':req.body.milkType,
+                            milkType: req.body.type == '整单停送'?'':req.body.milkType,
                             begin: req.body.begin,
                             end: req.body.end,
                             hint: req.body.hint,
-                            count: req.body.type == '顺延'?'':req.body.count
+                            count: req.body.type == '整单停送'?'':req.body.count
                         }
                     }
                 })
