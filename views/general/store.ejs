@@ -28,7 +28,7 @@
     </thead>
     <tbody>
     <% stores.forEach(x => { %>
-    <tr>
+    <tr id="<%=x._id%>">
         <%
             if(type=='赠品仓库'){
         %>
@@ -42,6 +42,7 @@
         <td class="tc">
             <a href="/general/department/store/show/<%= x._id %>">详细资料</a>
             <a href="/general/departemtn/store/edit/<%= x._id %>">编辑</a>
+            <a href="javascript:deleteDialog('/general/department/store/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
         </td>
     </tr>
     <% }) %>

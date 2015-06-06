@@ -514,6 +514,8 @@ router.get('/department/store/edit/:id', auth.checkRole('store', 'modify'), func
         .then(null, next);
 });
 
+
+
 // 仓库储存的的修改 by nele
 router.post('/department/store/edit/:id',auth.checkRole('store','modify'), function ( req, res, next) {
     db.stores.update({ _id: req.params.id }, {
@@ -527,6 +529,17 @@ router.post('/department/store/edit/:id',auth.checkRole('store','modify'), funct
         .then(null, next);
 });
 
+// 删除存储信息 by nele
+router.post('/department/store/delete/:id', auth.checkRole('address', 'modify'), function (req, res, next) {
+    db.stores.remove({ _id: req.params.id })
+        .exec()
+        .then(function () {
+            res.send('ok');
+        })
+        .then(null, next);
+});
+
+
 // 添加地址
 router.get('/address/create', auth.checkRole('address', 'modify'), function (req, res, next) {
     db.departments.find({ type: '奶站' })
@@ -537,6 +550,7 @@ router.get('/address/create', auth.checkRole('address', 'modify'), function (req
         })
         .then(null, next);
 });
+
 
 // 添加地址
 router.post('/address/create', auth.checkRole('address', 'modify'), function (req, res, next) {
