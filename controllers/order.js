@@ -426,7 +426,7 @@ function getEndDistributeDate (order, changes)
             tmp.forEach(x => {
                 if (x.type == '加送')
                     count -= x.count;
-                else if (x.type == '停送')
+                else if (x.type == '整单停送')
                     count += x.count;
                 else
                     count += order.distributeCount;
@@ -456,7 +456,7 @@ function getDistributeCount (order, changes, time) {
                     count -= x.count;
                     cnt += x.count;
                 }
-                else if (x.type == '停送')
+                else if (x.type == '整单停送')
                 {
                     count += x.count;
                     cnt -= x.count;
@@ -483,7 +483,7 @@ function getDistributeCount (order, changes, time) {
                     count -= x.count;
                     cnt += x.count;
                 }
-                else if (x.type == '停送')
+                else if (x.type == '整单停送')
                 {
                     count += x.count;
                     cnt -= x.count;
@@ -511,7 +511,7 @@ function getDistributeCount (order, changes, time) {
                     count -= x.count;
                     cnt += x.count;
                 }
-                else if (x.type == '停送')
+                else if (x.type == '整单停送')
                 {
                     count += x.count;
                     cnt -= x.count;
