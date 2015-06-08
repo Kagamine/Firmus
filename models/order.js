@@ -37,7 +37,8 @@ var orderSchema = new Schema({
             type: String,
             enum: enums.distributeMethod,
             index: true
-        }
+        },
+        single: Number
     }],
     payMethod: {
         type: String,
