@@ -8,6 +8,11 @@ $(window).resize(function () {
     resize();
 });
 
+// 给日期类对象添加日期差方法，返回日期与diff参数日期的时间差，单位为天
+Date.prototype.diff = function(date){
+    return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
+}
+
 $(document).ready(function () {
     resize();
     $('#logo').click(function () {
@@ -634,7 +639,7 @@ $(document).ready(function () {
 
     $('.btnAddTr').click(function () {
        var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6 milkType" name="milkType" /></td><td><input type="text" class="textbox w-0-6 count"  name="count" /></td>'+
-        '<td><input type="text" class="textbox datetime w-0-6" name="begin" /></td>'+
+        '<td><input type="text" class="textbox datetime w-0-6 begin" name="begin" /></td>'+
         '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option>'+
         '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td> <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>'+
         '<td><a href="javascript:void(0);" class="btnDeltr">删除</a></td></tr>';
@@ -671,12 +676,21 @@ $(document).ready(function () {
             var milkTypes = $('.milkType');
             var hash = {};
             for(var i=0;i< milkTypes.length; i++) {
-                console.log($(milkTypes[i]).val());
                 if(hash[$(milkTypes[i]).val()]){
-                    alert("您输入的品相有重复值！");
+                    popMsg("您输入的品相有重复值！");
                     return false;
                 }else{
                     hash[$(milkTypes[i]).val()] = true;
+                }
+            }
+            var now =new Date();
+            var begins = $('.begin');
+            var tmp;
+            for(var i=0;i<begins.length;i++){
+                tmp =new Date($(begins[i]).val());
+                if(tmp.diff(now)<2){
+                    popMsg("起配日期必须是当前日期的两天之后！");
+                    return false;
                 }
             }
             return true;
@@ -687,12 +701,21 @@ $(document).ready(function () {
             var milkTypes = $('.milkType');
             var hash = {};
             for(var i=0;i< milkTypes.length; i++) {
-                console.log($(milkTypes[i]).val());
                 if(hash[$(milkTypes[i]).val()]){
-                    alert("您输入的品相有重复值！");
+                    popMsg("您输入的品相有重复值！");
                     return false;
                 }else{
                     hash[$(milkTypes[i]).val()] = true;
+                }
+            }
+            var now =new Date();
+            var begins = $('.begin');
+            var tmp;
+            for(var i=0;i<begins.length;i++){
+                tmp =new Date($(begins[i]).val());
+                if(tmp.diff(now)<2){
+                    popMsg("起配日期必须是当前日期的两天之后！");
+                    return false;
                 }
             }
             return true;
@@ -745,12 +768,22 @@ $(document).ready(function () {
         var milkTypes = $('.milkType');
         var hash = {};
         for(var i=0;i< milkTypes.length; i++) {
-            console.log($(milkTypes[i]).val());
             if(hash[$(milkTypes[i]).val()]){
-                alert("您输入的品相有重复值！");
+                popMsg("您输入的品相有重复值！");
                 return false;
             }else{
                 hash[$(milkTypes[i]).val()] = true;
+            }
+        }
+
+        var now =new Date();
+        var begins = $('.begin');
+        var tmp;
+        for(var i=0;i<begins.length;i++){
+            tmp =new Date($(begins[i]).val());
+            if(tmp.diff(now)<2){
+                popMsg("起配日期必须是当前日期的两天之后！");
+                return false;
             }
         }
         return true;
@@ -761,12 +794,21 @@ $(document).ready(function () {
         var milkTypes = $('.milkType');
         var hash = {};
         for(var i=0;i< milkTypes.length; i++) {
-            console.log($(milkTypes[i]).val());
             if(hash[$(milkTypes[i]).val()]){
-                alert("您输入的品相有重复值！");
+                popMsg("您输入的品相有重复值！");
                 return false;
             }else{
                 hash[$(milkTypes[i]).val()] = true;
+            }
+        }
+        var now =new Date();
+        var begins = $('.begin');
+        var tmp;
+        for(var i=0;i<begins.length;i++){
+            tmp =new Date($(begins[i]).val());
+            if(tmp.diff(now)<2){
+                popMsg("起配日期必须是当前日期的两天之后！");
+                return false;
             }
         }
         return true;
@@ -849,9 +891,8 @@ function saveOrder(id) {
     var milkTypes = $('.milkType');
     var hash = {};
     for(var i=0;i< milkTypes.length; i++) {
-        console.log($(milkTypes[i]).val());
         if(hash[$(milkTypes[i]).val()]){
-            alert("您输入的品相有重复值！");
+            popMsg("您输入的品相有重复值！");
             return false;
         }else{
             hash[$(milkTypes[i]).val()] = true;
