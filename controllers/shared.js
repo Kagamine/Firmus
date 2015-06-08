@@ -14,7 +14,7 @@ router.get('/login', auth.guest, function(req, res, next) {
 
 router.post('/login', auth.guest, function (req, res, next) {
     db.users.findOne({ username: req.body.username })
-        .select('username password salt _id')
+        .select('username password salt _id role department')
         .exec()
         .then(function (user) {
             if (!user) {
@@ -24,6 +24,7 @@ router.post('/login', auth.guest, function (req, res, next) {
             if (pwd == user.password)
             {
                 req.session.uid = user._id;
+                req.session.user = user;
                 res.redirect('/general/news');
             }
             else

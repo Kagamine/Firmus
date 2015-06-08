@@ -204,11 +204,13 @@ router.post('/department/create', auth.checkRole('department', 'modify'), functi
 // 职工列表
 router.get('/employee', auth.checkRole('employee', 'query'), function (req, res, next) {
     let query;
+    let _departments ;
     db.departments.find()
         .select('_id title')
         .exec()
         .then(function (departments) {
-            res.locals.departments = departments;
+            _departments= departments;
+            var user = req.session.user;
             query = db.users.find();
             if (req.query.name)
                 query = query.where({ name: req.query.name });
@@ -218,6 +220,11 @@ router.get('/employee', auth.checkRole('employee', 'query'), function (req, res,
                 query = query.where({ department: req.query.department });
             if (req.query.role)
                 query = query.where({ role: req.query.role });
+            if(user.role == '部门主管'){
+                query = query.where({department: user.department});
+                _departments = departments.filter(x=>x._id==user.department);
+            }
+            res.locals.departments = _departments;
             return _.clone(query).count().exec();
         })
         .then (function (count) {
