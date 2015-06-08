@@ -26,7 +26,7 @@
         <tr>
             <td class="row-title">金额</td>
             <td>
-                <input type="text" class="textbox w-3" name="price" value="<%= order.price %>" />
+                <input type="text" class="textbox w-3" id="price" name="price" value="<%= order.price %>" />
             </td>
         </tr>
         <tr>
@@ -65,6 +65,7 @@
                         <td>起送时间</td>
                         <td>配送方式</td>
                         <td>每次配送瓶数</td>
+                        <td>单价</td>
                         <td>操作</td>
                     </tr>
                     </thead>
@@ -74,7 +75,7 @@
                          %>
                         <tr class="trOrderDetail">
                             <td><input type="text" class="textbox w-0-6" name="milkType" value="<%=order.orders[i].milkType%>" /></td>
-                            <td><input type="text" class="textbox w-0-6"  name="count" value="<%=order.orders[i].count%>" /></td>
+                            <td><input type="text" class="textbox w-0-6 count"  name="count" value="<%=order.orders[i].count%>" /></td>
                             <td><input type="text" class="textbox datetime w-0-6" name="begin" value="<%= moment(order.orders[i].begin).format('YYYY-MM-DD')%>" /></td>
                             <td>
                                 <select name="distributeMethod">
@@ -84,6 +85,7 @@
                                 </select>
                             </td>
                             <td><input type="text" class="textbox w-0-6" name="distributeCount"  value="<%=order.orders[i].distributeCount%>" /></td>
+                            <td><input type="text" class="textbox w-0-6 single" name="single" value="<%= order.orders[i].single %>"/></td>
                             <td><a href="javascript:void(0);" class="btnDeltr">删除</a></td>
                         </tr>
                          <%

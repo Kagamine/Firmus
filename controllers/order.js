@@ -156,6 +156,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                 count:req.body.count[i],
                 distributeCount:req.body.distributeCount[i],
                 distributeMethod:req.body.distributeMethod[i],
+                single:req.body.single[i],
                 time:Date.now(),
                 begin:req.body.begin[i]
             });
@@ -166,6 +167,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
             count:req.body.count,
             distributeCount:req.body.distributeCount,
             distributeMethod:req.body.distributeMethod,
+            single:req.body.single,
             time:Date.now(),
             begin:req.body.begin
         });

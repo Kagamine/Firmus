@@ -681,6 +681,23 @@ $(document).ready(function () {
             }
             return true;
         });
+
+        // 检查提交的订单是不是有重复品相 by nele
+        $('#frmEditOrder').submit(function () {
+            var milkTypes = $('.milkType');
+            var hash = {};
+            for(var i=0;i< milkTypes.length; i++) {
+                console.log($(milkTypes[i]).val());
+                if(hash[$(milkTypes[i]).val()]){
+                    alert("您输入的品相有重复值！");
+                    return false;
+                }else{
+                    hash[$(milkTypes[i]).val()] = true;
+                }
+            }
+            return true;
+        });
+
     });
 
 
@@ -721,6 +738,40 @@ $(document).ready(function () {
         }
         $('#price').val(sum);
     });
+
+
+    // 检查提交的订单是不是有重复品相 by nele
+    $('#frmCreateOrder').submit(function () {
+        var milkTypes = $('.milkType');
+        var hash = {};
+        for(var i=0;i< milkTypes.length; i++) {
+            console.log($(milkTypes[i]).val());
+            if(hash[$(milkTypes[i]).val()]){
+                alert("您输入的品相有重复值！");
+                return false;
+            }else{
+                hash[$(milkTypes[i]).val()] = true;
+            }
+        }
+        return true;
+    });
+
+    // 检查提交的订单是不是有重复品相 by nele
+    $('#frmEditOrder').submit(function () {
+        var milkTypes = $('.milkType');
+        var hash = {};
+        for(var i=0;i< milkTypes.length; i++) {
+            console.log($(milkTypes[i]).val());
+            if(hash[$(milkTypes[i]).val()]){
+                alert("您输入的品相有重复值！");
+                return false;
+            }else{
+                hash[$(milkTypes[i]).val()] = true;
+            }
+        }
+        return true;
+    });
+
 });
 
 function popMsg(txt) {
@@ -795,6 +846,17 @@ function saveCarStation(id) {
 }
 
 function saveOrder(id) {
+    var milkTypes = $('.milkType');
+    var hash = {};
+    for(var i=0;i< milkTypes.length; i++) {
+        console.log($(milkTypes[i]).val());
+        if(hash[$(milkTypes[i]).val()]){
+            alert("您输入的品相有重复值！");
+            return false;
+        }else{
+            hash[$(milkTypes[i]).val()] = true;
+        }
+    }
     $.post('/order/edit/' + id, $('#frmEditOrder').serialize(), function () {
         popMsg('订单信息修改成功');
     });
