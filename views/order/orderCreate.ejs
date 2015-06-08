@@ -1,5 +1,5 @@
 <h2><%= title %></h2>
-<form method="post" class="block">
+<form method="post" class="block" id="frmCreateOrder">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
     <h3>订单信息</h3>
     <table class="detail-table">
@@ -21,7 +21,7 @@
         </tr>
         <tr>
             <td class="row-title">金额</td>
-            <td><input type="text" class="textbox w-3" name="price" /> 例如: 38.5</td>
+            <td><input type="text" class="textbox w-3" id="price" name="price" /> 例如: 38.5</td>
         </tr>
         <tr>
             <td class="row-title">付款方式</td>
@@ -49,13 +49,14 @@
                           <td>起送时间</td>
                           <td>配送方式</td>
                           <td>每次配送瓶数</td>
+                          <td>单价</td>
                           <td>操作</td>
                       </tr>
                    </thead>
                     <tbody class="lstOrder">
                       <tr>
                           <td><input type="text" class="textbox w-0-6" name="milkType" /></td>
-                          <td><input type="text" class="textbox w-0-6"  name="count" /></td>
+                          <td><input type="text" class="textbox w-0-6 count"  name="count" /></td>
                           <td><input type="text" class="textbox datetime w-0-6" name="begin" /></td>
                           <td>
                               <select name="distributeMethod">
@@ -65,6 +66,7 @@
                               </select>
                           </td>
                           <td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>
+                          <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>
                           <td></td>
                       </tr>
                     </tbody>

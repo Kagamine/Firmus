@@ -633,10 +633,10 @@ $(document).ready(function () {
 
 
     $('.btnAddTr').click(function () {
-       var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6" name="milkType" /></td><td><input type="text" class="textbox w-0-6"  name="count" /></td>'+
+       var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6" name="milkType" /></td><td><input type="text" class="textbox w-0-6 count"  name="count" /></td>'+
         '<td><input type="text" class="textbox datetime w-0-6" name="begin" /></td>'+
         '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option>'+
-        '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>'+
+        '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td> <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>'+
         '<td><a href="javascript:void(0);" class="btnDeltr">删除</a></td></tr>';
         $('.lstOrder').append(str);
         $('.datetime').datetimepicker();
@@ -645,6 +645,26 @@ $(document).ready(function () {
             $(this).parents('.trOrderDetail').remove();
         });
 
+        $('.count').change(function () {
+            var price = $('#price').val();
+            var counts= $('.count');
+            var sum=0;
+            for(var i=0;i< counts.length;i++){
+                sum =parseInt(sum)+parseInt($(counts[i]).val());
+            }
+            var single = price/sum;
+            $('.single').val(single);
+        });
+
+        $('.single').change(function () {
+            var singles = $(".single");
+            var counts= $('.count');
+            var sum=0;
+            for(var i=0;i< counts.length;i++){
+                sum =parseInt(sum)+parseInt($(counts[i]).val())*parseInt($(singles[i]).val());
+            }
+            $('#price').val(sum);
+        });
     });
 
 
@@ -663,6 +683,31 @@ $(document).ready(function () {
                 return true;
             }
         });
+    });
+
+    $('#frmCreateOrder').submit(function () {
+        var
+    })
+
+    $('.count').change(function () {
+        var price = $('#price').val();
+        var counts= $('.count');
+        var sum=0;
+        for(var i=0;i< counts.length;i++){
+            sum =parseInt(sum)+parseInt($(counts[i]).val());
+        }
+        var single = price/sum;
+        $('.single').val(single);
+    });
+
+    $('.single').change(function () {
+        var singles = $(".single");
+        var counts= $('.count');
+        var sum=0;
+        for(var i=0;i< counts.length;i++){
+            sum =parseInt(sum)+parseInt($(counts[i]).val())*parseInt($(singles[i]).val());
+        }
+        $('#price').val(sum);
     });
 });
 
@@ -763,6 +808,8 @@ function saveCall(id) {
         popMsg('来电信息修改成功');
     });
 }
+
+
 
 // 确定地址触发事件  by nele
 function saveOrderAddress(){
