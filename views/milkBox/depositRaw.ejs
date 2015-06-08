@@ -1,0 +1,34 @@
+<style>
+    td, th {
+        padding: 3px;
+    }
+    table {
+        font-size: 9px;
+        text-align: left;
+    }
+</style>
+<button onClick="window.print()">打印</button>
+<table class="table">
+    <thead>
+    <tr class="tl">
+        <th>押金单号</th>
+        <th>地址</th>
+        <th>联系人</th>
+        <th>电话</th>
+        <th>标识</th>
+        <th>时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% deposits.forEach(x => { %>
+    <tr id="<%= x._id %>" class="depositDataTr" data-id="<%= x._id %>">
+        <td><%= x.number %></td>
+        <td><%= x.address.city %><%= x.address.district %><%= x.address.address %></td>
+        <td><%= x.address.name %></td>
+        <td><%= x.address.phone %></td>
+        <td><%= (x.giveBackFlag)?"拆箱":"装箱"%></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

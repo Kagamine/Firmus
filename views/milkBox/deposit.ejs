@@ -6,6 +6,7 @@
 </h2>
 <form class="search">
     检索：
+    <input id="raw" type="hidden" name="raw" value="false" />
     <select name="giveBackFlag"  id="slDepositSearchGiveBackFlag">
         <option value="">是否需要拆箱</option>
         <option value="0">否</option>
@@ -22,12 +23,13 @@
     <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" value="过滤" class="button green" style="margin: 0" value="过滤" />
+    <a href="javascript:$('#raw').val(true);$('.search').submit();" class="button blue" target="_blank">打印</a>
 </form>
 
 <table class="table">
     <thead>
     <tr class="tl">
-        <th>单号</th>
+        <th>押金单号</th>
         <th>地址</th>
         <th>联系人</th>
         <th>电话</th>

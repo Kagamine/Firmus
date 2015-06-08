@@ -79,6 +79,7 @@ router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,nex
         .count()
         .exec()
         .then(function (count) {
+            if (req.query.raw) return query.exec();
             var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
             var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
@@ -91,7 +92,10 @@ router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,nex
         })
         .then(function (deposits) {
             res.locals.deposits = deposits;
-            res.render('milkBox/deposit',{title:'押金单管理'});
+            if (!req.query.raw)
+                res.render('milkBox/deposit',{title:'押金单管理'});
+            else
+                res.render('milkBox/depositRaw', { title: '押金单管理', layout: false });
         })
         .then(null,next);
 
