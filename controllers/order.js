@@ -119,6 +119,10 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
         .populate('logs.user')
         .exec()
         .then(function (order) {
+            for(var i=0;i<order.orders.length;i++){
+               var leftCount = getLeftCount(order.orders[i],order.changes,order.time);
+               order.orders[i].leftCount= leftCount;
+            }
             res.render('order/orderDetail', { title: '订单详情', order: order });
         })
         .then(null, next);
@@ -526,6 +530,7 @@ function getDistributeCount (order, changes, time) {
 
 // 获取剩余瓶数
 function getLeftCount (order, changes, time) {
+    console.log(order);
     let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
     let tmp = new Date();
     time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
