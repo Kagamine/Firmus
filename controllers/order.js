@@ -194,7 +194,17 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
 // 添加订单变更
 router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     res.locals.orderId = req.params.id;
-    res.render('order/orderChange', { title: '订单变更' });
+    db.orders.findById(req.params.id)
+        .exec()
+        .then(function (order) {
+            for(var i=0;i<order.orders.length;i++){
+                var leftCount = getLeftCount(order.orders[i],order.changes,order.orders[i].begin);
+                order.orders[i].leftCount= leftCount;
+            }
+            res.render('order/orderChange', { title: '订单变更', order: order });
+        })
+        .then(null, next);
+
 });
 
 // 添加订单变更
@@ -225,7 +235,6 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                            db.orders.findById(req.params.id)
                            .exec()
                            .then(function (order) {
-                                   console.log(order);
                                    db.addresses.update({_id:order.address},{
                                        $inc: { balance: req.body.balance }
                                    })
@@ -238,8 +247,42 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             })
             .then(null, next);
     }
+    else if(req.body.type=='退单'){
+        db.orders.findById(req.params.id)
+        .exec()
+        .then(function (order) {
+                var temp = 0;
+                if(typeof(req.body.cancelCount)!='string'){
+                    for(var i =0;i<req.body.cancelCount.length;i++){
+                        if(req.body.cancelCount[i]!=''){
+                            order.orders[i].count = order.orders[i].count-req.body.cancelCount[i];
+                            temp = temp+req.body.cancelCount[i] * order.orders[i].single;
+                        }
+                    }
+                }else{
+                    if(req.body.cancelCount!=''){
+                        order.orders[0].count = order.orders[0].count-req.body.cancelCount;
+                        temp = temp+req.body.cancelCount* order.orders[0].single;
+                    }
+                }
+                db.orders.update({ _id: req.params.id }, {
+                    orders:order.orders
+                })
+                .exec()
+                .then(function () {
+                        db.addresses.update({_id:order.address},{
+                            $inc: { balance: temp }
+                        })
+                            .exec()
+                            .then(function () {
+                                res.redirect('/order/show/' + req.params.id);
+                            });
+                    });
+            })
+        .then(null,next);
+
+    }
     else if(req.body.type=='顺延'){
-        var temp;
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {

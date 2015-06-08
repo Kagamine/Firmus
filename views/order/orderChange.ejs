@@ -13,6 +13,7 @@
                     <option>品相变更</option>
                     <option>赠饮</option>
                     <option>顺延</option>
+                    <option>退单</option>
                 </select>
             </td>
         </tr>
@@ -54,10 +55,10 @@
                             <td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td>
                         </tr>
                     </thead>
-                    <tbody class="lstOrder"><tr><td><input type="text" class="textbox w-0-6" name="omilkType" id="txtOmilkType" /></td>
-                        <td><input type="text" class="textbox w-0-6"  name="ocount" id="txtOcount" /></td><td><input type="text" class="textbox datetime w-0-6" name="obegin" id="txtObegin" /></td>
+                    <tbody class="lstOrder"><tr><td><input type="text" class="textbox w-0-6" value="omilkType" name="omilkType" id="txtOmilkType" /></td>
+                        <td><input type="text" class="textbox w-0-6" value="ocount"  name="ocount" id="txtOcount" /></td><td><input type="text" class="textbox datetime w-0-6" value="obegin" name="obegin" id="txtObegin" /></td>
                         <td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option></select>
-                        </td><td><input type="text" class="textbox w-0-6"  name="distributeCount" id="txtDistributeCount" /></td>
+                        </td><td><input type="text" class="textbox w-0-6" value="distributeCount"  name="distributeCount" id="txtDistributeCount" /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -65,16 +66,16 @@
         </tr>
         <tr id="trGiftCount" style="display: none;">
             <td class="row-title">瓶数</td>
-            <td><input type="text" id="giftCount" name="giftCount" class="textbox"/></td>
+            <td><input type="text" id="giftCount" value="giftCount" name="giftCount" class="textbox"/></td>
         </tr>
         <tr id="trLengthenCount" style="display: none;">
             <td class="row-title">瓶数</td>
-            <td><input type="text" id="lengthenCount" name="lengthenCount" class="textbox"/></td>
+            <td><input type="text" id="lengthenCount" value="lengthenCount" name="lengthenCount" class="textbox"/></td>
         </tr>
         <tr id="trBalance" style="display: none;">
             <td class="row-title">差价</td>
             <td>
-                <input type="text" class="textbox" name="balance" id="txtBalance" value="balance"/>
+                <input type="text" class="textbox" name="balance"  id="txtBalance" value="balance"/>
             </td>
         </tr>
         <tr id="trOrderChangeBegin">
@@ -98,6 +99,29 @@
             <td>
                 <textarea name="hint" class="ckeditor"></textarea>
                 <script src="/scripts/ckeditor/ckeditor.js"></script>
+            </td>
+        </tr>
+        <tr id="trOrderCancelOrders" style="display:none;">
+            <td>
+                订单详情
+            </td>
+            <td>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>品相</td><td>剩余瓶数</td><td>退订瓶数</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                     <% order.orders.forEach(x => { %>
+                     <tr>
+                        <td><%= x.milkType %></td>
+                        <td class="tdLeftCount"><%= x.leftCount %></td>
+                        <td><input name="cancelCount" class="textbox cancelCount" value="cancelCount"  /></td>
+                     </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
             </td>
         </tr>
     </table>

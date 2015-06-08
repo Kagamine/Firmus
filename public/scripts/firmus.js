@@ -315,6 +315,8 @@ $(document).ready(function () {
     $('#slOrderChangeType').change(function () {
         var value =  $('#slOrderChangeType').val();
         if(value == '整单停送'){
+            $('#trOrderCancelOrders').hide();
+            $('.cancelCount').val('cancelCount');
             $('#trOrders').hide();
             $('#txtOrderChangeMilkType').val('milktype');
             $('#txtOrderChangeCount').val('count');
@@ -339,6 +341,8 @@ $(document).ready(function () {
             $('#trLengthenCount').hide();
         }
         if(value=='品相变更'){
+            $('#trOrderCancelOrders').hide();
+            $('.cancelCount').val('cancelCount');
             $('#trOrders').show();
             $('#trNewOrder').hide();
             $('#trOrderChangeCount').hide();
@@ -414,6 +418,8 @@ $(document).ready(function () {
            });
         }
         if(value =='停送' ||  value == '加送' ){
+            $('#trOrderCancelOrders').hide();
+            $('.cancelCount').val('cancelCount');
             $('#trOrders').hide();
             $('#trOldOrder').hide();
             $('#trNewOrder').hide();
@@ -441,7 +447,8 @@ $(document).ready(function () {
         else if(value=='顺延'){
             $('#trLengthenOrders').show();
             $('#trLengthenCount').show();
-
+            $('#trOrderCancelOrders').hide();
+            $('.cancelCount').val('cancelCount');
             $('#trOrders').hide();
             $('#trOldOrder').hide();
             $('#trNewOrder').hide();
@@ -485,9 +492,11 @@ $(document).ready(function () {
                     }
                 }));
         }
-        else if(value =='赠饮'){
+        if(value =='赠饮'){
             $('#trLengthenOrders').hide();
             $('#trLengthenCount').hide();
+            $('#trOrderCancelOrders').hide();
+            $('.cancelCount').val('cancelCount');
             $('#trOrders').hide();
             $('#trBalance').hide();
             $('#trOrderChangeCount').hide();
@@ -502,6 +511,7 @@ $(document).ready(function () {
             $('#txtOmilkType').val('milktype');
             $('#txtOcount').val('count');
             $('#txtObegin').val('begin');
+
             $('#txtDistributeCount').val('count');
             $('#txtBalance').val('balance');
             $('#trOldOrder').hide();
@@ -536,6 +546,35 @@ $(document).ready(function () {
                         $('#giftCount').val('');
                     }
                 }));
+        }
+        else if(value=='退单'){
+            $('#trOrderCancelOrders').show();
+            $('.cancelCount').val('');
+
+            $('#trLengthenOrders').hide();
+            $('#trLengthenCount').hide();
+            $('#trOrders').hide();
+            $('#trOldOrder').hide();
+            $('#trNewOrder').hide();
+            $('#trBalance').hide();
+            $('#trGiftCount').hide();
+            $('#trGiftOrders').hide();
+            $('#trOrderChangeCount').hide();
+            $('#trOrderChangeMilkType').hide();
+            $('#trOrderChangeBegin').hide();
+            $('#trOrderChangeEnd').hide();
+            $('#trOrderChangeHint').hide();
+            $('#txtOrderChangeMilkType').val('milktype');
+            $('#txtOrderChangeCount').val('count');
+            $('#giftCount').val('giftCount');
+            $('#lengthenCount').val('lengthenCount');
+            $('#txtOmilkType').val('milktype');
+            $('#txtOcount').val('count');
+            $('#txtObegin').val('begin');
+            $('#txtDistributeCount').val('count');
+            $('#txtBalance').val('balance');
+
+
         }
     });
 
@@ -813,6 +852,14 @@ $(document).ready(function () {
         }
         return true;
     });
+
+    $('.cancelCount').change(function () {
+        var cancelCount = $(this).val();
+        var left = $(this).parents('td').prev('.tdLeftCount').text();
+        if(parseInt(cancelCount)>parseInt(left)){
+            popMsg("退订的数量不能大于剩余的数量");
+        }
+    })
 
 });
 
