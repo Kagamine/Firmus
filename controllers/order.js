@@ -967,6 +967,25 @@ router.post('/createFinance',auth.checkRole('finance','modify'), function (req, 
         });
 });
 
+
+// 登记退钱 by nele
+router.get('/createBackMoney',auth.checkRole('finance','modify'), function (req, res, next) {
+    res.render('order/backMoneyCreate',{ title: '登记退钱'});
+});
+
+// 登记退钱 by nele
+router.post('/createBackMoney',auth.checkRole('finance','modify'), function (req, res, next) {
+    db.addresses.update({_id:req.body.backMoneyAddress},{
+        $inc: { balance: -req.body.backMoney }
+        })
+        .exec()
+        .then(function () {
+            res.redirect('/order/finance');
+        })
+     .then(null,next);
+});
+
+
 // 财务详细  by nele
 router.get('/finance/show/:id',auth.checkRole('finance','modify'), function (req, res, next) {
       db.finances.findById(req.params.id)

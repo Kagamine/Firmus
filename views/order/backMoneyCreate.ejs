@@ -1,0 +1,24 @@
+<h2><%= title %></h2>
+<form method="post" class="block">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <h3>退钱信息登记</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <input type="text" class="textbox w-3" name="address" id="txtBackMoneyAddress" />
+                <span id="pAddress"></span>
+                <input type="hidden" name="backMoneyAddress" id="txtBackMoneyAddressId" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">可退金额</td>
+            <td><span id="pAllowBackMoney"></span></td>
+        </tr>
+        <tr id="pos-number-row">
+            <td class="row-title">退送金额</td>
+            <td><input type="text" class="textbox w-3" id="backMoney" name="backMoney"  /></td>
+        </tr>
+    </table>
+    <p><input type="submit" value="确定退钱" class="button blue" /></p>
+</form>

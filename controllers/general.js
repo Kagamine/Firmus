@@ -861,6 +861,24 @@ router.get('/address/getAddressByName',auth.checkRole('address','query'),functio
         .then(null, next);
 });
 
+// 模糊匹配详细地址名称 返回json by nele
+router.get('/address/getAddressJSONByName',auth.checkRole('address','query'),function(req,res,next){
+    db.addresses
+        .aggregate()
+        .match({ address: new RegExp('.*' + req.query.data + '.*') })
+        .group({_id:{address:'$address',id:'$_id'}})
+        .exec()
+        .then(function(data){
+            res.json(data.map(x=>{
+               return {
+                 id:x._id.id,
+                 data:x._id.address
+               }
+            }));
+        })
+        .then(null, next);
+});
+
 // 根据联系人匹配地址 by nele
 router.get('/address/getAddressByUserName',auth.checkRole('address','query'),function(req,res,next){
     db.addresses

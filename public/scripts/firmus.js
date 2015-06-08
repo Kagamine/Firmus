@@ -70,6 +70,7 @@ $(document).ready(function () {
     $('#txtEditAddressDistrict').droptxt('/general/address/getDistrictsByName','data');
     $('#txtEditAddressAddress').droptxt('/general/address/getAddressByName','data');
 
+    $('#txtBackMoneyAddress').dropAddressJson('/general/address/getAddressJSONByName','data');
 
     //修改地址信息时 地址的改变奶站改变
     $('#txtEditAddressCity').blur(function(){
@@ -863,6 +864,13 @@ $(document).ready(function () {
         }
     })
 
+    $('#backMoney').change(function () {
+        var backmoney = $('#backMoney').val();
+        var allowmoney = $('#pAllowBackMoney').text();
+        if(parseInt(backmoney)>parseInt(allowmoney)){
+            popMsg("登记退钱的钱数不能大于允许退钱的钱数！");
+        }
+    });
 });
 
 function popMsg(txt) {
