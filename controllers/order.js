@@ -227,7 +227,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                            .then(function (order) {
                                    console.log(order);
                                    db.addresses.update({_id:order.address},{
-                                       balance:req.body.balance
+                                       $inc: { balance: req.body.balance }
                                    })
                                        .exec()
                                        .then(function () {
