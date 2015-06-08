@@ -78,6 +78,7 @@
               <th>起送时间</th>
               <th>配送方式</th>
               <th>每次配送瓶数</th>
+              <th>单价</th>
           </tr>
       </thead>
       <tbody>
@@ -88,6 +89,7 @@
           <td><%= moment(x.begin).format('YYYY-MM-DD')%></td>
           <td><%= x.distributeMethod %></td>
           <td><%= x.distributeCount %></td>
+          <td><%= x.single %></td>
       </tr>
       <% }) %>
        </tbody>
