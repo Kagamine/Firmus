@@ -179,9 +179,11 @@ $(document).ready(function () {
         var method = $('#lstPaymentMethod').val();
         if(method == '现金'){
             $('#pos-number-row').hide();
+            $('#pos').val('pos');
         }
         else{
             $('#pos-number-row').show();
+            $('#pos').val('');
         }
     });
 
