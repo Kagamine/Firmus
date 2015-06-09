@@ -5,7 +5,7 @@
 </h2>
 <form class="search">
     检索：
-    <input type="text" name="title" class="textbox" placeholder="部门名称" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="title" class="textbox nullable" placeholder="部门名称" value="<%= req.query.title %>" />&nbsp;
     <select name="type">
         <option value="">部门类型</option>
         <% enums.departmentType.forEach(x => { %>

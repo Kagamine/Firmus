@@ -17,11 +17,11 @@
         <option value="0">否</option>
         <option value="1">是</option>
     </select>&nbsp;
-    <input type="text" class="textbox w-0-6" name="address" placeholder="地址" />&nbsp;
-    <input type="text" class="textbox w-0-6" name="phone" placeholder="联系电话" />&nbsp;
-    <input type="text" class="textbox w-0-6" name="name" placeholder="联系人" />&nbsp;
-    <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
-    <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
+    <input type="text" class="textbox w-0-6 nullable" name="address" placeholder="地址" />&nbsp;
+    <input type="text" class="textbox w-0-6 nullable" name="phone" placeholder="联系电话" />&nbsp;
+    <input type="text" class="textbox w-0-6 nullable" name="name" placeholder="联系人" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" value="过滤" class="button green" style="margin: 0" value="过滤" />
     <a href="javascript:$('#raw').val(true);$('.search').submit();" class="button blue" target="_blank">打印</a>
 </form>

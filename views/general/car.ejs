@@ -5,9 +5,9 @@
 </h2>
 <form class="search">
     检索：
-    <input type="text" name="city" class="textbox" placeholder="城市" value="<%= req.query.city %>" />&nbsp;
-    <input type="text" name="line" class="textbox" placeholder="线路名称" value="<%= req.query.line %>" />&nbsp;
-    <input type="text" name="plate" class="textbox" placeholder="车牌号" value="<%= req.query.plate %>" />&nbsp;
+    <input type="text" name="city" class="textbox nullable" placeholder="城市" value="<%= req.query.city %>" />&nbsp;
+    <input type="text" name="line" class="textbox nullable" placeholder="线路名称" value="<%= req.query.line %>" />&nbsp;
+    <input type="text" name="plate" class="textbox nullable" placeholder="车牌号" value="<%= req.query.plate %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
 </form>
 <table class="table">

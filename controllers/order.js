@@ -13,6 +13,7 @@ router.use(function (req, res, next) {
 // 订单列表
 router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
     let query = db.orders.find();
+    let orders;
     if (req.query.number)
         query = query.where({ number: req.query.number });
     if (req.query.city)
@@ -46,17 +47,16 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
                 .limit(50)
                 .exec();
         })
-        .then(function (orders) {
+        .then(function (_orders) {
+            orders = _orders.map(x => x.toObject());
             var temp = [];
             for(var i= 0;i<orders.length;i++){
                 for(var j=0;j<orders[i].orders.length;j++){
                     var leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,orders[i].orders[j].begin);
-                    temp = orders[i].orders[j];
-                    temp.leftCount = leftCount ;
-                    orders[i].orders[j] = temp;
+                    orders[i].orders[j].push({leftCount:leftCount});
                 }
             }
-           // console.log(orders);
+            console.log(orders);
             res.locals.orders = orders;
             return db.addresses
                 .aggregate()

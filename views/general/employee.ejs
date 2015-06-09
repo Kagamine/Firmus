@@ -5,8 +5,8 @@
 </h2>
 <form class="search">
     检索:
-    <input name="name" type="text" placeholder="姓名" class="textbox w-1" />
-    <input name="jobNumber" type="text" placeholder="工号" class="textbox w-1" />
+    <input name="name" type="text" placeholder="姓名" class="textbox w-1 nullable" />
+    <input name="jobNumber" type="text" placeholder="工号" class="textbox w-1 nullable" />
     <select name="role" class="w-1">
         <option value="">角色</option>
         <% enums.role.forEach(x => {%>

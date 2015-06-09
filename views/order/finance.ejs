@@ -6,9 +6,9 @@
 </h2>
 <form class="search">
     检索：
-    <input type="text" name="user" id="txtFinanceSearchUser"  class="textbox w-0-6" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
-    <input type="text" class="textbox w-0-8 datetime" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
-    <input type="text" class="textbox w-0-8 datetime" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
+    <input type="text" name="user" id="txtFinanceSearchUser"  class="textbox w-0-6 nullable" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
 </form>
 
