@@ -147,7 +147,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                         });
                 });
             });
-            res.render('orders/renew', { title: '续单提醒', report: ret });
+            res.render('order/renew', { title: '续单提醒', report: ret });
         })
         .then(null, next);
 });
