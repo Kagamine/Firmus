@@ -95,24 +95,36 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         for(var i =0;i<req.body.milkType.length;i++){
             order.orders.push({
                 milkType: req.body.milkType[i],
-                count:req.body.count[i],
+                count:req.body.count[i] +req.body.presentCount[i],
                 distributeCount:req.body.distributeCount[i],
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
                 time:Date.now(),
                 begin:req.body.begin[i]
             });
+            if(req.body.presentCount[i]>0){
+              order.logs.push({
+                        user: req.session.uid,
+                        content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+                })
+            }
         }
     }else{
         order.orders.push({
             milkType: req.body.milkType,
-            count:req.body.count,
+            count:req.body.count + req.body.presentCount,
             distributeCount:req.body.distributeCount,
             distributeMethod:req.body.distributeMethod,
             single:req.body.single,
             time:Date.now(),
             begin:req.body.begin
         });
+        if(req.body.presentCount>0){
+            order.logs.push({
+                user: req.session.uid,
+                content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+            })
+        }
     }
     for (let i = 0; i < order.orders.length; i++)
         order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);

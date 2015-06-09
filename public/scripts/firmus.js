@@ -680,7 +680,8 @@ $(document).ready(function () {
 
 
     $('.btnAddTr').click(function () {
-       var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6 milkType" name="milkType" /></td><td><input type="text" class="textbox w-0-6 count"  name="count" /></td>'+
+       var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6 milkType" name="milkType" /></td><td><input type="text" class="textbox w-0-6 count"  name="count" /></td>' +
+           '<td><input type="text" class="textbox w-0-6 count" value="0"  name="presentCount" /></td>'+
         '<td><input type="text" class="textbox datetime w-0-6 begin" name="begin" /></td>'+
         '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option>'+
         '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td> <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>'+
