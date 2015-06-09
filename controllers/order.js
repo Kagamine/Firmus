@@ -47,6 +47,16 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
                 .exec();
         })
         .then(function (orders) {
+            var temp = [];
+            for(var i= 0;i<orders.length;i++){
+                for(var j=0;j<orders[i].orders.length;j++){
+                    var leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,orders[i].orders[j].begin);
+                    temp = orders[i].orders[j];
+                    temp.leftCount = leftCount ;
+                    orders[i].orders[j] = temp;
+                }
+            }
+           // console.log(orders);
             res.locals.orders = orders;
             return db.addresses
                 .aggregate()
