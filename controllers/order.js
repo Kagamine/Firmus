@@ -120,6 +120,11 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     });
 });
 
+// 续单统计
+router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next) {
+
+});
+
 // 查看订单详情
 router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
     db.orders.findById(req.params.id)

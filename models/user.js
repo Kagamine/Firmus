@@ -4,12 +4,11 @@ var Schema = mongodb.mongoose.Schema;
 var userSchema = new Schema({
     jobNumber: {
         type: Number,
-        unique: true
+        index: true
     },
     username: {
         type: String,
-        unique: true,
-        validate: /^[^@]{4,16}$/ //限制为4~16个字符
+        unique: true
     },
     password: String,
     salt: String,
@@ -32,8 +31,7 @@ var userSchema = new Schema({
         index: true
     },
     PRCIdentity: {
-        type: String,
-        unique: true
+        type: String
     },
     address: String,
     cautioner: {
