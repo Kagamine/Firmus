@@ -161,7 +161,7 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
         .exec()
         .then(function (order) {
             for(var i=0;i<order.orders.length;i++){
-               var leftCount = getLeftCount(order.orders[i],order.changes,order.orders[i].begin);
+               var leftCount = getLeftCount(order.orders[i],order.changes,new Date());
                order.orders[i].leftCount= leftCount;
             }
             res.render('order/orderDetail', { title: '订单详情', order: order });
