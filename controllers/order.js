@@ -49,11 +49,11 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
         })
         .then(function (_orders) {
             orders = _orders.map(x => x.toObject());
-            var temp = [];
             for(var i= 0;i<orders.length;i++){
                 for(var j=0;j<orders[i].orders.length;j++){
-                    var leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,orders[i].orders[j].begin);
-                    orders[i].orders[j].push({leftCount:leftCount});
+                    var leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
+                    orders[i].orders[j] = orders[i].orders[j].toObject();
+                    orders[i].orders[j].leftCount=leftCount;
                 }
             }
             console.log(orders);
