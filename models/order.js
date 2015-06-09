@@ -38,7 +38,8 @@ var orderSchema = new Schema({
             enum: enums.distributeMethod,
             index: true
         },
-        single: Number
+        single: Number,
+        leftCount: Number
     }],
     payMethod: {
         type: String,

@@ -48,11 +48,12 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
                 .exec();
         })
         .then(function (_orders) {
-            orders = _orders.map(x => x.toObject());
+            orders = _orders;
             for(let i= 0;i<orders.length;i++){
                 for(let j=0;j<orders[i].orders.length;j++){
                     let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
                     orders[i].orders[j].leftCount=leftCount;
+                    console.log(orders[i].orders[j]);
                 }
             }
             res.locals.orders = orders;
