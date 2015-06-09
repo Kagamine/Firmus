@@ -241,7 +241,6 @@ router.get('/employee', auth.checkRole('employee', 'query'), function (req, res,
         .then(null, next);
 });
 
-
 // 添加职工
 router.get('/employee/create', auth.checkRole('employee', 'modify'), function (req, res, next) {
     res.render('general/employeeCreate', { title: '添加职工' });

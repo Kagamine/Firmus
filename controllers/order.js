@@ -114,6 +114,8 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
             begin:req.body.begin
         });
     }
+    for (let i = 0; i < order.orders.length; i++)
+        order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
     order.save(function (err, order) {
           console.log(err);
           res.redirect('/order/show/' + order._id);
@@ -122,7 +124,32 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
 
 // 续单统计
 router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next) {
-
+    let time = new Date();
+    time.setDate(time.getDate() + 8);
+    db.orders.find({
+        'orders.end': {
+            $lte: time,
+            $gte: new Date()
+    } }).populate('address')
+        .exec()
+        .then(function (orders) {
+            let ret = [];
+            orders.forEach(x => {
+                x.orders.forEach(y => {
+                    if (y.end >= new Date() && y.end <= time)
+                        ret.push({
+                            name: x.address.name,
+                            phone: x.address.phone,
+                            milkType: y.milkType,
+                            leftCount: getLeftCount(y, x.changes, new Date()),
+                            end: y.end,
+                            number: x.number
+                        });
+                });
+            });
+            res.render('orders/renew', { title: '续单提醒', report: ret });
+        })
+        .then(null, next);
 });
 
 // 查看订单详情
@@ -978,7 +1005,7 @@ router.post('/createFinance',auth.checkRole('finance','modify'), function (req, 
             finance.price = price;
             finance.pos=pos;
             finance.save(function (err,finance) {
-                  res.redirect('/order/finance');
+                res.redirect('/order/finance');
             })
         });
 });

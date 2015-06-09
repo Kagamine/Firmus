@@ -27,7 +27,8 @@ var orderSchema = new Schema({
         },
         end: {
             type: Date,
-            index: true
+            index: true,
+            default: new Date(2199, 0)
         },
         distributeCount: {
             type: Number,
