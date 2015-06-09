@@ -46,6 +46,7 @@
         <td class="tc">
             <a href="/general/employee/<%= x._id %>">详细资料</a>
             <a href="/general/employee/edit/<%= x._id %>">编辑</a>
+            <a href="javascript:deleteDialog('/general/employee/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
         </td>
     </tr>
     <% }) %>
