@@ -49,14 +49,12 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
         })
         .then(function (_orders) {
             orders = _orders.map(x => x.toObject());
-            for(var i= 0;i<orders.length;i++){
-                for(var j=0;j<orders[i].orders.length;j++){
-                    var leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
-                    orders[i].orders[j] = orders[i].orders[j].toObject();
+            for(let i= 0;i<orders.length;i++){
+                for(let j=0;j<orders[i].orders.length;j++){
+                    let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
                     orders[i].orders[j].leftCount=leftCount;
                 }
             }
-            console.log(orders);
             res.locals.orders = orders;
             return db.addresses
                 .aggregate()
@@ -631,9 +629,11 @@ function getLeftCount (order, changes, time) {
                     count += order.distributeCount;
                 }
             });
-            if (i.getTime() === time.getTime()) return count;
-            let t2 = _.clone(i).setDate(i.getDate() - 1)
-            if (t2.getTime() === time.getTime()) return count;
+            let timetmp = time.getTime();
+            if (i.getTime() === timetmp) return count;
+            let tt = new Date(i);
+            let t2 = tt.setDate(i.getDate() - 1);
+            if (t2.toString() == timetmp) return count;
         }
     }
     else
