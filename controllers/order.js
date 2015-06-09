@@ -1083,9 +1083,10 @@ router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res,
     db.orders.findById(req.params.id)
         .populate('address user')
         .exec()
-        .then(function (order) {
-
-              res.json(order);
+        .then(function (orders) {
+            for (let i = 0; i < orders.orders.length; i ++)
+                orders.orders[i].leftCount = getLeftCount(orders.orders[i],orders.changes,new Date());
+            res.json(orders);
         })
         .then(null, next);
 });
