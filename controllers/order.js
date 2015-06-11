@@ -112,7 +112,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     }else{
         order.orders.push({
             milkType: req.body.milkType,
-            count:req.body.count + req.body.presentCount,
+            count:parseInt(req.body.count) + parseInt(req.body.presentCount),
             distributeCount:req.body.distributeCount,
             distributeMethod:req.body.distributeMethod,
             single:req.body.single,
