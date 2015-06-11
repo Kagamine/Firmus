@@ -95,7 +95,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         for(var i =0;i<req.body.milkType.length;i++){
             order.orders.push({
                 milkType: req.body.milkType[i],
-                count:req.body.count[i] +req.body.presentCount[i],
+                count:req.body.count[i] + req.body.presentCount[i],
                 distributeCount:req.body.distributeCount[i],
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
