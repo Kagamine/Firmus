@@ -1,0 +1,15 @@
+<div class="wrap-cont">
+    <% data.forEach(x => { %>
+    <a href="/mobile/promotion/<%= x._id %>">
+        <div class="product-item">
+            <img src="/file/download/<%= x.icon %>" class="product-img" alt="促销活动">
+            <div class="product-title"><%= x.title %></div>
+            <div class="product-price"><%= moment(x.begin).format('YYYY-MM-DD') %> ~ <%= moment(x.end).format('YYYY-MM-DD') %></div>
+        </div>
+    </a>
+    <% }) %>
+    <% if (data.length == 0) { %>
+    <br />
+    <p style="text-align: center">目前没有正在进行的促销活动</p>
+    <% } %>
+</div>

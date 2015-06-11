@@ -1,0 +1,7 @@
+<% data.forEach(x => { %>
+<a href="/mobile/order/<%= x.id %>">
+    <div class="list-outer">
+        订单 <%= x.number %><br><div class="sub-title">下单时间：<%= moment(x.time).format('YYYY-MM-DD hh:mm:ss') %></div>
+    </div>
+</a>
+<% }) %>

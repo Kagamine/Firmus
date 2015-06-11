@@ -1,0 +1,18 @@
+<h2>奶箱盘点
+</h2>
+<table class="detail-table">
+    <thead>
+    <tr>
+        <td class="tl">仓库名称</td>
+        <td class="tl">库存</td>
+    </tr>
+    </thead>
+    <tbody>
+    <% departments.forEach(x => { %>
+    <tr id="<%= x._id %>">
+        <td class="tl"><a href="/general/department/<%= x._id %>"><%= x.title %></a></td>
+        <td><%= x.count %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

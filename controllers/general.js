@@ -110,7 +110,7 @@ router.get('/department', auth.checkRole('department', 'modify'), function (req,
         .then(function (count) {
             var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
                 .skip(50 * (page - 1))
@@ -237,7 +237,7 @@ router.get('/employee', auth.checkRole('employee', 'query'), function (req, res,
         .then (function (count) {
         var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
         var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-        var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+        var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
         var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
         return query.populate('department').sort('jobNumber').skip(50 * (page - 1)).limit(50).exec();
     })
@@ -390,7 +390,7 @@ router.get('/address', auth.checkRole('address', 'query'), function (req, res, n
         .then(function (count) {
             var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query.populate({ path: 'milkStation', select: 'title _id' }).skip(50 * (page - 1)).limit(50).exec();
         })

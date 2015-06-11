@@ -131,7 +131,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
               res.locals.count = count;
               var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
               var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-              var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+              var start = res.locals.start = page - 5 < 1 ? 1 : page - 5;
               var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
               return query
                   .populate('address milkStation user')
@@ -440,11 +440,9 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
 
 // 查看订单详情
 router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
-    var sum  = 0;
+    let sum  = 0;
     db.orders.findById(req.params.id)
-        .populate('address')
-        .populate('order user')
-        .populate('logs.user')
+        .populate('address order user logs.user')
         .exec()
         .then(function (order) {
             for(var i=0;i<order.orders.length;i++){
@@ -2072,7 +2070,7 @@ router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next
         .then(function (count) {
             var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+            var start = res.locals.start = page - 5 < 1 ? 1 : page - 5;
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
                 .populate('address milkStation user')

@@ -1,0 +1,42 @@
+<div class="wrap-cont">
+    <form action="/mobile/milkbox/create" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <div class="textbox-outer">
+            <div class="field">订单号</div>
+            <input type="text" name="number" class="textbox form" placeholder="轻触此处输入订单号">
+        </div>
+        <div class="textbox-outer">
+            <div class="field">奶箱仓库</div>
+            <select id="lstStores" name="department" class="form">
+                <option value="">轻触此处选择仓库</option>
+            </select>
+        </div>
+        <div class="textbox-outer">
+            <div class="field">数量</div>
+            <input type="text" name="count" class="textbox form" placeholder="轻触此处输入数量" value="1">
+        </div>
+        <div class="textbox-outer">
+            <div class="field">备注</div>
+            <input type="text" name="hint" class="textbox form" placeholder="轻触此处输入备注">
+        </div>
+        <a id="btnSubmit" href="javascript:;">
+            <div class="btn">提交</div>
+        </a>
+    </form>
+</div>
+
+<script>
+    var lock = false;
+    $('#btnSubmit').click(function () {
+        if (lock)
+            return;
+        lock = true;
+        $('form').submit();
+    });
+    $.getJSON('/milkBox/storelist', {}, function (data) {
+        for(var i = 0; i < data.length; i++) {
+            if (data[i].count > 0)
+                $('#lstStores').append('<option value="' + data[i].id + '">' + data[i].title + '</option>');
+        }
+    });
+</script>

@@ -1,0 +1,18 @@
+<div class="wrap-cont">
+    <div class="container">
+        <table class="detail-table">
+            <tr>
+                <td>奶品编码</td>
+                <td>奶品名称</td>
+                <td>单价</td>
+            </tr>
+            <% milks.forEach(x => { %>
+            <tr>
+                <td><%= x.number %></td>
+                <td><%= x.title %></td>
+                <td>¥<%= x.price.toFixed(2) %></td>
+            </tr>
+            <% }) %>
+        </table>
+    </div>
+</div>

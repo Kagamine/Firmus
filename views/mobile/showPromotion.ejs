@@ -1,0 +1,38 @@
+<div class="wrap-cont">
+    <div class="container">
+        <h3>基本信息</h3>
+        <table class="detail-table">
+            <tr>
+                <td class="row-title">促销活动名称</td>
+                <td><%= data.title %></td>
+            </tr>
+            <tr>
+                <td class="row-title">开始时间</td>
+                <td><%= moment(data.begin).format('YYYY-MM-DD') %></td>
+            </tr>
+            <tr>
+                <td class="row-title">结束时间</td>
+                <td><%= moment(data.end).format('YYYY-MM-DD') %></td>
+            </tr>
+            <tr>
+                <td class="row-title">原价</td>
+                <td>￥<%= data.original.toFixed(2) %></td>
+            </tr>
+            <tr>
+                <td class="row-title">现价</td>
+                <td>￥<%= data.discount.toFixed(2) %></td>
+            </tr>
+        </table>
+        <h3>活动介绍</h3>
+        <%- xss.process(data.content) %>
+        <h3>活动礼品</h3>
+        <div>
+            <% for(var i = 0; i < data.gifts.length; i++) { %>
+            <%= (i + 1) %>. <%= data.gifts[i].title %><br />
+            <% } %>
+            <% if (data.gifts.length == 0) { %>
+            本活动无赠品
+            <% } %>
+        </div>
+    </div>
+</div>

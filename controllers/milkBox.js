@@ -18,7 +18,7 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
         .then(function (count) {
             var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+            var start = res.locals.start = page - 5 < 1 ? 1 : page - 5;
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
                 .skip(50 * (page - 1))
@@ -75,6 +75,60 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
         .then(null, next);
 });
 
+router.get('/check',auth.checkRole('milkBox','query'), function ( req, res, next) {
+    let query = db.departments.find({ type: '奶箱仓库' });
+    if (req.query.title)
+        query = query.where({ title: new RegExp('.*' + req.query.title + '.*') });
+
+    query.exec()
+        .then(function (departments) {
+            res.locals.departments = departments;
+            return Promise.all(departments.map(x => {
+                    return db.stores
+                        .aggregate()
+                        .match({
+                            gift: { $eq: null } ,
+                            operateType: { $in: ['转入', '入库', '拆箱'] }
+                        })
+                        .group({
+                            _id: '$gift',
+                            total: {
+                                $sum: '$count'
+                            }
+                        })
+                        .exec();
+            }));
+        })
+        .then(function (counts) {
+            for (let i = 0; i < counts.length; i++) {
+                res.locals.departments[i].count = counts[i][0].total;
+            }
+            return Promise.all(res.locals.departments.map(x => {
+                    return db.stores
+                        .aggregate()
+                        .match({
+                            gift: { $eq: null } ,
+                            operateType: { $nin: ['转入', '入库', '拆箱'] }
+                        })
+                        .group({
+                            _id: '$gift',
+                            total: {
+                                $sum: '$count'
+                            }
+                        })
+                        .exec();
+        }));
+
+        })
+        .then(function (counts) {
+            for (let i = 0; i < counts.length; i++) {
+                if (counts[i][0] && counts[i][0].total)
+                    res.locals.departments[i].count -= counts[i][0].total;
+            }
+            res.render('milkBox/check', { title: '奶箱盘点' });
+        })
+        .then(null, next);
+});
 
 router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next) {
     let query = db.deposits.find();
@@ -124,7 +178,7 @@ router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next
                     .exec();
             var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
             var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+            var start = res.locals.start = page - 5 < 1 ? 1 : page - 5;
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
                 .populate('address')
@@ -313,7 +367,7 @@ router.post('/distribute', auth.checkRole('milkBox', 'modify'), function (req, r
             store.department = req.body.department;
             store.hint = req.body.hint;
             store.operateType = req.body.type;
-            store.milkbox = req.body.milkbox;
+            store.milkBox = req.body.milkbox;
             store.save(function (err) {
                 return Promise.resolve();
             });

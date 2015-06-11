@@ -1,0 +1,106 @@
+<link href="/styles/codecomb.droptxt.css" rel="stylesheet" />
+<link href="/styles/datetimepicker.css" rel="stylesheet" />
+<script src="/scripts/codecomb.droptxt.js"></script>
+<script src="/scripts/moment.js"></script>
+<script src="/scripts/jquery.datetimepicker.js"></script>
+<script src="/scripts/firmus.js"></script>
+<div class="wrap-cont">
+    <form id="frmCreateOrderA" action="/mobile/order/create" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <div style="padding: 0.4em; font-size:0.8em;color:#888">订单基本信息</div>
+        <div class="textbox-outer">
+            <div class="field">订单号</div>
+            <input type="text" name="number" class="textbox form" placeholder="轻触此处输入订单号">
+        </div>
+
+        <div class="textbox-outer">
+            <div class="field">地址信息</div>
+            <span id="showOrderAddress"></span>
+            <a href="javascript:createOrderSelectAddress();" id="btnSetAddress">点击设置地址</a>
+            <input type="hidden" name="address" id="orderAddress" />
+        </div>
+
+        <div class="textbox-outer">
+            <div class="field">押金单号</div>
+            <input type="text" name="deposit" class="textbox form" placeholder="轻触此处输入押金单号">
+        </div>
+
+
+        <div class="textbox-outer">
+            <div class="field">金额</div>
+            <input type="text" name="price" id="price" class="textbox form" placeholder="轻触此处输入金额">
+        </div>
+
+        <div class="textbox-outer">
+            <div class="field">付款方式</div>
+            <select name="payMethod" id="lstPaymentMethod" class="form">
+                <option>现金</option>
+                <option>POS</option>
+            </select>
+        </div>
+
+        <div class="textbox-outer" id="pos-number-row" style="display: none;">
+            <div class="field">POS单号</div>
+            <input type="text" name="pos" class="nullable textbox form" placeholder="轻触此处输入POS单号">
+        </div>
+
+        <div class="textbox-outer">
+            <div class="field">备注</div>
+            <input type="text" name="hint" class="nullable textbox form" placeholder="轻触此处输入备注">
+        </div>
+
+        <div style="padding: 0.4em; font-size:0.8em;color:#888">订单详细信息</div>
+
+        <div style="overflow-x:auto">
+            <table class="detail-table order-table">
+                <thead>
+                <tr>
+                    <td>品相</td>
+                    <td>购买瓶数</td>
+                    <td>赠送瓶数</td>
+                    <td>第几天起送</td>
+                    <td>起送时间</td>
+                    <td>配送方式</td>
+                    <td>每次配送瓶数</td>
+                    <td>单价</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody class="lstOrder">
+                <tr>
+                    <td><input type="text" class="textbox w-0-6 milkType" name="milkType" /></td>
+                    <td><input type="text" class="textbox w-0-6 count"  name="count" /></td>
+                    <td><input type="text" class="textbox w-0-6" value="0"  name="presentCount" /></td>
+                    <td><input type="text" class="textbox w-0-6 dayAfter nullable" value="2"/></td>
+                    <td><input type="text" class="textbox datetime w-0-6 begin" name="begin"  /></td>
+                    <td>
+                        <select name="distributeMethod">
+                            <option>天天送</option>
+                            <option>隔日送</option>
+                            <option>周末停送</option>
+                        </select>
+                    </td>
+                    <td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>
+                    <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <a href="javascript:void(0);" class="btnAddTr">增加</a>
+        </div>
+
+        <a id="btnCreateOrderA" href="javascript:;">
+            <div class="btn">提交</div>
+        </a>
+    </form>
+</div>
+
+<script>
+    var lock = false;
+    $('#btnCreateOrderA').click(function () {
+        if (lock)
+            return;
+        lock = true;
+        $('#frmCreateOrderA').submit();
+    });
+</script>
