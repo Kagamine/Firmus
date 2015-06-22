@@ -82,6 +82,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     let user  = req.session.user;
     if(user.role == '热线员'){
         order.customCall =  req.session.uid;
+        order.customServiceFlag = false;
     }
     if(user.role == '业务员'){
         order.customService =  req.session.uid;
@@ -90,7 +91,6 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.user = req.session.uid;
     order.address = req.body.address;
     order.number = req.body.number;
-    order.customServiceFlag = false;
     order.payMethod = req.body.payMethod;
     order.pos = req.body.pos =='pos'?'': req.body.pos;
     order.price = req.body.price;
@@ -798,7 +798,7 @@ function getLeftCount (order, changes, time) {
 // 配送日报
 router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, res, next) {
     db.orders.find({
-        //begin: { $lte: Date.now() }
+        'customServiceFlag':true
     })
         .where('address').ne(null)
         .populate('address')
@@ -806,7 +806,7 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
         .then(function (orders) {
             let tmp = _.groupBy(orders, x => x.address.city);
             let ret = {};
-            for (let x in tmp) {
+            for (let x in tmp) {4
                 ret[x] = {};
                 tmp[x].forEach(z => {
                     z.orders.forEach(y => {
@@ -830,7 +830,7 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
 router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (req, res, next) {
     let orders;
     db.orders.find({
-        //begin: { $lte: Date.now() }
+        'customServiceFlag':true
     })
         .where('address').ne(null)
         .populate('address')
@@ -869,7 +869,7 @@ router.get('/distribute/car', auth.checkRole('distribute', 'query'), function (r
 // 奶站配送日报
 router.get('/distribute/station', auth.checkRole('distribute', 'query'), function (req, res, next) {
     db.orders.find({
-        //begin: { $lte: Date.now() }
+        'customServiceFlag':true
     })
         .where('address').ne(null)
         .populate('address')
@@ -896,7 +896,9 @@ router.get('/distribute/station', auth.checkRole('distribute', 'query'), functio
 });
 
 router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function (req, res, next) {
-    db.orders.find({})
+    db.orders.find({
+        'customServiceFlag':true
+    })
         .where('address').ne(null)
         .populate('address')
         .deepPopulate('address.milkStation address.distributor')
@@ -942,6 +944,7 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
 
 router.get('/distribute/detail', function (req, res, next) {
     db.orders.find({
+        'customServiceFlag':true
         //begin: { $lte: Date.now() }
     })
         .where('address').ne(null)
@@ -979,6 +982,7 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
     let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
     time.setDate(time.getDate() + (parseInt(req.query.day) || 3));
     db.orders.find({
+        'customServiceFlag':true
         //begin: { $lte: time }
     })
         .where('address').ne(null)

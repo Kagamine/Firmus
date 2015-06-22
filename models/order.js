@@ -58,7 +58,7 @@ var orderSchema = new Schema({
     customServiceFlag: {
         index: true,
         type: Boolean,
-        default: false
+        default: true,
     },
     customService: {
         type: Schema.Types.ObjectId,
