@@ -79,7 +79,13 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
     let order = new db.orders();
-
+    var  user =  req.session.user;
+    if(user.role == '热线员'){
+        order.customCall =  req.session.uid;
+    }
+    if(user.role == '业务员'){
+        order.customService =  req.session.uid;
+    }
     order.time = Date.now();
     order.user = req.session.uid;
     order.address = req.body.address;
@@ -1161,7 +1167,7 @@ router.get('/getOneOrderById/:id',auth.checkRole('order','query'), function (req
         .then(null,next);
 });
 
-// 根据地址的id获取
+// 根据地址的id获取 订单类型
 router.get('/getOrderTypeByAddress/:id',auth.checkRole('order','query'), function (req,res,next) {
     let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     let user  = new db.users();
@@ -1246,6 +1252,10 @@ router.get('/getOrderTypeByAddress/:id',auth.checkRole('order','query'), functio
                     }
                 })
         })
+});
+
+router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next) {
+     res.render('order/acceptCall', { title: '受理热线订单' });
 });
 
 module.exports = router;
