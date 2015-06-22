@@ -1243,10 +1243,6 @@ router.get('/getOneOrderById/:id',auth.checkRole('order','query'), function (req
         .then(null,next);
 });
 
-// 根据地址的id获取 订单类型
-router.get('/getOrderTypeByAddress/:id',auth.checkRole('order','query'), function (req,res,next) {
-
-});
 
 router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next) {
     let query = db.orders.find();
@@ -1304,6 +1300,20 @@ router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next
         .then(function (cities) {
             res.locals.cities = cities.map(x => x._id);
             res.render('order/acceptCall', { title: '受理热线订单' });
+        })
+        .then(null, next);
+});
+
+router.post('/doAcceptCall/:id',auth.checkRole('order','modify'), function (req,res,next){
+    //TODO: 判断各个字段是否合法
+    let user  =req.session.user;
+    db.orders.update({ _id: req.params.id }, {
+        customServiceFlag:true,
+        customService: req.session.uid
+    })
+        .exec()
+        .then(function () {
+            res.send('ok');
         })
         .then(null, next);
 });

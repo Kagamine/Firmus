@@ -46,7 +46,7 @@
         <td>
             <a href="/order/show/<%= x._id %>">订单详情</a>
             <% if (permission.order.modify) { %>
-            <a href="/order/change/<%= x._id %>">受理</a>
+            <a href="javascript:acceptDialog('/order/doAcceptCall/<%= x._id %>', '<%= x._id %>');">受理</a>
             <% } %>
         </td>
     </tr>

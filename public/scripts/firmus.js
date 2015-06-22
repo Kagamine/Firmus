@@ -913,6 +913,16 @@ function postDelete(url, id) {
         closeDialog();
     });
 }
+function postAccept(url, id) {
+    $.post(url, { _csrf: csrf }, function (data) {
+        $('#' + id).remove();
+        if (data == 'ok' || data == 'OK')
+            popMsg('受理成功');
+        else
+            popMsg(data);
+        closeDialog();
+    });
+}
 
 function deleteDialog(url, id)
 {
@@ -926,6 +936,20 @@ function deleteDialog(url, id)
     $('body').append(dom);
     setTimeout(function () { dom.addClass('active'); }, 10);
 }
+
+function acceptDialog(url, id)
+{
+    var html = '<div class="dialog">' +
+        '<h3 class="dialog-title">提示</h3>' +
+        '<p>您确认要受理该订单吗？</p>' +
+        '<div class="dialog-buttons"><a href="javascript:postAccept(\'' + url + '\', \'' + id + '\')" class="button red">受理</a> <a href="javascript:closeDialog()" class="button blue">取消</a></div>' +
+        '</div>';
+    var dom = $(html);
+    dom.css('margin-left', -(dom.outerWidth() / 2));
+    $('body').append(dom);
+    setTimeout(function () { dom.addClass('active'); }, 10);
+}
+
 
 
 function editAddress(id) {
