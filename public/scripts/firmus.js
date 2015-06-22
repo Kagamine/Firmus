@@ -997,9 +997,6 @@ function saveOrderAddress(){
     $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address,phone:phone,storey:storey,milkStation:milkStation}, function (data) {
             $('#orderAddress').val(data);
             closeDialog();
-            $.get('/order/getOrderTypeByAddress/'+data, function (data) {
-                $('#orderType').val(data);
-            })
             var str='<span>'+city+'  '+district+'   '+address+'</span>';
             $('#showOrderAddress').html(str);
     });

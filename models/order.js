@@ -64,11 +64,6 @@ var orderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    customerServiceDealFlag:{
-        index: true,
-        type: Boolean,
-        default: false
-    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users',

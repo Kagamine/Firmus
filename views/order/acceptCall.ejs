@@ -1,1 +1,64 @@
-asdad
+<h2><%= title %>
+    <% if (permission.order.modify) { %>
+    <a class="add" href="/order/create">添加订单</a>
+    <% } %>
+</h2>
+<form class="search">
+    检索：
+    <input type="text" placeholder="订单号" name="number" class="textbox w-0-8 nullable" />&nbsp;
+    <select name="city" class="w-0-6" id="lstOrderCity">
+        <option value="">城市</option>
+        <% cities.forEach(x => { %>
+        <option<%= req.query.city == x ? ' selected' : '' %>><%= x %></option>
+        <% }) %>
+    </select>&nbsp;
+    <select name="district" class="w-0-6" id="lstOrderDistrict">
+        <option value="">区县</option>
+    </select>&nbsp;
+    <select name="department" class="w-0-6" id="lstOrderDepartment">
+        <option value="">奶站</option>
+    </select>&nbsp;
+    <input type="text" placeholder="详细地址" name="address" class="textbox w-1 nullable" />&nbsp;
+    <input type="text" name="user" class="textbox w-0-6 nullable" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
+    <input type="submit" class="button green" style="margin: 0" value="过滤" />
+</form>
+<table class="table">
+    <thead>
+    <tr class="tl">
+        <th>订单号</th>
+        <th>奶站</th>
+        <th>业务员</th>
+        <th>订单日期</th>
+        <th>订单类型</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% orders.forEach(x => { %>
+    <tr id="<%= x._id %>" class="orderDataTr" data-id="<%= x._id %>">
+        <td><%= x.number %></td>
+        <td><% if (x.milkStation) { %><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a><% } %></td>
+        <td><% if (x.user) { %><a href="/general/employee/<%= x.user._id %>"><%= x.user.name %></a>(<%= x.user.jobNumber %>)<% } %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+        <td><%= x.orderType %></td>
+        <td>
+            <a href="/order/show/<%= x._id %>">订单详情</a>
+            <% if (permission.order.modify) { %>
+            <a href="/order/change/<%= x._id %>">受理</a>
+            <% } %>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<div id="divInfo">
+</div>
+<div class="pager">
+    <a class="pager-item" href="/order/?p=1&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
+    <% for(var i = start; i <= end; i++) { %>
+    <a class="pager-item <%= page == i ? 'active' : '' %>" href="/order/?p=<%= i %>&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>"><%= i %></a>
+    <% } %>
+    <a class="pager-item" href="/order/?p=<%= pageCount || 1 %>&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">»</a>
+</div>

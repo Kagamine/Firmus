@@ -79,7 +79,7 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
     let order = new db.orders();
-    var  user =  req.session.user;
+    let user  = req.session.user;
     if(user.role == '热线员'){
         order.customCall =  req.session.uid;
     }
@@ -90,11 +90,11 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.user = req.session.uid;
     order.address = req.body.address;
     order.number = req.body.number;
-
+    order.customServiceFlag = false;
     order.payMethod = req.body.payMethod;
     order.pos = req.body.pos =='pos'?'': req.body.pos;
-    order.orderType = req.body.orderType;
     order.price = req.body.price;
+    order.orderType = 'undefine';
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
@@ -110,9 +110,9 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                 begin:req.body.begin[i]
             });
             if(req.body.presentCount[i]>0){
-              order.logs.push({
-                        user: req.session.uid,
-                        content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+                order.logs.push({
+                    user: req.session.uid,
+                    content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
                 })
             }
         }
@@ -135,10 +135,86 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     }
     for (let i = 0; i < order.orders.length; i++)
         order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
-    order.save(function (err, order) {
-          console.log(err);
-          res.redirect('/order/show/' + order._id);
-    });
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+    db.orders.find({
+                'address':ObjectID(req.body.address)
+            })
+                .exec()
+             .then(function (orders) {
+                    console.log(orders);
+                    console.log(orders.length);
+                    console.log(user);
+                    if(orders.length == 0){
+                        if(user.role=='业务员'){
+                            order.orderType= 'B01';
+                        }
+                        else if(user.role=="热线员"){
+                            order.orderType =  'A02';
+                        }
+                    }
+                    else{
+                        var flag = false;  //是否有结束的订单
+                        var empty = true;  //是否全部的订单都结束
+                        var days = 0;
+                        var isTodayHave = false; 　//是否今天下单
+                        for(var i=0;i<orders.length;i++){
+                            var  now = new Date();
+                            var date =   getEndDistributeDate(order.orders[i], order.changes);
+                            var orderTime  = orders[i].orders[0].time;
+                            if(orderTime.getDate() == now.getDate() ){
+                                isTodayHave = true;
+                            }
+                            if(date<now){
+                                if(days>parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24)){
+                                    days = parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24);
+                                }
+                                flag = true;
+                            }
+                            else if(date > now){
+                                empty = false;
+                            }
+                        }
+                        if(isTodayHave==true){
+                            if(user.role=='业务员'){
+                                order.orderType =  'B03';
+                            }
+                            else if(user.role=="热线员"){
+                                order.orderType =  'A04';
+                            }
+                        }
+                        if((flag==false) || ((flag==true) && (empty==false))){
+                            if(user.role=='业务员'){
+                                order.orderType =  'B04';
+                            }
+                            else if(user.role=="热线员"){
+                                order.orderType =  'A04';
+                            }
+                        }
+                        if(empty==true){
+                            if(parseInt(days)<10){
+                                if(user.role=='业务员'){
+                                    order.orderType =  'B05';
+                                }
+                                else if(user.role=="热线员"){
+                                    order.orderType =  'A03';
+                                }
+                            }
+                            else{
+                                if(user.role=='业务员'){
+                                    order.orderType =  'B02';
+                                }
+                                else if(user.role=="热线员"){
+                                    order.orderType =  'A03';
+                                }
+                            }
+                        }
+                    }
+        })
+             .then(function (data) {
+               order.save(function (err, order) {
+                   res.redirect('/order/show/' + order._id);
+               });
+      })
 });
 
 // 续单统计
@@ -1169,93 +1245,67 @@ router.get('/getOneOrderById/:id',auth.checkRole('order','query'), function (req
 
 // 根据地址的id获取 订单类型
 router.get('/getOrderTypeByAddress/:id',auth.checkRole('order','query'), function (req,res,next) {
-    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
-    let user  = new db.users();
-    db.users.findById(req.session.uid)
-        .exec()
-        .then(function (user) {
-            user = user;
-            db.orders.find({
-                'address':ObjectID(req.params.id)
-            })
-                .exec()
-                .then(function (orders) {
-                    console.log(orders);
-                    console.log(orders.length);
-                    console.log(user);
-                    if(orders.length == 0){
-                        if(user.role=='业务员'){
-                            res.send('B01');
-                        }
-                        else if(user.role=="热线员"){
-                            res.send('A02');
-                        }
-                    }
 
-                    else{
-                        var flag = false;  //是否有结束的订单
-                        var empty = true;  //是否全部的订单都结束
-                        var days = 0;
-                        var isTodayHave = false; 　//是否今天下单
-                        for(var i=0;i<orders.length;i++){
-                            var  now = new Date();
-                            var date =   getEndDistributeDate(order.orders[i], order.changes);
-                            var orderTime  = orders[i].orders[0].time;
-                            if(orderTime.getDate() == now.getDate() ){
-                                isTodayHave = true;
-                            }
-                            if(date<now){
-                                if(days>parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24)){
-                                    days = parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24);
-                                }
-                                flag = true;
-                            }
-                            else if(date > now){
-                                empty = false;
-                            }
-                        }
-                        if(isTodayHave==true){
-                            if(user.role=='业务员'){
-                                res.send('B03');
-                            }
-                            else if(user.role=="热线员"){
-                                res.send('A04');
-                            }
-                        }
-                        if((flag==false) || ((flag==true) && (empty==false))){
-                            if(user.role=='业务员'){
-                                res.send('B04');
-                            }
-                            else if(user.role=="热线员"){
-                                res.send('A04');
-                            }
-                        }
-                        if(empty==true){
-                            if(parseInt(days)<10){
-                                if(user.role=='业务员'){
-                                    res.send('B05');
-                                }
-                                else if(user.role=="热线员"){
-                                    res.send('A03');
-                                }
-                            }
-                            else{
-                                if(user.role=='业务员'){
-                                    res.send('B02');
-                                }
-                                else if(user.role=="热线员"){
-                                    res.send('A03');
-                                }
-                            }
-                        }
-
-                    }
-                })
-        })
 });
 
 router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next) {
-     res.render('order/acceptCall', { title: '受理热线订单' });
+    let query = db.orders.find();
+    let orders;
+    if (req.query.number)
+        query = query.where({ number: req.query.number });
+    if (req.query.city)
+        query = query.where({ 'address.city': req.query.city });
+    if (req.query.district)
+        query = query.where({ 'address.district': req.query.district });
+    if (req.query.milkStation)
+        query = query.where({ 'milkStation': req.query.milkStation });
+    if (req.query.address) {
+        query = query.where({ 'address.address': new RegExp('.*' + req.query.address + '.*') });
+    }
+    if (req.query.begin)
+        query = query.where('begin').gte(Date.parse(req.query.begin));
+    if (req.query.end)
+        query = query.where('end').lte(Date.parse(req.query.end));
+    if (req.query.user)
+        query = query.where({ 'user.name': new RegExp('.*' + req.query.user + '.*') });
+    query=query.where({'orderType':{ $in: [ 'A02','A03','A04','A05','A06' ]}});
+    query=query.where({'customServiceFlag':false});
+    _.clone(query)
+        .count()
+        .exec()
+        .then(function (count) {
+            var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+            return query
+                .populate('address milkStation user')
+                .skip(50 * (page - 1))
+                .limit(50)
+                .exec();
+        })
+        .then(function (_orders) {
+            orders = _orders;
+            for(let i= 0;i<orders.length;i++){
+                for(let j=0;j<orders[i].orders.length;j++){
+                    let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
+                    orders[i].orders[j].leftCount=leftCount;
+                    console.log(orders[i].orders[j]);
+                }
+            }
+            res.locals.orders = orders;
+            return db.addresses
+                .aggregate()
+                .group({
+                    _id: '$city'
+                })
+                .exec()
+        })
+        .then(function (cities) {
+            res.locals.cities = cities.map(x => x._id);
+            res.render('order/acceptCall', { title: '受理热线订单' });
+        })
+        .then(null, next);
 });
 
 module.exports = router;
