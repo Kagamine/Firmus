@@ -3,7 +3,7 @@ var Schema = mongodb.mongoose.Schema;
 
 var userSchema = new Schema({
     jobNumber: {
-        type: Number,
+        type: String,
         index: true
     },
     username: {

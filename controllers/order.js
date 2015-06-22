@@ -79,6 +79,7 @@ router.get('/create', auth.checkRole('order', 'modify'), function (req, res, nex
 // 创建订单
 router.post('/create', auth.checkRole('order', 'modify'), function (req, res, next) {
     let order = new db.orders();
+
     order.time = Date.now();
     order.user = req.session.uid;
     order.address = req.body.address;
@@ -91,6 +92,46 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
+
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+    let user  = new db.users();
+    db.users.findById(req.session.uid)
+        .exec()
+        .then(function (user) {
+            user = user;
+            db.orders.find({
+                'address':ObjectID(req.params.id)
+            })
+                .exec()
+                .then(function (orders) {
+                    console.log(orders);
+                    console.log(orders.length);
+                    console.log(user);
+                    if(orders.length == 0){
+                        if(user.role=='业务员'){
+                             order.orderType='B01';
+                        }
+                        else if(user.role=="热线员"){
+                            order.orderType = 'A02';
+                        }
+                    }
+
+                    else{
+                        for(var i=0;i<orders.length;i++){
+                              if(orders[i].orders.length==req.body.milkType.length){
+                                   for(var i = 0 ;i<orders[i].orders.length;i++){
+                                         
+                                   }
+                              }
+                        }
+                        if(user.role=='热线员'){
+
+                        }else if(user.role=='业务员'){
+
+                        }
+                    }
+                })
+        })
     if(typeof(req.body.milkType)!='string'){
         for(var i =0;i<req.body.milkType.length;i++){
             order.orders.push({
@@ -1160,5 +1201,9 @@ router.get('/getOneOrderById/:id',auth.checkRole('order','query'), function (req
         .then(null,next);
 });
 
+// 根据地址的id获取
+router.get('/getOrderTypeByAddress/:id',auth.checkRole('order','query'), function (req,res,next) {
+
+});
 
 module.exports = router;
