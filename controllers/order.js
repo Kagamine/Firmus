@@ -1520,9 +1520,24 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
                    res.render('order/message', { title: '提示信息' });
                }
                else{
-                   res.locals.order =order;
-                   res.locals.address = order.address;
-                   res.render('order/orderContinueInfo', { title: '受理热线订单' });
+                   var time = Date.now();
+                   var flag = false;
+                   for(var i=0;i<order.orders.length;i++){
+                       var end = getEndDistributeDate(order.orders[i],order.changes);
+                       end.setDate(end.getDate()-2);
+                       if(time >end){
+                            flag = true;
+                       }
+                   }
+                   if(flag==true){
+                       res.locals.message ="只能提前两天续单";
+                       res.render('order/message', { title: '提示信息' });
+                   }
+                   else{
+                       res.locals.order =order;
+                       res.locals.address = order.address;
+                       res.render('order/orderContinueInfo', { title: '受理热线订单' });
+                   }
                }
            })
          .then(null,next);
