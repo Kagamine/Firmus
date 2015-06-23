@@ -1519,9 +1519,11 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
                    res.locals.message ="你输入的订单不存在，请重新输入";
                    res.render('order/message', { title: '提示信息' });
                }
-               res.locals.order =order;
-               res.locals.address = order.address;
-               res.render('order/orderContinueInfo', { title: '受理热线订单' });
+               else{
+                   res.locals.order =order;
+                   res.locals.address = order.address;
+                   res.render('order/orderContinueInfo', { title: '受理热线订单' });
+               }
            })
          .then(null,next);
 });
