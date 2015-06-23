@@ -540,7 +540,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             })
             .then(null, next);
     }
-
+    
 });
 
 // 删除变更
@@ -561,6 +561,7 @@ router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (r
 // 计算订单结束日期
 function getEndDistributeDate (order, changes)
 {
+    console.log(order);
     let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
     let ret;
     let count = order.count;
@@ -1338,7 +1339,6 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
            .populate('address')
         .exec()
         .then(function (order) {
-               console.log(order);
                res.locals.order =order;
                res.locals.address = order.address;
                res.render('order/orderContinueInfo', { title: '受理热线订单' });
@@ -1347,12 +1347,11 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
 });
 
 // 续单 第二步
-router.post('/orderContinueInfo',auth.checkRole('order','modify'), function (req,res,next) {
+router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (req,res,next) {
     let order = new db.orders();
     let user  = req.session.user;
     if(user.role == '热线员'){
         order.customCall =  req.session.uid;
-        order.customServiceFlag = false;
     }
     if(user.role == '业务员'){
         order.customService =  req.session.uid;
@@ -1369,53 +1368,65 @@ router.post('/orderContinueInfo',auth.checkRole('order','modify'), function (req
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
-    if(typeof(req.body.milkType)!='string'){
-        for(var i =0;i<req.body.milkType.length;i++){
-            order.orders.push({
-                milkType: req.body.milkType[i],
-                count:req.body.count[i] + req.body.presentCount[i],
-                distributeCount:req.body.distributeCount[i],
-                distributeMethod:req.body.distributeMethod[i],
-                single:req.body.single[i],
-                time:Date.now(),
-                begin:req.body.begin[i]
-            });
-            if(req.body.presentCount[i]>0){
-                order.logs.push({
-                    user: req.session.uid,
-                    content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
-                })
-            }
-        }
-    }else{
-        order.orders.push({
-            milkType: req.body.milkType,
-            count:parseInt(req.body.count) + parseInt(req.body.presentCount),
-            distributeCount:req.body.distributeCount,
-            distributeMethod:req.body.distributeMethod,
-            single:req.body.single,
-            time:Date.now(),
-            begin:req.body.begin
-        });
-        if(req.body.presentCount>0){
-            order.logs.push({
-                user: req.session.uid,
-                content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
-            })
-        }
-    }
-    for (let i = 0; i < order.orders.length; i++)
-        order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
 
    db.orders.findById(req.body.parentId)
     .exec()
     .then(function (data) {
-           order.orderType  =  'A01';
+           console.log(data);
+           if(typeof(req.body.milkType)!='string'){
+               for(var i =0;i<req.body.milkType.length;i++){
+                   order.orders.push({
+                       milkType: req.body.milkType[i],
+                       count:req.body.count[i] + req.body.presentCount[i],
+                       distributeCount:req.body.distributeCount[i],
+                       distributeMethod:req.body.distributeMethod[i],
+                       single:req.body.single[i],
+                       time:Date.now(),
+                       begin:getEndDistributeDate(data.orders[i],data.changes)
+                   });
+                   if(req.body.presentCount[i]>0){
+                       order.logs.push({
+                           user: req.session.uid,
+                           content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+                       })
+                   }
+               }
+           }else{
+               order.orders.push({
+                   milkType: req.body.milkType,
+                   count:parseInt(req.body.count) + parseInt(req.body.presentCount),
+                   distributeCount:req.body.distributeCount,
+                   distributeMethod:req.body.distributeMethod,
+                   single:req.body.single,
+                   time:Date.now(),
+                   begin:getEndDistributeDate(data.orders[0],data.changes)
+               });
+               if(req.body.presentCount>0){
+                   order.logs.push({
+                       user: req.session.uid,
+                       content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+                   })
+               }
+           }
+           for (let i = 0; i < order.orders.length; i++)
+               order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
+
+           for(var i  =0 ;i<data.orders.length;i++){
+               var time = new Date();
+               time.setDate(time.getDate() + 8);
+               var end = getEndDistributeDate(data.orders[i],data.changes);
+               if(time>end){
+                   order.orderType  =  'A01';
+               }
+               else{
+                   order.orderType  =  'A06';
+               }
+           }
            order.save(function (err, order) {
                res.redirect('/order/show/' + order._id);
            });
        })
-      .then(next,null);
+      .then(null,next);
 });
 
 module.exports = router;

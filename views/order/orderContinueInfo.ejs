@@ -1,5 +1,5 @@
 <h2><%= title %></h2>
-<form method="post" class="block" id="frmCreateOrder" action="/order/orderContinueInfo">
+<form method="post" class="block" id="frmCreateOrder" action="/order/doOrderContinueInfo">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
     <input type="hidden" name="parentId" value="<%=order._id%>" />
     <h3>订单信息</h3>
@@ -43,7 +43,6 @@
                         <td>品相</td>
                         <td>购买瓶数</td>
                         <td>赠送瓶数</td>
-                        <td>起送时间</td>
                         <td>配送方式</td>
                         <td>每次配送瓶数</td>
                         <td>单价</td>
@@ -55,7 +54,6 @@
                         <td><input type="text" class="textbox w-0-6 milkType" name="milkType" value="<%=x.milkType%>" /></td>
                         <td><input type="text" class="textbox w-0-6 count"  name="count" /></td>
                         <td><input type="text" class="textbox w-0-6" value="0"  name="presentCount" /></td>
-                        <td><input type="text" class="textbox datetime w-0-6 begin" name="begin" /></td>
                         <td>
                             <select name="distributeMethod">
                                 <option>天天送</option>
