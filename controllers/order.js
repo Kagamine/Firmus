@@ -95,6 +95,30 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     order.pos = req.body.pos =='pos'?'': req.body.pos;
     order.price = req.body.price;
     order.orderType = 'undefine';
+
+    db.addresses.findById(req.body.address)
+    .exec()
+    .then(function (address) {
+            if(address.deposit==null){
+                let deposit = new db.deposits();
+                deposit.number = req.body.deposit;
+                deposit.address= req.body.address;
+                deposit.giveBackFlag=false;
+                deposit.giveBackDone=false;
+                deposit.giveBackTime='';
+
+                deposit.boxedFlag=false;
+                deposit.boxedTime='';
+                deposit.boxedDone=false;
+                deposit.time=Date.now();
+                deposit.save(function (err, deposit) {
+                    db.addresses.update({_id: req.body.address}, {
+                        deposit: deposit._id
+                    })
+                        .exec();
+                })
+            }
+        });
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
@@ -279,8 +303,11 @@ router.post('/delete/:id', auth.checkRole('order', 'modify'), function (req, res
 router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     db.orders.findById(req.params.id)
         .populate('address')
+        .deepPopulate('address.deposit')
         .exec()
         .then(function (order) {
+            res.locals.order = order;
+            res.locals.deposit = order.address.deposit;
             res.render('order/orderEdit', { title: '订单详情', order: order });
         })
         .then(null, next);
@@ -293,6 +320,31 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
     let orders = [];
     var ordersTemp;
     var _order ;
+
+    db.addresses.findById(req.body.address)
+        .exec()
+        .then(function (address) {
+            if(address.deposit==null){
+                let deposit = new db.deposits();
+                deposit.number = req.body.deposit;
+                deposit.address= req.body.address;
+                deposit.giveBackFlag=false;
+                deposit.giveBackDone=false;
+                deposit.giveBackTime='';
+
+                deposit.boxedFlag=false;
+                deposit.boxedTime='';
+                deposit.boxedDone=false;
+                deposit.time=Date.now();
+                deposit.save(function (err, deposit) {
+                    db.addresses.update({_id: req.body.address}, {
+                        deposit: deposit._id
+                    })
+                        .exec();
+                })
+            }
+        });
+
     if(typeof(req.body.milkType)!='string'){
         for(var i =0;i<req.body.milkType.length;i++){
             orders.push({

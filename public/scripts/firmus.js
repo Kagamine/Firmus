@@ -1020,6 +1020,12 @@ function saveOrderAddress(){
     var  milkStation =$('#lstOrderMilkStation').val();
     $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address,phone:phone,storey:storey,milkStation:milkStation}, function (data) {
             $('#orderAddress').val(data);
+            $.get('/general/getAddressById/'+data, function (data) {
+                if(data.deposit == null){
+                    $('#txtDeposit').val("");
+                }
+                $('#txtDeposit').val(data.deposit.number);
+            })
             closeDialog();
             var str='<span>'+city+'  '+district+'   '+address+'</span>';
             $('#showOrderAddress').html(str);
