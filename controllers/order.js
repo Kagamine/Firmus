@@ -308,7 +308,7 @@ router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, n
         .then(function (order) {
             res.locals.order = order;
             res.locals.deposit = order.address.deposit;
-            res.render('order/orderEdit', { title: '订单详情', order: order });
+            res.render('order/orderEdit', { title: '订单详情' });
         })
         .then(null, next);
 });
@@ -324,6 +324,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
     db.addresses.findById(req.body.address)
         .exec()
         .then(function (address) {
+            console.log(address);
             if(address.deposit==null){
                 let deposit = new db.deposits();
                 deposit.number = req.body.deposit;
