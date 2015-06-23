@@ -346,12 +346,14 @@ router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res,
 
 // 添加订单变更
 router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+    let  _order ;
     if(req.body.type=='品相变更'){
         var ordersTemp = [];
         var oid  =req.body.oid;
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {
+                _order = order;
                 let tmp = order.orders.filter(x=>x._id==oid);
                 tmp.milkType = req.body.omilkType;
                 tmp.count  = req.body.ocount;
@@ -388,6 +390,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
         db.orders.findById(req.params.id)
         .exec()
         .then(function (order) {
+                _order = order;
                 var temp = 0;
                 if(typeof(req.body.cancelCount)!='string'){
                     for(var i =0;i<req.body.cancelCount.length;i++){
@@ -423,6 +426,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {
+                _order = order;
                 ordersTemp = order.orders;
                 for(var i =0;i<ordersTemp.length;i++){
                     if(req.body.lsLengthenOreders==ordersTemp[i]._id){
@@ -445,6 +449,21 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         })
                         .exec()
                         .then(function () {
+                                db.orders.find()
+                                .where({'parentId': req.params.id})
+                                .exec()
+                                .then(function (orders) {
+                                        for(var i =0 ;i<orders.length;i++){
+                                            ordersTemp = order.orders;
+                                            for(var j =0;j<ordersTemp.length;j++){
+                                                    ordersTemp[i].bigein = getEndDistributeDate(_order.orders[j],_order.changes)+1;
+                                            }
+                                            db.orders.update({ _id:orders[i] }, {
+                                                orders:ordersTemp
+                                            })
+                                                .exec()
+                                        }
+                                    })
                                 res.redirect('/order/show/' + req.params.id);
                             })
                     })
@@ -486,6 +505,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
              db.orders.findById(req.params.id)
                  .exec()
                  .then(function (order) {
+                     _order = order;
                      ordersTemp = order.orders;
                      for(var i =0;i<ordersTemp.length;i++){
                          if(req.body.lsGiftOreders==ordersTemp[i]._id){
@@ -519,6 +539,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {
+                _order = order;
                 return db.orders.update({ _id: req.params.id }, {
                     $push: {
                         changes: {
@@ -540,7 +561,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             })
             .then(null, next);
     }
-    
+
 });
 
 // 删除变更
@@ -1382,7 +1403,7 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
                        distributeMethod:req.body.distributeMethod[i],
                        single:req.body.single[i],
                        time:Date.now(),
-                       begin:getEndDistributeDate(data.orders[i],data.changes)
+                       begin:getEndDistributeDate(data.orders[i],data.changes)+1
                    });
                    if(req.body.presentCount[i]>0){
                        order.logs.push({
@@ -1414,7 +1435,7 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
            for(var i  =0 ;i<data.orders.length;i++){
                var time = new Date();
                time.setDate(time.getDate() + 8);
-               var end = getEndDistributeDate(data.orders[i],data.changes);
+               var end = getEndDistributeDate(data.orders[i],data.changes)+1;
                if(time>end){
                    order.orderType  =  'A01';
                }
