@@ -399,11 +399,29 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                            db.orders.findById(req.params.id)
                            .exec()
                            .then(function (order) {
+                                   _order = order;
                                    db.addresses.update({_id:order.address},{
                                        $inc: { balance: req.body.balance }
                                    })
                                        .exec()
                                        .then(function () {
+                                           db.orders.find()
+                                               .where({'parentId': req.params.id})
+                                               .exec()
+                                               .then(function (orders) {
+                                                   for(var i =0 ;i<orders.length;i++){
+                                                       ordersTemp = order.orders;
+                                                       console.log(ordersTemp);
+                                                       for(var j =0;j<ordersTemp.length;j++){
+                                                           ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+                                                       }
+                                                       console.log(ordersTemp);
+                                                       db.orders.update({ _id:orders[i]._id }, {
+                                                           orders:ordersTemp
+                                                       })
+                                                           .exec()
+                                                   }
+                                               })
                                            res.redirect('/order/show/' + req.params.id);
                                        });
                                })
@@ -440,6 +458,23 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         })
                             .exec()
                             .then(function () {
+                                db.orders.find()
+                                    .where({'parentId': req.params.id})
+                                    .exec()
+                                    .then(function (orders) {
+                                        for(var i =0 ;i<orders.length;i++){
+                                            ordersTemp = order.orders;
+                                            console.log(ordersTemp);
+                                            for(var j =0;j<ordersTemp.length;j++){
+                                                ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+                                            }
+                                            console.log(ordersTemp);
+                                            db.orders.update({ _id:orders[i]._id }, {
+                                                orders:ordersTemp
+                                            })
+                                                .exec()
+                                        }
+                                    })
                                 res.redirect('/order/show/' + req.params.id);
                             });
                     });
@@ -480,9 +515,11 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                                 .then(function (orders) {
                                         for(var i =0 ;i<orders.length;i++){
                                             ordersTemp = order.orders;
+                                            console.log(ordersTemp);
                                             for(var j =0;j<ordersTemp.length;j++){
                                                 ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
                                             }
+                                            console.log(ordersTemp);
                                             db.orders.update({ _id:orders[i]._id }, {
                                                 orders:ordersTemp
                                             })
@@ -520,7 +557,30 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                      })
                          .exec()
                          .then(function () {
-                             res.redirect('/order/show/' + req.params.id);
+                             db.orders.findById(req.params.id)
+                                 .exec()
+                                 .then(function (order) {
+                                     _order = order ;
+                                     db.orders.find()
+                                         .where({'parentId': req.params.id})
+                                         .exec()
+                                         .then(function (orders) {
+                                             for(var i =0 ;i<orders.length;i++){
+                                                 ordersTemp = order.orders;
+                                                 console.log(ordersTemp);
+                                                 for(var j =0;j<ordersTemp.length;j++){
+                                                     ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+                                                 }
+                                                 console.log(ordersTemp);
+                                                 db.orders.update({ _id:orders[i]._id }, {
+                                                     orders:ordersTemp
+                                                 })
+                                                     .exec()
+                                             }
+                                         })
+                                     res.redirect('/order/show/' + req.params.id);
+                                 })
+
                          })
                  })
              .then(null,next);
@@ -553,6 +613,23 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                              })
                                  .exec()
                                  .then(function () {
+                                     db.orders.find()
+                                         .where({'parentId': req.params.id})
+                                         .exec()
+                                         .then(function (orders) {
+                                             for(var i =0 ;i<orders.length;i++){
+                                                 ordersTemp = order.orders;
+                                                 console.log(ordersTemp);
+                                                 for(var j =0;j<ordersTemp.length;j++){
+                                                     ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+                                                 }
+                                                 console.log(ordersTemp);
+                                                 db.orders.update({ _id:orders[i]._id }, {
+                                                     orders:ordersTemp
+                                                 })
+                                                     .exec()
+                                             }
+                                         })
                                      res.redirect('/order/show/' + req.params.id);
                                  })
                          })
