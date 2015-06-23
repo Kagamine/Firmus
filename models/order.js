@@ -91,6 +91,10 @@ var orderSchema = new Schema({
     }],
     pos : String,
     hint : String,
+    parentId:{
+        type: Schema.Types.ObjectId,
+        ref: 'orders'
+    },
     logs:[{
         user: {
             type: Schema.Types.ObjectId,

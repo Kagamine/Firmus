@@ -1,0 +1,11 @@
+<h2><%= title %></h2>
+<form method="post" class="block" id="frmContinueOrder">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">要续单的订单号</td>
+            <td><input type="text" class="textbox w-3" name="number" /></td>
+        </tr>
+    </table>
+    <p><input type="submit" value="下一步" class="button blue" /></p>
+</form>

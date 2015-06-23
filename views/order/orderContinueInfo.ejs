@@ -1,0 +1,85 @@
+<h2><%= title %></h2>
+<form method="post" class="block" id="frmCreateOrder" action="/order/orderContinueInfo">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <input type="hidden" name="parentId" value="<%=order._id%>" />
+    <h3>订单信息</h3>
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">订单号</td>
+            <td><input type="text" class="textbox w-3" name="number" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">地址</td>
+            <td>
+                <span id="showOrderAddress"><%=address.city%> <%=address.district %> <%=address.address %></span>
+                <input type="hidden" name="address" id="orderAddress" value="<%=order.address._id%>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">金额</td>
+            <td><input type="text" class="textbox w-3" id="price" name="price" /> 例如: 38.5</td>
+        </tr>
+        <tr>
+            <td class="row-title">付款方式</td>
+            <td>
+                <select name="payMethod" id="lstPaymentMethod">
+                    <option>现金</option>
+                    <option>POS</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="pos-number-row" style="display: none;">
+            <td class="row-title">POS单号</td>
+            <td><input type="text" class="textbox w-3" name="pos" value="pos" /></td>
+        </tr>
+        <tr>
+            <td class="row-title">
+                订单详情
+            </td>
+            <td>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>品相</td>
+                        <td>购买瓶数</td>
+                        <td>赠送瓶数</td>
+                        <td>起送时间</td>
+                        <td>配送方式</td>
+                        <td>每次配送瓶数</td>
+                        <td>单价</td>
+                    </tr>
+                    </thead>
+                    <tbody class="lstOrder">
+                    <% order.orders.forEach(x => { %>
+                    <tr>
+                        <td><input type="text" class="textbox w-0-6 milkType" name="milkType" value="<%=x.milkType%>" /></td>
+                        <td><input type="text" class="textbox w-0-6 count"  name="count" /></td>
+                        <td><input type="text" class="textbox w-0-6" value="0"  name="presentCount" /></td>
+                        <td><input type="text" class="textbox datetime w-0-6 begin" name="begin" /></td>
+                        <td>
+                            <select name="distributeMethod">
+                                <option>天天送</option>
+                                <option>隔日送</option>
+                                <option>周末停送</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td>
+                        <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>
+                        <td></td>
+                    </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">
+                备注
+            </td>
+            <td>
+                <textarea name="hint" class="textbox" style="height: 60px;"></textarea>
+            </td>
+        </tr>
+    </table>
+    <p><input type="submit" value="创建订单" class="button blue" /></p>
+</form>

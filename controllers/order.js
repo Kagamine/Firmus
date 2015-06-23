@@ -225,7 +225,8 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
         'orders.end': {
             $lte: time,
             $gte: new Date()
-    } }).populate('address')
+    } })
+        .populate('address')
         .exec()
         .then(function (orders) {
             let ret = [];
@@ -1308,6 +1309,7 @@ router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next
         .then(null, next);
 });
 
+// 受理热线订单 bu nele
 router.post('/doAcceptCall/:id',auth.checkRole('order','modify'), function (req,res,next){
     //TODO: 判断各个字段是否合法
     let user  =req.session.user;
@@ -1320,6 +1322,100 @@ router.post('/doAcceptCall/:id',auth.checkRole('order','modify'), function (req,
             res.send('ok');
         })
         .then(null, next);
+});
+
+
+// 续单 第一步
+router.get('/continue',auth.checkRole('order','modify'), function (req,res,next){
+    res.render('order/orderContinue', { title: '续单' });
+});
+
+router.post('/continue',auth.checkRole('order','modify'), function (req,res,next) {
+       var number =  req.body.number;
+       db.orders.findOne({
+           'number':number
+       })
+           .populate('address')
+        .exec()
+        .then(function (order) {
+               console.log(order);
+               res.locals.order =order;
+               res.locals.address = order.address;
+               res.render('order/orderContinueInfo', { title: '受理热线订单' });
+           })
+         .then(null,next);
+});
+
+// 续单 第二步
+router.post('/orderContinueInfo',auth.checkRole('order','modify'), function (req,res,next) {
+    let order = new db.orders();
+    let user  = req.session.user;
+    if(user.role == '热线员'){
+        order.customCall =  req.session.uid;
+        order.customServiceFlag = false;
+    }
+    if(user.role == '业务员'){
+        order.customService =  req.session.uid;
+    }
+    order.time = Date.now();
+    order.user = req.session.uid;
+    order.address = req.body.address;
+    order.number = req.body.number;
+    order.payMethod = req.body.payMethod;
+    order.pos = req.body.pos =='pos'?'': req.body.pos;
+    order.price = req.body.price;
+    order.orderType = 'undefine';
+    order.parentId = req.body.parentId
+    // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
+    // order.end = ;
+    order.hint = req.body.hint;
+    if(typeof(req.body.milkType)!='string'){
+        for(var i =0;i<req.body.milkType.length;i++){
+            order.orders.push({
+                milkType: req.body.milkType[i],
+                count:req.body.count[i] + req.body.presentCount[i],
+                distributeCount:req.body.distributeCount[i],
+                distributeMethod:req.body.distributeMethod[i],
+                single:req.body.single[i],
+                time:Date.now(),
+                begin:req.body.begin[i]
+            });
+            if(req.body.presentCount[i]>0){
+                order.logs.push({
+                    user: req.session.uid,
+                    content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+                })
+            }
+        }
+    }else{
+        order.orders.push({
+            milkType: req.body.milkType,
+            count:parseInt(req.body.count) + parseInt(req.body.presentCount),
+            distributeCount:req.body.distributeCount,
+            distributeMethod:req.body.distributeMethod,
+            single:req.body.single,
+            time:Date.now(),
+            begin:req.body.begin
+        });
+        if(req.body.presentCount>0){
+            order.logs.push({
+                user: req.session.uid,
+                content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+            })
+        }
+    }
+    for (let i = 0; i < order.orders.length; i++)
+        order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
+
+   db.orders.findById(req.body.parentId)
+    .exec()
+    .then(function (data) {
+           order.orderType  =  'A01';
+           order.save(function (err, order) {
+               res.redirect('/order/show/' + order._id);
+           });
+       })
+      .then(next,null);
 });
 
 module.exports = router;
