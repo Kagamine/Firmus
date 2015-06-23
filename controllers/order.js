@@ -289,7 +289,10 @@ router.get('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, n
 // 编辑订单
 router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     let end = Date.now(); //TODO: 计算最后一天送奶日期
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     let orders = [];
+    var ordersTemp;
+    var _order ;
     if(typeof(req.body.milkType)!='string'){
         for(var i =0;i<req.body.milkType.length;i++){
             orders.push({
@@ -323,6 +326,28 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
     })
         .exec()
         .then(function () {
+                db.orders.findById(req.params.id)
+                .exec()
+                .then(function (order) {
+                    _order=order;
+                        db.orders.find()
+                            .where({'parentId':ObjectID(req.params.id)})
+                            .exec()
+                            .then(function (orders) {
+                                for(var i =0 ;i<orders.length;i++){
+                                    ordersTemp = order.orders;
+                                    console.log(ordersTemp);
+                                    for(var j =0;j<ordersTemp.length;j++){
+                                        ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+                                    }
+                                    console.log(ordersTemp);
+                                    db.orders.update({ _id:orders[i]._id }, {
+                                        orders:ordersTemp
+                                    })
+                                        .exec()
+                                }
+                            })
+                })
             res.send('ok');
         })
         .then(null, next);
@@ -456,9 +481,9 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                                         for(var i =0 ;i<orders.length;i++){
                                             ordersTemp = order.orders;
                                             for(var j =0;j<ordersTemp.length;j++){
-                                                    ordersTemp[i].bigein = getEndDistributeDate(_order.orders[j],_order.changes)+1;
+                                                ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
                                             }
-                                            db.orders.update({ _id:orders[i] }, {
+                                            db.orders.update({ _id:orders[i]._id }, {
                                                 orders:ordersTemp
                                             })
                                                 .exec()
@@ -1389,7 +1414,6 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
-
    db.orders.findById(req.body.parentId)
     .exec()
     .then(function (data) {
@@ -1403,7 +1427,7 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
                        distributeMethod:req.body.distributeMethod[i],
                        single:req.body.single[i],
                        time:Date.now(),
-                       begin:getEndDistributeDate(data.orders[i],data.changes)+1
+                       begin:getEndDistributeDate(data.orders[i],data.changes).getDate()+1
                    });
                    if(req.body.presentCount[i]>0){
                        order.logs.push({
@@ -1420,7 +1444,7 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
                    distributeMethod:req.body.distributeMethod,
                    single:req.body.single,
                    time:Date.now(),
-                   begin:getEndDistributeDate(data.orders[0],data.changes)
+                   begin:getEndDistributeDate(data.orders[0],data.changes).getDate()+1
                });
                if(req.body.presentCount>0){
                    order.logs.push({
@@ -1435,7 +1459,8 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
            for(var i  =0 ;i<data.orders.length;i++){
                var time = new Date();
                time.setDate(time.getDate() + 8);
-               var end = getEndDistributeDate(data.orders[i],data.changes)+1;
+               var end ;
+               end.setDate(getEndDistributeDate(data.orders[i],data.changes).getDate());
                if(time>end){
                    order.orderType  =  'A01';
                }
