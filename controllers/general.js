@@ -232,7 +232,7 @@ router.get('/employee', auth.checkRole('employee', 'query'), function (req, res,
         var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
         var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
         var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-        return query.populate('department').skip(50 * (page - 1)).limit(50).exec();
+        return query.populate('department').sort('jobNumber').skip(50 * (page - 1)).limit(50).exec();
     })
         .then(function (users) {
             res.locals.users = users;

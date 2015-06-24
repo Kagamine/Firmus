@@ -14,11 +14,11 @@
             </tr>
             <tr>
                 <td class="row-title">姓名</td>
-                <td><input type="text" class="textbox" name="name" value="<%= user.name %>" /></td>
+                <td><input type="text" class="textbox nullable" name="name" value="<%= user.name %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">工号</td>
-                <td><input type="text" class="textbox" name="jobNumber" value="<%= user.jobNumber %>" /></td>
+                <td><input type="text" class="textbox nullable" name="jobNumber" value="<%= user.jobNumber %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">性别</td>
@@ -35,7 +35,7 @@
             </tr>
             <tr>
                 <td class="row-title">就职日期</td>
-                <td><input type="text" class="textbox datetime" name="takeOfficeTime" value="<%= moment(user.takeOfficeTime).format('YYYY-MM-DD') %>" /></td>
+                <td><input type="text" class="textbox nullable datetime" name="takeOfficeTime" value="<%= moment(user.takeOfficeTime).format('YYYY-MM-DD') %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">角色</td>
@@ -49,7 +49,7 @@
             </tr>
             <tr>
                 <td class="row-title">学历</td>
-                <td><input type="text" class="textbox" name="diploma" value="<%= user.diploma %>" /></td>
+                <td><input type="text" class="textbox nullable" name="diploma" value="<%= user.diploma %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">部门</td>
@@ -64,11 +64,11 @@
             </tr>
             <tr>
                 <td class="row-title">身份证号</td>
-                <td><input type="text" class="textbox" name="PRCIdentity" value="<%= user.PRCIdentity %>" /></td>
+                <td><input type="text" class="textbox nullable" name="PRCIdentity" value="<%= user.PRCIdentity %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">通信地址</td>
-                <td><input type="text" class="textbox" name="PRCIdentity" value="<%= user.address %>" /></td>
+                <td><input type="text" class="textbox nullable" name="PRCIdentity" value="<%= user.address %>" /></td>
             </tr>
         </table>
         <br />
@@ -76,19 +76,19 @@
         <table class="detail-table">
             <tr>
                 <td class="row-title">姓名</td>
-                <td><input type="text" class="textbox" name="cautioner-name" value="<%= user.cautioner.name %>" /></td>
+                <td><input type="text" class="textbox nullable" name="cautioner-name" value="<%= user.cautioner.name %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">联系电话</td>
-                <td><input type="text" class="textbox" name="cautioner-phone" value="<%= user.cautioner.phone %>" /></td>
+                <td><input type="text" class="textbox nullable" name="cautioner-phone" value="<%= user.cautioner.phone %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">身份证号</td>
-                <td><input type="text" class="textbox" name="cautioner-PRCIdentity" value="<%= user.cautioner.PRCIdentity %>" /></td>
+                <td><input type="text" class="textbox nullable" name="cautioner-PRCIdentity" value="<%= user.cautioner.PRCIdentity %>" /></td>
             </tr>
             <tr>
                 <td class="row-title">通信地址</td>
-                <td><input type="text" class="textbox" name="cautioner-address" value="<%= user.cautioner.address %>" /></td>
+                <td><input type="text" class="textbox nullable" name="cautioner-address" value="<%= user.cautioner.address %>" /></td>
             </tr>
         </table>
         <p><input type="submit" value="保存" class="button blue" /></p>
