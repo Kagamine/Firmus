@@ -85,7 +85,6 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         order.customServiceFlag = false;
     }
     order.time = Date.now();
-    order.user = req.session.uid;
     order.address = req.body.address;
     order.number = req.body.number;
     order.payMethod = req.body.payMethod;
@@ -236,8 +235,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                            .exec()
                            .then(function (user) {
                                console.log(user);
-                               order.customService = user._id;
-                               order.save();
+                               db.orders.update({ _id: order._id }, { user: user._id }).exec();
                            })
                    }
                    res.redirect('/order/show/' + order._id);
