@@ -1481,7 +1481,10 @@ router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next
         })
         .then(function (cities) {
             res.locals.cities = cities.map(x => x._id);
-            res.render('order/acceptCall', { title: '受理热线订单' });
+            if (!req.query.raw)
+               res.render('order/acceptCall', { title: '受理热线订单' });
+            else
+               res.render('order/acceptCallDetailRaw', { layout: false });
         })
         .then(null, next);
 });
