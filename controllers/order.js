@@ -235,7 +235,8 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                            .exec()
                            .then(function (xxxuser) {
                                console.log(xxxuser);
-                               db.orders.update({ _id: order._id }, { user: xxxuser._id }).exec();
+                               order.user = xxxuser._id;
+                               order.save();
                            })
                    }
                    res.redirect('/order/show/' + order._id);
