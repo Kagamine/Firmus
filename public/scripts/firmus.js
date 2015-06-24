@@ -8,10 +8,6 @@ $(window).resize(function () {
     resize();
 });
 
-// 给日期类对象添加日期差方法，返回日期与diff参数日期的时间差，单位为天
-Date.prototype.diff = function(date){
-    return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
-}
 
 $(document).ready(function () {
     resize();
@@ -731,7 +727,10 @@ $(document).ready(function () {
             var tmp;
             for(var i=0;i<begins.length;i++){
                 tmp =new Date($(begins[i]).val());
-                if(tmp.diff(now)<2){
+                now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                var tmp2 = now.setDate(now.getDate() + 1);
+                tmp = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
+                if(tmp <= tmp2 && $('#hdRole').val()!='系统管理员'){
                     popMsg("起配日期必须是当前日期的两天之后！");
                     return false;
                 }
@@ -756,7 +755,10 @@ $(document).ready(function () {
             var tmp;
             for(var i=0;i<begins.length;i++){
                 tmp =new Date($(begins[i]).val());
-                if(tmp.diff(now)<2){
+                now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                var tmp2 = now.setDate(now.getDate() + 1);
+                tmp = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
+                if(tmp <= tmp2 && $('#hdRole').val()!='系统管理员'){
                     popMsg("起配日期必须是当前日期的两天之后！");
                     return false;
                 }
@@ -825,7 +827,10 @@ $(document).ready(function () {
         var tmp;
         for(var i=0;i<begins.length;i++){
             tmp =new Date($(begins[i]).val());
-            if(tmp.diff(now)<2){
+            now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            var tmp2 = now.setDate(now.getDate() + 1);
+            tmp = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
+            if(tmp <= tmp2 && $('#hdRole').val()!='系统管理员'){
                 popMsg("起配日期必须是当前日期的两天之后！");
                 return false;
             }
@@ -850,7 +855,10 @@ $(document).ready(function () {
         var tmp;
         for(var i=0;i<begins.length;i++){
             tmp =new Date($(begins[i]).val());
-            if(tmp.diff(now)<1&& $('#hdRole')!='系统管理员'){
+            now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            var tmp2 = now.setDate(now.getDate() + 1);
+            tmp = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
+            if(tmp <= tmp2 && $('#hdRole').val()!='系统管理员'){
                 popMsg("起配日期必须是当前日期的两天之后！");
                 return false;
             }
