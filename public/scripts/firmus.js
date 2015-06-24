@@ -770,7 +770,7 @@ $(document).ready(function () {
 
 
 
-        $('.dayAfter').change(function () {
+        $('.dayAfter').blur(function () {
             var day = $(this).val();
             var time = new Date();
             time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
@@ -779,7 +779,7 @@ $(document).ready(function () {
 
         });
 
-        $('.datetime').change(function () {
+        $('.datetime').blur(function () {
             $(this).parents('tr').children('td').children('.dayAfter').val('');
         })
 
@@ -900,7 +900,7 @@ $(document).ready(function () {
     });
 
 
-    $('.dayAfter').change(function () {
+    $('.dayAfter').blur(function () {
         var day = $(this).val();
         var time = new Date();
         time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
