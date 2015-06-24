@@ -850,7 +850,7 @@ $(document).ready(function () {
         var tmp;
         for(var i=0;i<begins.length;i++){
             tmp =new Date($(begins[i]).val());
-            if(tmp.diff(now)<2 && $('#hdRole')!='系统管理员'){
+            if(tmp.diff(now)<1&& $('#hdRole')!='系统管理员'){
                 popMsg("起配日期必须是当前日期的两天之后！");
                 return false;
             }
