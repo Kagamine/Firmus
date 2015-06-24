@@ -233,9 +233,9 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                        console.log(req.body.serverNumber);
                        db.users.findOne({'jobNumber':req.body.serverNumber})
                            .exec()
-                           .then(function (user) {
-                               console.log(user);
-                               db.orders.update({ _id: order._id }, { user: user._id }).exec();
+                           .then(function (xxxuser) {
+                               console.log(xxxuser);
+                               db.orders.update({ _id: order._id }, { user: xxxuser._id }).exec();
                            })
                    }
                    res.redirect('/order/show/' + order._id);
