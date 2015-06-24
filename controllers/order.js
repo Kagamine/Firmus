@@ -84,8 +84,14 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         order.customCall =  req.session.uid;
         order.customServiceFlag = false;
     }
-    if(user.role == '业务员'){
-        order.customService =  req.session.uid;
+    if(user.role != '热线员'){
+           console.log(req.body.serverNumber);
+           db.users.findOne({'jobNumber':req.body.serverNumber})
+            .exec()
+            .then(function (user) {
+                   console.log(user);
+                   order.customService = user._id;
+               })
     }
     order.time = Date.now();
     order.user = req.session.uid;
@@ -165,9 +171,6 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
             })
                 .exec()
              .then(function (orders) {
-                    console.log(orders);
-                    console.log(orders.length);
-                    console.log(user);
                     if(orders.length == 0){
                         if(user.role=='业务员'){
                             order.orderType= 'B01';
@@ -324,7 +327,6 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
     db.addresses.findById(req.body.address)
         .exec()
         .then(function (address) {
-            console.log(address);
             if(address.deposit==null){
                 let deposit = new db.deposits();
                 deposit.number = req.body.deposit;
@@ -389,11 +391,9 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                             .then(function (orders) {
                                 for(var i =0 ;i<orders.length;i++){
                                     ordersTemp = order.orders;
-                                    console.log(ordersTemp);
                                     for(var j =0;j<ordersTemp.length;j++){
                                         ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
                                     }
-                                    console.log(ordersTemp);
                                     db.orders.update({ _id:orders[i]._id }, {
                                         orders:ordersTemp
                                     })
@@ -464,11 +464,11 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                                                .then(function (orders) {
                                                    for(var i =0 ;i<orders.length;i++){
                                                        ordersTemp = order.orders;
-                                                       console.log(ordersTemp);
+
                                                        for(var j =0;j<ordersTemp.length;j++){
                                                            ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
                                                        }
-                                                       console.log(ordersTemp);
+
                                                        db.orders.update({ _id:orders[i]._id }, {
                                                            orders:ordersTemp
                                                        })
@@ -517,11 +517,11 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                                     .then(function (orders) {
                                         for(var i =0 ;i<orders.length;i++){
                                             ordersTemp = order.orders;
-                                            console.log(ordersTemp);
+
                                             for(var j =0;j<ordersTemp.length;j++){
                                                 ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
                                             }
-                                            console.log(ordersTemp);
+
                                             db.orders.update({ _id:orders[i]._id }, {
                                                 orders:ordersTemp
                                             })

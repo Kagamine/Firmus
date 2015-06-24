@@ -15,6 +15,18 @@
                 <input type="hidden" name="address" id="orderAddress" />
             </td>
         </tr>
+        <%
+            if(currentUser.role !="热线员" ){
+         %>
+        <tr>
+            <td class="row-title">业务员工号</td>
+            <td>
+                <input type="text"  class="textbox w-3" name="serverNumber" id="serverNumber" />
+            </td>
+        </tr>
+        <%
+            }
+          %>
         <tr>
             <td class="row-title">押金单</td>
             <td>
