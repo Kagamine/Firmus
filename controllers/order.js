@@ -172,11 +172,11 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                 .exec()
              .then(function (orders) {
                     if(orders.length == 0){
-                        if(user.role=='业务员'){
-                            order.orderType= 'B01';
-                        }
-                        else if(user.role=="热线员"){
+                        if(user.role=="热线员"){
                             order.orderType =  'A02';
+                        }
+                        else{
+                            order.orderType= 'B01';
                         }
                     }
                     else{
@@ -202,36 +202,36 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                             }
                         }
                         if(isTodayHave==true){
-                            if(user.role=='业务员'){
-                                order.orderType =  'B03';
-                            }
-                            else if(user.role=="热线员"){
+                            if(user.role=="热线员"){
                                 order.orderType =  'A04';
+                            }
+                            else{
+                                order.orderType =  'B03';
                             }
                         }
                         if((flag==false) || ((flag==true) && (empty==false))){
-                            if(user.role=='业务员'){
-                                order.orderType =  'B04';
-                            }
-                            else if(user.role=="热线员"){
+                            if(user.role=="热线员"){
                                 order.orderType =  'A04';
+                            }
+                            else{
+                                order.orderType =  'B04';
                             }
                         }
                         if(empty==true){
                             if(parseInt(days)<10){
-                                if(user.role=='业务员'){
-                                    order.orderType =  'B05';
-                                }
-                                else if(user.role=="热线员"){
+                                if(user.role=="热线员"){
                                     order.orderType =  'A03';
+                                }
+                                else{
+                                    order.orderType =  'B05';
                                 }
                             }
                             else{
-                                if(user.role=='业务员'){
-                                    order.orderType =  'B02';
-                                }
-                                else if(user.role=="热线员"){
+                                if(user.role=="热线员"){
                                     order.orderType =  'A03';
+                                }
+                                else{
+                                    order.orderType =  'B02';
                                 }
                             }
                         }

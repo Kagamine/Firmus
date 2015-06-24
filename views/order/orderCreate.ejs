@@ -1,6 +1,7 @@
 <h2><%= title %></h2>
 <form method="post" class="block" id="frmCreateOrder">
     <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <input type="hidden" value="<%=currentUser.role%>" id="hdRole"  />
     <h3>订单信息</h3>
     <table class="detail-table">
         <tr>
@@ -30,7 +31,7 @@
         <tr>
             <td class="row-title">押金单</td>
             <td>
-                <input type="text"  class="textbox w-3" name="deposit" id="txtDeposit" />
+                <input type="text"  class="textbox w-3 nullable" name="deposit" id="txtDeposit" />
             </td>
         </tr>
         <tr>
