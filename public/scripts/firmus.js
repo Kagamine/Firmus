@@ -780,7 +780,7 @@ $(document).ready(function () {
         });
 
         $('.datetime').change(function () {
-            $(this).parents('tr').find('.dayAfter').val('');
+            $(this).parents('tr').children('td').children('.dayAfter').val('');
         })
 
     });
@@ -910,7 +910,7 @@ $(document).ready(function () {
     });
 
     $('.datetime').blur(function () {
-        $(this).parents('tr').find('.dayAfter').val('');
+            $(this).parents('tr').children('td').children('.dayAfter').val('');
     })
 });
 
