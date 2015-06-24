@@ -84,15 +84,6 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         order.customCall =  req.session.uid;
         order.customServiceFlag = false;
     }
-    if(user.role != '热线员'){
-           console.log(req.body.serverNumber);
-           db.users.findOne({'jobNumber':req.body.serverNumber})
-            .exec()
-            .then(function (user) {
-                   console.log(user);
-                   order.customService = user._id;
-               })
-    }
     order.time = Date.now();
     order.user = req.session.uid;
     order.address = req.body.address;
@@ -239,6 +230,16 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         })
              .then(function (data) {
                order.save(function (err, order) {
+                   if(user.role != '热线员'){
+                       console.log(req.body.serverNumber);
+                       db.users.findOne({'jobNumber':req.body.serverNumber})
+                           .exec()
+                           .then(function (user) {
+                               console.log(user);
+                               order.customService = user._id;
+                               order.save();
+                           })
+                   }
                    res.redirect('/order/show/' + order._id);
                });
       })

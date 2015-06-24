@@ -10,6 +10,7 @@ $(window).resize(function () {
 
 
 $(document).ready(function () {
+
     resize();
     $('#logo').click(function () {
         window.location = '/';
@@ -677,7 +678,8 @@ $(document).ready(function () {
 
     $('.btnAddTr').click(function () {
        var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6 milkType" name="milkType" /></td><td><input type="text" class="textbox w-0-6 count"  name="count" /></td>' +
-           '<td><input type="text" class="textbox w-0-6" value="0"  name="presentCount" /></td>'+
+           '<td><input type="text" class="textbox w-0-6" value="0"  name="presentCount" /></td>' +
+           '<td><input type="text" class="textbox w-0-6 dayAfter nullable" value="2"/></td>'+
         '<td><input type="text" class="textbox datetime w-0-6 begin" name="begin" /></td>'+
         '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option>'+
         '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td> <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>'+
@@ -765,6 +767,21 @@ $(document).ready(function () {
             }
             return true;
         });
+
+
+
+        $('.dayAfter').change(function () {
+            var day = $(this).val();
+            var time = new Date();
+            time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+            time.setDate(time.getDate()+parseInt(day));
+            $(this).parents('tr').children('td').children('.begin').val(moment(time).format('YYYY-MM-DD'));
+
+        });
+
+        $('.datetime').change(function () {
+            $(this).parents('tr').find('.dayAfter').val('');
+        })
 
     });
 
@@ -881,6 +898,20 @@ $(document).ready(function () {
             popMsg("登记退钱的钱数不能大于允许退钱的钱数！");
         }
     });
+
+
+    $('.dayAfter').change(function () {
+        var day = $(this).val();
+        var time = new Date();
+        time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+        time.setDate(time.getDate()+parseInt(day));
+        $(this).parents('tr').children('td').children('.begin').val(moment(time).format('YYYY-MM-DD'));
+
+    });
+
+    $('.datetime').blur(function () {
+        $(this).parents('tr').find('.dayAfter').val('');
+    })
 });
 
 function popMsg(txt) {
