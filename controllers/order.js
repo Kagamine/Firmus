@@ -892,6 +892,7 @@ function getLeftCount (order, changes, time) {
     time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
     let ret, cnt = 0;
     let count = order.count;
+    if (dbeg > tmp) return count;
     if (order.distributeMethod == '天天送')
     {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
