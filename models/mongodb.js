@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://firmus:123456@42.96.129.28:27017/firmus', {
+mongoose.connect('mongodb://221.208.208.60:27017/firmus', {
     server: {
         auto_reconnect: true,
         socketOptions:{

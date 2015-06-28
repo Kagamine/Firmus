@@ -40,7 +40,7 @@
     <% orders.forEach(x => { %>
     <tr id="<%= x._id %>" class="orderDataTr" data-id="<%= x._id %>">
         <td><%= x.number %></td>
-        <td><% if (x.milkStation) { %><a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a><% } %></td>
+        <td><% if (x.address.milkStation) { %><a href="/general/department/<%= x.address.milkStation._id %>"><%= x.address.milkStation.title %></a><% } %></td>
         <td><% if (x.user) { %><a href="/general/employee/<%= x.user._id %>"><%= x.user.name %></a>(<%= x.user.jobNumber %>)<% } %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
         <td><%= x.orderType %></td>
