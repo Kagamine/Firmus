@@ -9,7 +9,8 @@
 </style>
 <button onClick="window.print()">打印</button>
 <% for (var x in report2) { %>
-<p><%= x %></p>
+<% for (var b in report2[x]) { %>
+<p><%= x %> <%= b %></p>
 <table class="detail-table">
     <thead>
     <tr>
@@ -18,16 +19,14 @@
     </tr>
     </thead>
     <tbody>
-    <% for (var y in report2[x]) { %>
+    <% for (var y in report2[x][b]) { %>
     <tr>
         <td class="row-title"><%= y %></td>
-        <td><%= report2[x][y] %></td>
+        <td><%= report2[x][b][y] %></td>
     </tr>
     <% } %>
     </tbody>
-</table>
-<% } %>
-<br />
+</table><br />
 <table class="table">
     <thead class="tl">
     <tr>
@@ -44,7 +43,7 @@
     </tr>
     </thead>
     <tbody>
-    <% report.forEach(x => { %>
+    <% report.filter(c => c.milkStation == b && c.city == x).sort((a, b) => { if (a.distributor == b.distributor) return a.address.localeCompare(b.address); else return a.distributor.localeCompare(b.distributor); }).forEach(x => { %>
     <tr>
         <td><%= x.number %></td>
         <td><%= x.milkStation %></td>
@@ -60,3 +59,6 @@
     <% }) %>
     </tbody>
 </table>
+<br />
+<br />
+<% }} %>

@@ -1101,7 +1101,8 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
                                 address: z.address.address,
                                 storey: z.address.storey,
                                 milkStation: z.address.milkStation ? z.address.milkStation.title : '未指派',
-                                distributor: z.address.distributor ? z.address.distributor.name : '未指派'
+                                distributor: z.address.distributor ? z.address.distributor.name : '未指派',
+                                city: z.address.city
                             });
                         }
                     });
@@ -1129,25 +1130,32 @@ router.get('/distribute/detail', function (req, res, next) {
     })
         .where('address').ne(null)
         .populate('address')
+        .deepPopulate('address.milkStation')
         .exec()
         .then(function (orders) {
             let tmp = _.groupBy(orders, x => x.address.city);
             let ret = {};
             for (let x in tmp) {
                 ret[x] = {};
-                tmp[x].forEach(z => {
-                    z.orders.forEach(y => {
-                        let cnt = getDistributeCount(y, z.changes, new Date());
-                        console.log(cnt);
-                        if (cnt > 0) {
-                            if (!ret[x][y.milkType])
-                                ret[x][y.milkType] = cnt;
-                            else
-                                ret[x][y.milkType] += cnt;
-                        }
+                let tmp2 = _.groupBy(tmp[x], a => a.address.milkStation.title);
+                for(let b in tmp2)
+                {
+                    ret[x][b] = {};
+                    tmp2[b].forEach(z => {
+                        z.orders.forEach(y => {
+                            let cnt = getDistributeCount(y, z.changes, new Date());
+                            console.log(cnt);
+                            if (cnt > 0) {
+                                if (!ret[x][b][y.milkType])
+                                    ret[x][b][y.milkType] = cnt;
+                                else
+                                    ret[x][b][y.milkType] += cnt;
+                            }
+                        });
                     });
-                });
+                }
             }
+            console.log(ret);
             res.locals.report2 = ret;
             if (!req.query.raw)
                 res.render('order/distributeDetail', { title: '配送详单' });
