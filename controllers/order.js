@@ -1130,21 +1130,20 @@ router.get('/distribute/detail', function (req, res, next) {
     })
         .where('address').ne(null)
         .populate('address')
-        .deepPopulate('address.milkStation')
+        .deepPopulate('address.milkStation address.distributor')
         .exec()
         .then(function (orders) {
             let tmp = _.groupBy(orders, x => x.address.city);
             let ret = {};
             for (let x in tmp) {
                 ret[x] = {};
-                let tmp2 = _.groupBy(tmp[x], a => a.address.milkStation.title);
+                let tmp2 = _.groupBy(tmp[x], a => a.address.milkStation.title + ' ' + (a.address.milkStation.distributor == null ? "未指派" : a.address.milkStation.distributor.name));
                 for(let b in tmp2)
                 {
                     ret[x][b] = {};
                     tmp2[b].forEach(z => {
                         z.orders.forEach(y => {
                             let cnt = getDistributeCount(y, z.changes, new Date());
-                            console.log(cnt);
                             if (cnt > 0) {
                                 if (!ret[x][b][y.milkType])
                                     ret[x][b][y.milkType] = cnt;
