@@ -54,8 +54,8 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
 });
 
 
-router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,next) {
-    let query = db.deposits.find();
+router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next) {
+    let query = db.deposits.find().where('address').ne(null);
     if(req.query.giveBackFlag)
         query =  query.where({'giveBackFlag':req.query.giveBackFlag});
     if(req.query.boxedFlag)
@@ -94,8 +94,7 @@ router.get('/deposit',auth.checkRole('deposit','query'), function ( req, res,nex
                 .exec();
         })
         .then(function (deposits) {
-            res.locals.deposits = deposits;
-            console.log(deposits);
+            res.locals.deposits = deposits.filter(x => x.number && x.address);
             if (!req.query.raw)
                 res.render('milkBox/deposit',{title:'押金单管理'});
             else

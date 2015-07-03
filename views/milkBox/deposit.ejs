@@ -40,7 +40,7 @@
     </thead>
     <tbody>
     <% deposits.forEach(x => { %>
-    <tr id="<%= x._id %>" class="depositDataTr" data-id="<%= x._id %>">
+    <% if (x.address) { %><tr id="<%= x._id %>" class="depositDataTr" data-id="<%= x._id %>">
         <td><%= x.number %></td>
         <td><%= x.address.city %><%= x.address.district %><%= x.address.address %></td>
         <td><%= x.address.name %></td>
@@ -54,6 +54,8 @@
             <% } %>
         </td>
     </tr>
+    <% } %>
+
     <% }) %>
     </tbody>
 </table>
