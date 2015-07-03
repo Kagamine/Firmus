@@ -2,23 +2,25 @@
 <table class="table">
     <thead>
     <tr>
-        <th>客户姓名</th>
-        <th>联系电话</th>
-        <th>品相</th>
-        <th>剩余瓶数</th>
-        <th>到期日</th>
-        <th>订单号</th>
+        <th class="tl">订单号</th>
+        <th class="tl">客户姓名</th>
+        <th class="tl">地址</th>
+        <th class="tl">联系电话</th>
+        <th class="tl">品相</th>
+        <th class="tl">剩余瓶数</th>
+        <th class="tl">到期日</th>
     </tr>
     </thead>
     <tbody>
     <% report.forEach(x => { %>
     <tr>
+        <td><%= x.number %></td>
         <td><%= x.name %></td>
+        <td><%= x.address %></td>
         <td><%= x.phone %></td>
         <td><%= x.milkType %></td>
         <td><%= x.leftCount %></td>
         <td><%= moment(x.end).format('YYYY-MM-DD') %></td>
-        <td><%= x.number %></td>
     </tr>
     <% }) %>
     </tbody>

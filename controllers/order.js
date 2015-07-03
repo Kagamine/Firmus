@@ -266,7 +266,8 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             milkType: y.milkType,
                             leftCount: getLeftCount(y, x.changes, new Date()),
                             end: y.end,
-                            number: x.number
+                            number: x.number,
+                            address: x.address.city + x.address.district + x.address.address
                         });
                 });
             });
