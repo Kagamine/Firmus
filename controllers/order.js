@@ -142,7 +142,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         order.customCall =  req.session.uid;
         order.customServiceFlag = false;
     }
-    order.time = Date.now();
+    order.time = new Date();
     order.address = req.body.address;
     order.number = req.body.number;
     order.payMethod = req.body.payMethod;
