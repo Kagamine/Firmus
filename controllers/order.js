@@ -12,7 +12,6 @@ router.use(function (req, res, next) {
 
 // 订单列表
 router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
-    console.log(req.query.city);
     let query = db.orders.find();
     let orders;
     if (req.query.number)
@@ -65,6 +64,24 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
         query = query.where('end').lte(Date.parse(req.query.end));
     if (req.query.user)
         query = query.where({ 'user.name': new RegExp('.*' + req.query.user + '.*') });
+    if(req.query.username){
+        db.addresses.find()
+            .where({ 'name':   req.query.username })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
+    }
+    if (req.query.phone) {
+        db.addresses.find()
+            .where({ 'phone': new RegExp('.*' + req.query.phone + '.*') })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
+    }
     if(req.query.orderType)
         query=query.where({'orderType':req.query.orderType});
     _.clone(query)
