@@ -15,9 +15,7 @@
     <select name="district" class="w-0-6" id="lstOrderDistrict">
         <option value="">区县</option>
     </select>&nbsp;
-    <select name="department" class="w-0-6" id="lstOrderDepartment">
-        <option value="">奶站</option>
-    </select>&nbsp;
+    <input type="text" placeholder="奶站" name="department" class="textbox w-1 nullable" />&nbsp;
     <input type="text" placeholder="详细地址" name="address" class="textbox w-1 nullable" />&nbsp;
     <input type="text" name="user" class="textbox w-0-6 nullable" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
     <input type="text" name="orderType" class="textbox w-0-6 nullable" placeholder="订单类型" value="<%= req.query.orderType %>" />&nbsp;

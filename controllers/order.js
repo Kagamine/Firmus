@@ -12,18 +12,52 @@ router.use(function (req, res, next) {
 
 // 订单列表
 router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
+    console.log(req.query.city);
     let query = db.orders.find();
     let orders;
     if (req.query.number)
         query = query.where({ number: req.query.number });
-    if (req.query.city)
-        query = query.where({ 'address.city': req.query.city });
-    if (req.query.district)
-        query = query.where({ 'address.district': req.query.district });
-    if (req.query.milkStation)
-        query = query.where({ 'milkStation': req.query.milkStation });
+    if (req.query.city){
+        db.addresses.find()
+            .where({ 'city': req.query.city })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
+    }
+    if (req.query.district){
+        db.addresses.find()
+            .where({ 'district': req.query.district })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
+    }
+    if (req.query.department){
+        db.departments.find()
+            .where({ 'title': new RegExp('.*' + req.query.department + '.*') })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                db.addresses.find()
+                    .where({ 'milkStation': { $in: data } })
+                    .select("_id")
+                    .exec()
+                    .then(function (_data) {
+                        query = query.where({ 'address':{ $in: _data } });
+                    })
+            })
+    }
     if (req.query.address) {
-        query = query.where({ 'address.address': new RegExp('.*' + req.query.address + '.*') });
+        db.addresses.find()
+            .where({ 'address': new RegExp('.*' + req.query.address + '.*') })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
     }
     if (req.query.begin)
         query = query.where('begin').gte(Date.parse(req.query.begin));
