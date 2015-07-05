@@ -62,8 +62,15 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
         query = query.where('begin').gte(Date.parse(req.query.begin));
     if (req.query.end)
         query = query.where('end').lte(Date.parse(req.query.end));
-    if (req.query.user)
-        query = query.where({ 'user.name': new RegExp('.*' + req.query.user + '.*') });
+    if (req.query.user){
+        db.users.find()
+            .where({ 'username': new RegExp('.*' + req.query.user + '.*') })
+            .select('_id')
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'user':{ $in: data } });
+            })
+    }
     if(req.query.username){
         db.addresses.find()
             .where({ 'name':   req.query.username })
