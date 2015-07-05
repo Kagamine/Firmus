@@ -1639,18 +1639,30 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
    db.orders.findById(req.body.parentId)
     .exec()
     .then(function (data) {
-           console.log(data);
+           console.log(data.orders.length);
            if(typeof(req.body.milkType)!='string'){
                for(var i =0;i<req.body.milkType.length;i++){
-                   order.orders.push({
-                       milkType: req.body.milkType[i],
-                       count:req.body.count[i] + req.body.presentCount[i],
-                       distributeCount:req.body.distributeCount[i],
-                       distributeMethod:req.body.distributeMethod[i],
-                       single:req.body.single[i],
-                       time:Date.now(),
-                       begin:getEndDistributeDate(data.orders[i],data.changes).getDate()+1
-                   });
+                   if(data.orders.length>=i+1){
+                       order.orders.push({
+                           milkType: req.body.milkType[i],
+                           count:req.body.count[i] + req.body.presentCount[i],
+                           distributeCount:req.body.distributeCount[i],
+                           distributeMethod:req.body.distributeMethod[i],
+                           single:req.body.single[i],
+                           time:Date.now(),
+                           begin:getEndDistributeDate(data.orders[i],data.changes).getDate()+1
+                       });
+                   }else{
+                       order.orders.push({
+                           milkType: req.body.milkType[i],
+                           count:req.body.count[i] + req.body.presentCount[i],
+                           distributeCount:req.body.distributeCount[i],
+                           distributeMethod:req.body.distributeMethod[i],
+                           single:req.body.single[i],
+                           time:Date.now(),
+                           begin:req.body.begin[i]
+                       });
+                   }
                    if(req.body.presentCount[i]>0){
                        order.logs.push({
                            user: req.session.uid,
