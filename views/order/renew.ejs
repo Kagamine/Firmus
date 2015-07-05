@@ -1,6 +1,28 @@
 <h2><%= title %></h2>
 <a href="?raw=true" target="_blank" class="button green">打印预览</a>
-<table class="table" style="margin-top: 20px;">
+<form class="search" style="margin-top:20px;">
+    检索：
+    <input type="text" placeholder="订单号" name="number" class="textbox w-0-8 nullable" />&nbsp;
+    <select name="city" class="w-0-6" id="lstOrderCity">
+        <option value="">城市</option>
+        <% cities.forEach(x => { %>
+        <option<%= req.query.city == x ? ' selected' : '' %>><%= x %></option>
+        <% }) %>
+    </select>&nbsp;
+    <select name="district" class="w-0-6" id="lstOrderDistrict">
+        <option value="">区县</option>
+    </select>&nbsp;
+    <input type="text" placeholder="奶站" name="department" class="textbox w-1 nullable" />&nbsp;
+    <input type="text" placeholder="详细地址" name="address" class="textbox w-1 nullable" />&nbsp;
+    <input type="text" name="user" class="textbox w-0-6 nullable" placeholder="业务员" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="username" class="textbox w-0-6 nullable" placeholder="姓名" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="phone" class="textbox w-0-6 nullable" placeholder="联系电话" value="<%= req.query.title %>" />&nbsp;
+    <input type="text" name="orderType" class="textbox w-0-6 nullable" placeholder="订单类型" value="<%= req.query.orderType %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
+    <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
+    <input type="submit" class="button green" style="margin: 0" value="过滤" />
+</form>
+<table class="table">
     <thead>
     <tr>
         <th class="tl">订单号</th>

@@ -312,9 +312,20 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             $gte: new Date()
     } })
         .populate('address')
+        .deepPopulate('address.milkStation')
         .exec()
         .then(function (orders) {
+            console.log(orders);
             let ret = [];
+            if(req.query.number){
+                orders = orders.filter(x=>x.number==req.query.number);
+            }
+            if(req.query.city){
+                orders = orders.filter(x=>x.address.city==req.query.city);
+            }
+            if(req.query.department){
+                orders = orders.filter(x=>(new RegExp('.*' + req.query.department + '.*')).test(x.address.milkStation.title));
+            }
             orders.forEach(x => {
                 x.orders.forEach(y => {
                     if (y.end >= new Date() && y.end <= time)
@@ -331,10 +342,21 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                 });
             });
 
-            if (!req.query.raw)
-                res.render('order/renew', { title: '续单提醒', report: ret });
-            else
-                res.render('order/renewRaw', { layout: false,report: ret });
+
+            return db.addresses
+                .aggregate()
+                .group({
+                    _id: '$city'
+                })
+                .exec()
+                .then(function (cities) {
+                    res.locals.cities = cities.map(x => x._id);
+                    if (!req.query.raw)
+                        res.render('order/renew', { title: '续单提醒', report: ret });
+                    else
+                        res.render('order/renewRaw', { layout: false,report: ret });
+                })
+
         })
         .then(null, next);
 });
