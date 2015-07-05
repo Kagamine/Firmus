@@ -792,10 +792,10 @@ $(document).ready(function () {
 
     $("form").submit(function (e) {
         $.each($(this).find("input[type='text']"), function (i, item) {
+            $(item).val($.trim($(item).val()));
             if ($(item).val() == "" && $(item).attr("name")!="undefined" && $(item).attr('class').indexOf('nullable')<0) {
                 $(item).addClass('error');
                 e.preventDefault();
-
                 return false;
             }
             else {
