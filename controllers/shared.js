@@ -40,4 +40,9 @@ router.get('/logout', function (req, res, next) {
     res.redirect('/login');
 });
 
+router.get('/message',function(req,res,next){
+    var msg =  req.query.msg;
+    res.render('shared/message', { title: '提示信息', msg: msg });
+});
+
 module.exports = router;
