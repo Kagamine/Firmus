@@ -1,0 +1,40 @@
+<style>
+    td, th {
+        padding: 3px;
+    }
+    table {
+        font-size: 9px;
+        text-align: left;
+    }
+</style>
+<button onClick="window.print()">打印</button>
+<table class="table">
+    <thead class="tl">
+    <tr>
+        <th>订单号</th>
+        <th>客户姓名</th>
+        <th>地址</th>
+        <th>联系电话</th>
+        <th>品相</th>
+        <th>剩余瓶数</th>
+        <th>到期日</th>
+        <th>订单日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% report.forEach(x => { %>
+    <tr>
+        <td><%= x.number %></td>
+        <td><%= x.name %></td>
+        <td><%= x.address %></td>
+        <td><%= x.phone %></td>
+        <td><%= x.milkType %></td>
+        <td><%= x.leftCount %></td>
+        <td><%= moment(x.end).format('YYYY-MM-DD') %></td>
+        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<br />
+<div style="page-break-after: always;"></div>

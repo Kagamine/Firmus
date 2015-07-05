@@ -325,11 +325,16 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             leftCount: getLeftCount(y, x.changes, new Date()),
                             end: y.end,
                             number: x.number,
-                            address: x.address.city + x.address.district + x.address.address
+                            address: x.address.city + x.address.district + x.address.address,
+                            time:x.time
                         });
                 });
             });
-            res.render('order/renew', { title: '续单提醒', report: ret });
+
+            if (!req.query.raw)
+                res.render('order/renew', { title: '续单提醒', report: ret });
+            else
+                res.render('order/renewRaw', { layout: false,report: ret });
         })
         .then(null, next);
 });
@@ -1693,7 +1698,7 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
            for(var i  =0 ;i<data.orders.length;i++){
                var time = new Date();
                time.setDate(time.getDate() + 8);
-               var end ;
+               var end =new Date() ;
                end.setDate(getEndDistributeDate(data.orders[i],data.changes).getDate());
                if(time>end){
                    order.orderType  =  'A01';
