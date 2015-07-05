@@ -326,6 +326,21 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             if(req.query.department){
                 orders = orders.filter(x=>(new RegExp('.*' + req.query.department + '.*')).test(x.address.milkStation.title));
             }
+            if(req.query.address){
+                orders = orders.filter(x=>(new RegExp('.*' + req.query.address + '.*')).test(x.address.address));
+            }
+            if(req.query.user){
+                orders = orders.filter(x=>x.user.username==req.query.user);
+            }
+            if(req.query.username){
+                orders = orders.filter(x=>x.address.name==req.query.username);
+            }
+            if(req.query.phone){
+                orders = orders.filter(x=>(new RegExp('.*' + req.query.phone + '.*')).test(x.address.phone));
+            }
+            if(req.query.orderType){
+                orders = orders.filter(x=>x.orderType==req.query.orderType);
+            }
             orders.forEach(x => {
                 x.orders.forEach(y => {
                     if (y.end >= new Date() && y.end <= time)
