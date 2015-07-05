@@ -1081,6 +1081,28 @@ router.get('/address/getAddressById/:id', auth.checkRole('address', 'query'), fu
         .then(null, next);
 });
 
+router.get('/modifypwd',function(req,res,next){
+    res.render('general/modifypwd', { title: '修改密码', permission: permission });
+});
+
+router.post('/modifypwd',function(req,res,next){
+     var user =   req.session.user;
+     let pwd = crypto.sha256(req.body.old, user.salt);
+     let password =  crypto.sha256(req.body.new, user.salt);
+     if (pwd == user.password)
+     {
+            db.users.update({_id:req.session.uid},{
+                password:password
+            })
+            .exec()
+           .then(function (data) {
+                    res.redirect("/")
+                })
+     }
+    else{
+         res.redirect("/")
+     }
+});
 
 
 module.exports = router;

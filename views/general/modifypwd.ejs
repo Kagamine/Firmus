@@ -1,0 +1,21 @@
+<div class="block">
+    <form  method="post" id="frmModifyPwd">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <p>
+            原密码
+            <br />
+            <input name="old" id="old" type="password" class="textbox w-3"  />
+        </p>
+        <p>
+            新密码
+            <br />
+            <input name="new" id="new" type="password" class="textbox w-3"  />
+        </p>
+        <p>
+            新密码重复
+            <br />
+            <input name="newConfirm" id="newConfirm" type="password" class="textbox w-3"  />
+        </p>
+        <p><input type="submit" value="保存修改" class="button green"></p>
+    </form>
+</div>

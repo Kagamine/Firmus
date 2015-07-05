@@ -912,6 +912,29 @@ $(document).ready(function () {
     $('.datetime').blur(function () {
             $(this).parents('tr').children('td').children('.dayAfter').val('');
     })
+
+    $('#frmModifyPwd').submit(function () {
+        var newpassword = $('#new').val();
+        var oldpassword = $('#old').val();
+        var newConfirm = $('#newConfirm').val();
+        if(newpassword==''){
+            $('#new').addClass('error');
+            return false;
+        }
+        if(oldpassword==''){
+            $('#old').addClass('error');
+            return false;
+        }
+        if(newConfirm==''){
+            $('#newConfirm').addClass('error');
+            return false;
+        }
+        if(newConfirm!=newpassword){
+            popMsg("两次输入密码不一致！");
+            return false;
+        }
+        return true;
+    });
 });
 
 function popMsg(txt) {
