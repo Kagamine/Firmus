@@ -341,6 +341,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             if(req.query.orderType){
                 orders = orders.filter(x=>x.orderType==req.query.orderType);
             }
+
             orders.forEach(x => {
                 x.orders.forEach(y => {
                     if (y.end >= new Date() && y.end <= time)
@@ -357,6 +358,12 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                 });
             });
 
+            if(req.query.begin){
+                ret = ret.filter(x=>(x.time>=Date.parse(req.query.begin)))
+            }
+            if(req.query.end){
+                ret = ret.filter(x=>(x.time<=Date.parse(req.query.end)));
+            }
 
             return db.addresses
                 .aggregate()
