@@ -1307,6 +1307,7 @@ router.get('/produce', auth.checkRole('produce', 'query'), function (req, res, n
 
 //  地址验证  by nele
 router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,res,next){
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     var district = req.query.district;
     var city = req.query.city;
     var address = req.query.address;
@@ -1314,8 +1315,9 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
     var phone = req.query.phone;
     var storey = req.query.storey;
     var milkStation = req.query.milkStation;
+    var distributor = req.query.distributor;
     db.addresses
-        .findOne({city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation})
+        .findOne({city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation,distributor:ObjectID(distributor)})
         .exec()
         .then(function(address){
             if(address==null){
@@ -1327,6 +1329,7 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
                 address.phone=phone;
                 address.storey=storey;
                 address.milkStation=milkStation;
+                address.distributor = distributor;
                 address.save(function (err,address) {
                     res.send(address._id);
                 })

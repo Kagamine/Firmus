@@ -304,7 +304,7 @@ $(document).ready(function () {
 
             var temp = $('#divInfo').outerHeight(true);
             console.log(temp);
-            if(hid>parseInt(sum)-1){
+            if(hid>parseInt(sum)-10){
                 $("#divInfo").css("z-index",999);//让层浮动
                 $("#divInfo").css("top",top-parseInt(temp));//设置提示div的位置
                 $("#divInfo").css("left",300);
@@ -1107,7 +1107,8 @@ function saveOrderAddress(){
     var phone = $('#txtOrderSetPhone').val();
     var storey= $('#lstOrderStorey').val();
     var  milkStation =$('#lstOrderMilkStation').val();
-    $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address,phone:phone,storey:storey,milkStation:milkStation}, function (data) {
+    var distributor =$('#lstOrderDistributor').val();
+    $.get('/order/verifyAddress',{name:name,city:city,district:district,address:address,phone:phone,storey:storey,milkStation:milkStation,distributor:distributor}, function (data) {
             $('#orderAddress').val(data);
             $.get('/general/getAddressById/'+data, function (data) {
                 if(data.deposit == null){
@@ -1134,6 +1135,7 @@ function createOrderSelectAddress(){
         '<tr><td>地址</td><td><input value="" type="text" class="textbox w-3" id="txtOrderSetAddress" /></td></tr>' +
         '<tr id="trOrderSetStorey"><td>楼层指示</td><td><select id="lstOrderStorey"><option value="电梯">电梯</option><option value="楼梯">楼梯</option></select></td></tr>' +
         '<tr id="trOrderSetMilkStation"><td>奶站</td><td><select id="lstOrderMilkStation"></select></td></tr>' +
+        '<tr id="trOrderSetMilkStation"><td>配送人员</td><td><select id="lstOrderDistributor"></select></td></tr>' +
         '</table>' +
         '<div class="dialog-buttons"><input onclick="saveOrderAddress()" class="button blue" type="button" id="btnAddOrderAddress" value="确定" />' +
         '<a href="javascript:closeDialog()" class="button">取消</a></div>' +
@@ -1150,6 +1152,16 @@ function createOrderSelectAddress(){
         $('#lstOrderMilkStation').html(str);
     });
 
+    $('#lstOrderMilkStation').change(function () {
+        var aid = $('#lstOrderMilkStation').val();
+        $.getJSON('/general/getDistributorByAId/'+aid, function (data) {
+            var str='<option>配送人员</option>';
+            for(var i=0;i<data.length;i++){
+                str+='<option value="'+data[i]._id+'">'+data[i].username+'</option>'
+            }
+            $('#lstOrderDistributor').html(str);
+        });
+    });
 
     $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
     $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
