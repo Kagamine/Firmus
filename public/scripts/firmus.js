@@ -610,7 +610,6 @@ $(document).ready(function () {
         var orderId = $(this).attr('data-id');
         var str='';
         $.getJSON('/general/getAddressById/'+orderId, function (data) {
-           // console.log(data);
             str+='城市：'+data['city']+'<br />县区：'+data['district']+'<br />联系人：' + data['name']+'<br />';
             str+='联系电话：'+ data['phone']+ '<br />楼层：' + data['storey'] +'<br />';
             $("#divInfo").css("z-index",999);//让层浮动
@@ -934,6 +933,18 @@ $(document).ready(function () {
             return false;
         }
         return true;
+    });
+
+    $('#lstAssMilkStation').change(function () {
+        var aid = $('#lstAssMilkStation').val();
+
+        $.getJSON('/general/getDistributorByAId/'+aid, function (data) {
+            var str='<option>配送人员</option>';
+            for(var i=0;i<data.length;i++){
+                str+='<option value="'+data[i]._id+'">'+data[i].username+'</option>'
+            }
+            $('#lstAssDistributor').html(str);
+        });
     });
 });
 

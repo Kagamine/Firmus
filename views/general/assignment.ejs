@@ -1,0 +1,65 @@
+<h2><%= title %>
+</h2>
+<form class="search">
+    检索:
+    <input type="text" class="w-1 textbox nullable" name="address" placeholder="地址" />
+    <input type="submit" value="过滤" class="button green" />
+</form>
+
+
+<form action="/general/AddressDistributor" method="post">
+    <input type="hidden" value="<%= csrf %>" name="_csrf" />
+<table class="table">
+    <thead>
+    <tr>
+        <th class="tl">城市</th>
+        <th class="tl">区县</th>
+        <th class="tl">地址</th>
+        <th class="tl">联系人</th>
+        <th class="tl">联系电话</th>
+        <th class="tl">奶站</th>
+        <th>奶箱</th>
+        <th>楼层指示</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% addresses.forEach(x => { %>
+    <tr class="addressDataTr" data-id="<%= x._id %>" id="<%=x._id%>">
+        <td><%= x.city %> <input type="hidden" value="<%=x.id%>" name="aid"/></td>
+        <td><%= x.district %></td>
+        <td><%= x.address %></td>
+        <td><%= x.name %></td>
+        <td><%= x.phone %></td>
+        <td>
+            <% if (x.milkStation) { %>
+            <a href="/general/department/<%= x.milkStation._id %>"><%= x.milkStation.title %></a>
+            <% } else { %>
+            未分配
+            <% } %>
+        </td>
+        <td class="tc"><%= x.deposit ? '有奶箱' : '无奶箱' %></td>
+        <td class="tc"><%= x.storey %></td>
+        <td class="tc">
+            <a href="/general/address/edit/<%= x._id %>">编辑</a>
+            <a href="javascript:deleteDialog('/general/address/delete/<%= x._id %>', '<%= x._id %>');">删除</a>
+            <a href="/general/address/<%= x._id %>">详细资料</a>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+<div>
+
+        <select name="milkStation" class="w-1" id="lstAssMilkStation">
+            <option value="">所属奶站</option>
+            <% departments.forEach(x => { %>
+            <option value="<%=x._id%>"><%=x.title%></option>
+            <% }) %>
+        </select>
+        <select name="user" class="w-1" id="lstAssDistributor">
+            <option value="">人员</option>
+        </select>
+        <input type="submit" value="分配" class="button green" />
+</div>
+</form>

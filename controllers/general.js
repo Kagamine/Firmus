@@ -1068,6 +1068,28 @@ router.get('/address/:id', auth.checkRole('address', 'query'), function (req, re
         .then(null, next);
 });
 
+router.get('/assignment', auth.checkRole('address', 'query'), function (req,res,next) {
+    let query = db.addresses.find();
+    if(req.query.address){
+        query = query.where({ address: new RegExp('.*' + req.query.address + '.*') });
+    }
+        query
+            .populate('milkStation')
+            .exec()
+        .then(function (addresses) {
+                res.locals.addresses = addresses;
+                db.departments.find({ type: '奶站' })
+                .exec()
+                .then(function (departments) {
+                        res.locals.departments = departments;
+                        console.log(departments);
+                        res.render('general/assignment', { title: '配送人员分配'});
+                    })
+        })
+        .then(null,next);
+});
+
+
 //  地址信息返回josn by nele
 router.get('/address/getAddressById/:id', auth.checkRole('address', 'query'), function (req, res, next) {
     let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
@@ -1104,5 +1126,38 @@ router.post('/modifypwd',function(req,res,next){
      }
 });
 
+
+//  根据奶站得到配送人员 by nele
+router.get('/getDistributorByAId/:id', auth.checkRole('address', 'query'), function (req, res, next) {
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
+    db.users.find({'department':ObjectID(req.params.id)})
+    .exec()
+    .then(function (users) {
+                res.json(users);
+        })
+    .then(null,next)
+
+});
+
+router.post('/AddressDistributor',auth.checkRole('address', 'modify'), function (req,res,next) {
+    if(typeof(req.body.aid)!='string') {
+        for(var i =0;i<req.body.aid.length;i++){
+            db.addresses.update({_id: req.body.aid[i]}, {
+                distributor: req.body.user
+            })
+                .exec()
+        }
+        res.redirect("/general/address");
+    }else{
+        db.addresses.update({_id: req.body.aid}, {
+            distributor: req.body.user
+        })
+            .exec()
+            .then(function () {
+                res.redirect("/general/address");
+            })
+            .then(null,next);
+    }
+});
 
 module.exports = router;

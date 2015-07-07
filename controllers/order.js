@@ -185,7 +185,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
                 time:Date.now(),
-                begin:req.body.begin[i]
+                begin:req.body.begin[0]
             });
             if(req.body.presentCount[i]>0){
                 order.logs.push({
@@ -359,7 +359,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             });
 
             if(req.query.begin){
-                ret = ret.filter(x=>(x.time>=Date.parse(req.query.begin)))
+                ret = ret.filter(x=>(x.time>=Date.parse(req.query.begin)));
             }
             if(req.query.end){
                 ret = ret.filter(x=>(x.time<=Date.parse(req.query.end)));
