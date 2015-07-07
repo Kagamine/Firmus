@@ -533,26 +533,38 @@ router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res,
 
 // 子订单续单
 function childrenContinue(data){
+    let _order ;
     var ordersTemp = [];
-    db.orders.find()
-        .where({'parentId': data})
+    var end = new Date();
+    var temp  = new Date();
+    db.orders.findById(data)
         .exec()
-        .then(function (orders) {
-            if(orders==null) return;
-            for(var i =0 ;i<orders.length;i++){
-                ordersTemp = order[i].orders;
-
-                for(var j =0;j<ordersTemp.length;j++){
-                    ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+        .then(function (order) {
+            _order = order;
+            ordersTemp = order.orders;
+            for (var j = 0; j < ordersTemp.length; j++) {
+                temp.setDate(getEndDistributeDate(_order.orders[j], _order.changes).getDate() + 1);
+                if(temp>end ){
+                    end =temp;
                 }
-
-                db.orders.update({ _id:orders[i]._id }, {
-                    orders:ordersTemp
-                })
-                    .exec()
-                childrenContinue(orders[i]._id)
             }
-        })
+            for(var j =0;j<ordersTemp.length;j++){
+                ordersTemp[i].begin.setDate(end.getDate()+1);
+            }
+            db.orders.find()
+                .where({'parentId': data})
+                .exec()
+                .then(function (orders) {
+                    if (orders == null) return;
+                    for (var i = 0; i < orders.length; i++) {
+                        db.orders.update({_id: orders[i]._id}, {
+                            orders: ordersTemp
+                        })
+                            .exec();
+                        childrenContinue(orders[i]._id);
+                    }
+                })
+        });
 };
 
 
@@ -592,23 +604,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                                    })
                                        .exec()
                                        .then(function () {
-                                           db.orders.find()
-                                               .where({'parentId': req.params.id})
-                                               .exec()
-                                               .then(function (orders) {
-                                                   for(var i =0 ;i<orders.length;i++){
-                                                       ordersTemp = order.orders;
-
-                                                       for(var j =0;j<ordersTemp.length;j++){
-                                                           ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
-                                                       }
-
-                                                       db.orders.update({ _id:orders[i]._id }, {
-                                                           orders:ordersTemp
-                                                       })
-                                                           .exec()
-                                                   }
-                                               })
+                                           childrenContinue(req.params.id);
                                            res.redirect('/order/show/' + req.params.id);
                                        });
                                })
@@ -645,23 +641,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         })
                             .exec()
                             .then(function () {
-                                db.orders.find()
-                                    .where({'parentId': req.params.id})
-                                    .exec()
-                                    .then(function (orders) {
-                                        for(var i =0 ;i<orders.length;i++){
-                                            ordersTemp = order.orders;
-
-                                            for(var j =0;j<ordersTemp.length;j++){
-                                                ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
-                                            }
-
-                                            db.orders.update({ _id:orders[i]._id }, {
-                                                orders:ordersTemp
-                                            })
-                                                .exec()
-                                        }
-                                    })
+                                childrenContinue(req.params.id);
                                 res.redirect('/order/show/' + req.params.id);
                             });
                     });
@@ -696,23 +676,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         })
                         .exec()
                         .then(function () {
-                                db.orders.find()
-                                .where({'parentId': req.params.id})
-                                .exec()
-                                .then(function (orders) {
-                                        for(var i =0 ;i<orders.length;i++){
-                                            ordersTemp = order.orders;
-                                            console.log(ordersTemp);
-                                            for(var j =0;j<ordersTemp.length;j++){
-                                                ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
-                                            }
-                                            console.log(ordersTemp);
-                                            db.orders.update({ _id:orders[i]._id }, {
-                                                orders:ordersTemp
-                                            })
-                                                .exec()
-                                        }
-                                    })
+                                childrenContinue(req.params.id);
                                 res.redirect('/order/show/' + req.params.id);
                             })
                     })
@@ -744,31 +708,9 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                      })
                          .exec()
                          .then(function () {
-                             db.orders.findById(req.params.id)
-                                 .exec()
-                                 .then(function (order) {
-                                     _order = order ;
-                                     db.orders.find()
-                                         .where({'parentId': req.params.id})
-                                         .exec()
-                                         .then(function (orders) {
-                                             for(var i =0 ;i<orders.length;i++){
-                                                 ordersTemp = order.orders;
-                                                 console.log(ordersTemp);
-                                                 for(var j =0;j<ordersTemp.length;j++){
-                                                     ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
-                                                 }
-                                                 console.log(ordersTemp);
-                                                 db.orders.update({ _id:orders[i]._id }, {
-                                                     orders:ordersTemp
-                                                 })
-                                                     .exec()
-                                             }
-                                         })
+                             childrenContinue(req.params.id);
                                      res.redirect('/order/show/' + req.params.id);
                                  })
-
-                         })
                  })
              .then(null,next);
          }
@@ -800,23 +742,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                              })
                                  .exec()
                                  .then(function () {
-                                     db.orders.find()
-                                         .where({'parentId': req.params.id})
-                                         .exec()
-                                         .then(function (orders) {
-                                             for(var i =0 ;i<orders.length;i++){
-                                                 ordersTemp = order.orders;
-                                                 console.log(ordersTemp);
-                                                 for(var j =0;j<ordersTemp.length;j++){
-                                                     ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
-                                                 }
-                                                 console.log(ordersTemp);
-                                                 db.orders.update({ _id:orders[i]._id }, {
-                                                     orders:ordersTemp
-                                                 })
-                                                     .exec()
-                                             }
-                                         })
+                                     childrenContinue(req.params.id);
                                      res.redirect('/order/show/' + req.params.id);
                                  })
                          })
