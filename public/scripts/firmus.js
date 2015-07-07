@@ -1155,7 +1155,7 @@ function createOrderSelectAddress(){
     $('#lstOrderMilkStation').change(function () {
         var aid = $('#lstOrderMilkStation').val();
         $.getJSON('/general/getDistributorByAId/'+aid, function (data) {
-            var str='<option>配送人员</option>';
+            var str='<option value="">配送人员</option>';
             for(var i=0;i<data.length;i++){
                 str+='<option value="'+data[i]._id+'">'+data[i].username+'</option>'
             }

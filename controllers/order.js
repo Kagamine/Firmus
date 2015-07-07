@@ -530,6 +530,32 @@ router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res,
 
 });
 
+
+// 子订单续单
+function childrenContinue(data){
+    var ordersTemp = [];
+    db.orders.find()
+        .where({'parentId': data})
+        .exec()
+        .then(function (orders) {
+            if(orders==null) return;
+            for(var i =0 ;i<orders.length;i++){
+                ordersTemp = order[i].orders;
+
+                for(var j =0;j<ordersTemp.length;j++){
+                    ordersTemp[i].begin.setDate(getEndDistributeDate(_order.orders[j],_order.changes).getDate()+1);
+                }
+
+                db.orders.update({ _id:orders[i]._id }, {
+                    orders:ordersTemp
+                })
+                    .exec()
+                childrenContinue(orders[i]._id)
+            }
+        })
+};
+
+
 // 添加订单变更
 router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
     let  _order ;
@@ -1317,7 +1343,7 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
     var milkStation = req.query.milkStation;
     var distributor = req.query.distributor;
     db.addresses
-        .findOne({city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation,distributor:ObjectID(distributor)})
+        .findOne({city:city,district:district,address:address,name:name,phone:phone,storey:storey,milkStation:milkStation})
         .exec()
         .then(function(address){
             if(address==null){
@@ -1329,7 +1355,9 @@ router.get('/verifyAddress',auth.checkRole('distribute','query'),function(req,re
                 address.phone=phone;
                 address.storey=storey;
                 address.milkStation=milkStation;
-                address.distributor = distributor;
+                if(distributor){
+                    address.distributor = distributor;
+                }
                 address.save(function (err,address) {
                     res.send(address._id);
                 })
