@@ -25,6 +25,10 @@
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" class="button green" style="margin: 0" value="过滤" />
 </form>
+<input type="hidden" id="sum" value="<%=orders.length%>" />
+<%
+  var i=0;
+ %>
 <table class="table">
     <thead>
     <tr class="tl">
@@ -39,7 +43,7 @@
     <tbody>
     <% orders.forEach(x => { %>
     <tr id="<%= x._id %>" class="orderDataTr" data-id="<%= x._id %>">
-        <td><%= x.number %></td>
+        <td><%= x.number %>  <input type="hidden" id="hid" value="<%=++i%>" class="hid" /></td>
         <td><% if (x.address.milkStation) { %><a href="/general/department/<%= x.address.milkStation._id %>"><%= x.address.milkStation.title %></a><% } %></td>
         <td><% if (x.user) { %><a href="/general/employee/<%= x.user._id %>"><%= x.user.name %></a>(<%= x.user.jobNumber %>)<% } %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>

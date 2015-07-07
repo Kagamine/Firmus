@@ -289,22 +289,38 @@ $(document).ready(function () {
         var top = $(this).position().top;
         var orderId = $(this).attr('data-id');
         var str='';
+        var sum = $('#sum').val();
+        var hid = $(this).children('td').eq(0).children('.hid').val();
         $.getJSON('/order/getById/'+orderId, function (data) {
           //   console.log(data);
             str+='<span>订单号：'+data['number']+'</span><br/><span>价格：'+data['price']+'</span><br/><span>地址：' + data['address']['city']+data['address']['district']+data['address']['address']+'</span><br />';
             str+='<span>订单类型：' + data['orderType'] +'</span><br /><span>订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'</span><br />';
             str+='<span>业务员：'+data['user']['name']+'</span>';
-            str+='<table class="table-inline"><thead><tr class="tl"><th>品相</th><th>总瓶数</th><th>起送时间</th><th>配送方式</th><th>每次配送瓶数</th><th>剩余瓶数</th></tr></thead>'
+            str+='<table class="table-inline"><thead><tr class="tl"><th>品相</th><th>总瓶数</th><th>起送时间</th><th>配送方式</th><th>每次配送瓶数</th><th>剩余瓶数</th></tr></thead>';
             for(var i=0;i<data.orders.length;i++){
                 str+='<tbody><tr><td>'+data.orders[i].milkType+'</td><td>'+data.orders[i].count+'</td><td>'+moment(data.orders[i].begin).format('YYYY-MM-DD')+'</td><td>'+data.orders[i].distributeMethod+'</td><td>'+data.orders[i].distributeCount+'</td><td>'+data.orders[i].leftCount+'</td></tr>'
             }
             str+='</tbody></table>';
-            $("#divInfo").css("z-index",999);//让层浮动
-            $("#divInfo").css("top",top+35);//设置提示div的位置
-            $("#divInfo").css("left",300);
-            $('#divInfo').html(str);
-            $("#divInfo").css("display","block");
+
+            var temp = $('#divInfo').outerHeight(true);
+            console.log(temp);
+            if(hid>parseInt(sum)-1){
+                $("#divInfo").css("z-index",999);//让层浮动
+                $("#divInfo").css("top",top-parseInt(temp));//设置提示div的位置
+                $("#divInfo").css("left",300);
+                $('#divInfo').html(str);
+                $("#divInfo").css("display","block");
+            }
+            else{
+                $("#divInfo").css("z-index",999);//让层浮动
+                $("#divInfo").css("top",top+35);//设置提示div的位置
+                $("#divInfo").css("left",300);
+                $('#divInfo').html(str);
+                $("#divInfo").css("display","block");
+            }
+
         });
+
     });
 
     $('.orderDataTr').mouseout(function () {
