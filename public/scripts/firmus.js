@@ -62,6 +62,8 @@ $(document).ready(function () {
     $('#txtAddAddressDistrict').droptxt('/general/address/getDistrictsByName','data');
     $('#txtAddAddressAddress').droptxt('/general/address/getAddressByName','data');
 
+
+
     // 修改地址下拉选择 by nele
     $('#txtEditAddressCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtEditAddressDistrict').droptxt('/general/address/getDistrictsByName','data');
@@ -1166,8 +1168,11 @@ function createOrderSelectAddress(){
     $('#txtOrderSetAddress').droptxt('/general/address/getAddressByName','data');
     $('#txtOrderSetCity').droptxt('/general/address/getCitiesByName','data');
     $('#txtOrderSetDistrict').droptxt('/general/address/getDistrictsByName','data');
-    $('#txtOrderSetUser').droptxt('/general/address/getAddressByUserName','data');
-    $('#txtOrderSetPhone').droptxt('/general/address/getAddressByPhone','data');
+
+    $('#txtOrderSetUser').dropjson('/general/address/getAddressByUserName','data');
+
+    $('#txtOrderSetPhone').dropjson('/general/address/getAddressByPhone','data');
+
 
 
 }
