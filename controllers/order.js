@@ -1164,7 +1164,7 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
                                 address: z.address.address,
                                 storey: z.address.storey,
                                 milkStation: z.address.milkStation ? z.address.milkStation.title : '未指派',
-                                distributor: z.address.distributor ? z.address.distributor.name : '未指派',
+                                distributor: z.address.distributor && z.address.distributor.name ? z.address.distributor.name : '未指派',
                                 city: z.address.city
                             });
                         }
@@ -1196,7 +1196,7 @@ router.get('/distribute/detail', function (req, res, next) {
         .deepPopulate('address.milkStation address.distributor')
         .exec()
         .then(function (orders) {
-            let tmp = _.groupBy(orders, x => x.address.city);
+            let tmp = _.groupBy(orders.filter(x => x.address && x.address.milkStation), x => x.address.city);
             let ret = {};
             for (let x in tmp) {
                 ret[x] = {};
