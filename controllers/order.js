@@ -35,6 +35,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
             })
     }
     if (req.query.department){
+        console.log(req.query.department);
         db.departments.find()
             .where({ 'title': new RegExp('.*' + req.query.department + '.*') })
             .select("_id")
@@ -55,6 +56,7 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
             .select("_id")
             .exec()
             .then(function (data) {
+                console.log(data);
                 query = query.where({ 'address':{ $in: data } });
             })
     }
@@ -1046,7 +1048,7 @@ router.get('/distribute', auth.checkRole('distribute', 'query'), function (req, 
         .then(function (orders) {
             let tmp = _.groupBy(orders, x => x.address.city);
             let ret = {};
-            for (let x in tmp) {4
+            for (let x in tmp) {
                 ret[x] = {};
                 tmp[x].forEach(z => {
                     z.orders.forEach(y => {

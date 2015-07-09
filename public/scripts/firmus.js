@@ -140,7 +140,7 @@ $(document).ready(function () {
         $.getJSON("/general/address/getDistrictByCity",{city:city},function(data){
             var str='<option value="">区县</option>';
             for(var i =0;i<data.length;i++){
-                str+='<option value='+data[i].city+'>'+data[i].district+'</option>';
+                str+='<option value='+data[i].district+'>'+data[i].district+'</option>';
             }
             $('#lstOrderDistrict').append(str);
         });

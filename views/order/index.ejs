@@ -46,7 +46,7 @@
         <td><%= x.number %>  <input type="hidden" id="hid" value="<%=++i%>" class="hid" /></td>
         <td><% if (x.address.milkStation) { %><a href="/general/department/<%= x.address.milkStation._id %>"><%= x.address.milkStation.title %></a><% } %></td>
         <td><% if (x.user) { %><a href="/general/employee/<%= x.user._id %>"><%= x.user.name %></a>(<%= x.user.jobNumber %>)<% } %></td>
-        <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+        <td><%= moment(x.orders[0].time).format('YYYY-MM-DD') %></td>
         <td><%= x.orderType %></td>
         <td>
             <a href="/order/show/<%= x._id %>">订单详情</a>
