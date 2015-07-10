@@ -855,6 +855,13 @@ $(document).ready(function () {
                 hash[$(milkTypes[i]).val()] = true;
             }
         }
+        var reg = /^\d{7}$/;
+        if (!reg.test($('#txtNumber').val()))
+        {
+            $('#txtNumber').addClass('error');
+            popMsg("订单号有误！");
+            return false;
+        }
 
         var now =new Date();
         var begins = $('.begin');

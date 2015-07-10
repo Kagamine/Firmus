@@ -107,12 +107,6 @@
 
 <script>
     $('#frmCreateOrder').submit(function () {
-        if ($('#txtNumber').val().length != 7)
-        {
-            $('#txtNumber').addClass('error');
-            popMsg("订单号有误！");
-            return false;
-        }
-        return true;
+
     });
 </script>
