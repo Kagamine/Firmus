@@ -356,7 +356,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             number: x.number,
                             address:  x.address.address,
                             time:x.time,
-                            postpone:x.changes.some(x=>x.type == "顺延").length>0?true:false,
+                            postpone:x.logs.filter(x=>(new RegExp('.*' + "顺延"+ '.*')).test(x.content)).length>0?true:false,
                         });
                 });
             });

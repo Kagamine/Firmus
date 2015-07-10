@@ -19,6 +19,7 @@
         <th>剩余瓶数</th>
         <th>到期日</th>
         <th>订单日期</th>
+        <th>是不是有顺延记录</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
         <td><%= x.leftCount %></td>
         <td><%= moment(x.end).format('YYYY-MM-DD') %></td>
         <td><%= moment(x.time).format('YYYY-MM-DD') %></td>
+        <td><%= (x.postpone)?"是":"否"%></td>
     </tr>
     <% }) %>
     </tbody>
