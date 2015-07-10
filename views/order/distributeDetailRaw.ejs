@@ -42,8 +42,8 @@
     <tbody>
     <% report.filter(c => c.milkStation + " " + c.distributor == b && c.city == x).sort((a, b) => { if (a.distributor == b.distributor) return a.address.localeCompare(b.address); else return a.distributor.localeCompare(b.distributor); }).forEach(x => { %>
     <tr>
-        <td><%= x.number %></td>
-        <td><%= x.customer %></td>
+        <td><%=x.ischanges?"#":""%><%= x.number %></td>
+        <td><%=x.isbegin?"*":""%><%= x.customer %></td>
         <td><%= x.milkType %></td>
         <td><%= x.count %></td>
         <td><%= x.address %></td>

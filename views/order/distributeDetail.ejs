@@ -19,10 +19,10 @@
     <tbody>
     <% report.forEach(x => { %>
     <tr>
-        <td><%= x.number %></td>
+        <td><%=x.ischanges?"#":""%><%= x.number %></td>
         <td><%= x.milkStation %></td>
         <td><%= x.distributor %></td>
-        <td><%= x.customer %></td>
+        <td><%=x.isbegin?"*":""%><%= x.customer %></td>
         <td><%= x.milkType %></td>
         <td><%= x.count %></td>
         <td><%= x.address %></td>

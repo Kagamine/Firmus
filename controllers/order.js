@@ -1151,6 +1151,8 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
         .deepPopulate('address.milkStation address.distributor')
         .exec()
         .then(function (orders) {
+            let now = new Date();
+            let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
             let ret = [];
             let tmp = _.groupBy(orders.filter(x => x.address.milkStation), x => x.address.milkStation.city + ' - ' + x.address.milkStation.title);
             for (let x in tmp) {
@@ -1169,7 +1171,9 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
                                 storey: z.address.storey,
                                 milkStation: z.address.milkStation ? z.address.milkStation.title : '未指派',
                                 distributor: z.address.distributor && z.address.distributor.name ? z.address.distributor.name : '未指派',
-                                city: z.address.city
+                                city: z.address.city,
+                                ischanges:z.logs.length>0?true:false,
+                                isbegin:((y.begin).getDate() == time.getDate())?true:false,
                             });
                         }
                     });
