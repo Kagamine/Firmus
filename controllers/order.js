@@ -34,29 +34,13 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
                 query = query.where({ 'address':{ $in: data } });
             })
     }
-    if (req.query.department){
-        console.log(req.query.department);
-        db.departments.find()
-            .where({ 'title': new RegExp('.*' + req.query.department + '.*') })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                db.addresses.find()
-                    .where({ 'milkStation': { $in: data } })
-                    .select("_id")
-                    .exec()
-                    .then(function (_data) {
-                        query = query.where({ 'address':{ $in: _data } });
-                    })
-            })
-    }
+
     if (req.query.address) {
         db.addresses.find()
             .where({ 'address': new RegExp('.*' + req.query.address + '.*') })
             .select("_id")
             .exec()
             .then(function (data) {
-                console.log(data);
                 query = query.where({ 'address':{ $in: data } });
             })
     }
@@ -93,42 +77,98 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
     }
     if(req.query.orderType)
         query=query.where({'orderType':req.query.orderType});
-    _.clone(query)
-        .count()
-        .exec()
-        .then(function (count) {
-            var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
-            var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
-            var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-            return query
-                .populate('address milkStation user')
-                .deepPopulate('address.milkStation')
-                .skip(50 * (page - 1))
-                .limit(50)
-                .exec();
-        })
-        .then(function (_orders) {
-            orders = _orders;
-            for(let i= 0;i<orders.length;i++){
-                for(let j=0;j<orders[i].orders.length;j++){
-                    let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
-                    orders[i].orders[j].leftCount=leftCount;
+
+    if (req.query.department){
+        console.log(req.query.department);
+        db.departments.find()
+            .where({ 'title': new RegExp('.*' + req.query.department + '.*') })
+            .select("_id")
+            .exec()
+            .then(function (data) {
+                db.addresses.find()
+                    .where({ 'milkStation': { $in: data } })
+                    .select("_id")
+                    .exec()
+                    .then(function (_data) {
+                        query = query.where({ 'address':{ $in: _data } });
+                        _.clone(query)
+                            .count()
+                            .exec()
+                            .then(function (count) {
+                                var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
+                                var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+                                var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+                                var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+                                return query
+                                    .populate('address milkStation user')
+                                    .deepPopulate('address.milkStation')
+                                    .skip(50 * (page - 1))
+                                    .limit(50)
+                                    .exec();
+                            })
+                            .then(function (_orders) {
+                                orders = _orders;
+                                for(let i= 0;i<orders.length;i++){
+                                    for(let j=0;j<orders[i].orders.length;j++){
+                                        let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
+                                        orders[i].orders[j].leftCount=leftCount;
+                                    }
+                                }
+                                res.locals.orders = orders;
+                                return db.addresses
+                                    .aggregate()
+                                    .group({
+                                        _id: '$city'
+                                    })
+                                    .exec()
+                            })
+                            .then(function (cities) {
+                                res.locals.cities = cities.map(x => x._id);
+                                res.render('order/index', { title: '订单管理' });
+                            })
+                            .then(null, next);
+                    })
+            })
+    }
+    else{
+        _.clone(query)
+            .count()
+            .exec()
+            .then(function (count) {
+                var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
+                var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+                var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+                var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+                return query
+                    .populate('address milkStation user')
+                    .deepPopulate('address.milkStation')
+                    .skip(50 * (page - 1))
+                    .limit(50)
+                    .exec();
+            })
+            .then(function (_orders) {
+                orders = _orders;
+                for(let i= 0;i<orders.length;i++){
+                    for(let j=0;j<orders[i].orders.length;j++){
+                        let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
+                        orders[i].orders[j].leftCount=leftCount;
+                    }
                 }
-            }
-            res.locals.orders = orders;
-            return db.addresses
-                .aggregate()
-                .group({
-                    _id: '$city'
-                })
-                .exec()
-        })
-        .then(function (cities) {
-            res.locals.cities = cities.map(x => x._id);
-            res.render('order/index', { title: '订单管理' });
-        })
-        .then(null, next);
+                res.locals.orders = orders;
+                return db.addresses
+                    .aggregate()
+                    .group({
+                        _id: '$city'
+                    })
+                    .exec()
+            })
+            .then(function (cities) {
+                res.locals.cities = cities.map(x => x._id);
+                res.render('order/index', { title: '订单管理' });
+            })
+            .then(null, next);
+    }
+
 });
 
 // 创建订单
