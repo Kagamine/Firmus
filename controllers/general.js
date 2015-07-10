@@ -1151,20 +1151,33 @@ router.get('/getDistributorByAId/:id', auth.checkRole('address', 'query'), funct
 
 router.post('/AddressDistributor',auth.checkRole('address', 'modify'), function (req,res,next) {
     if(typeof(req.body.aid)!='string') {
-        for(var i =0;i<req.body.aid.length;i++){
-            db.addresses.update({_id: req.body.aid[i]}, {
-                distributor: req.body.user
-            })
-                .exec()
-        }
-        res.redirect("/general/address");
-    }else{
-        db.addresses.update({_id: req.body.aid}, {
-            distributor: req.body.user
+        db.users.findById(req.body.user)
+        .exec()
+        .then(function (user) {
+                for(var i =0;i<req.body.aid.length;i++){
+                    db.addresses.update({_id: req.body.aid[i]}, {
+                        distributor: req.body.user,
+                        milkStation:user.department,
+                    })
+                        .exec()
+                    .then(function () {
+                            res.redirect("/general/address");
+                        })
+            }
         })
+            .then(null,next);
+    }else{
+        db.users.findById(req.body.user)
             .exec()
-            .then(function () {
-                res.redirect("/general/address");
+            .then(function (user) {
+                db.addresses.update({_id: req.body.aid}, {
+                    distributor: req.body.user,
+                    milkStation:user.department,
+                })
+                    .exec()
+                    .then(function () {
+                        res.redirect("/general/address");
+                    })
             })
             .then(null,next);
     }
