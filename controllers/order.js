@@ -344,7 +344,6 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             if(req.query.orderType){
                 orders = orders.filter(x=>x.orderType==req.query.orderType);
             }
-
             orders.forEach(x => {
                 x.orders.forEach(y => {
                     if (y.end >= new Date() && y.end <= time)
@@ -356,7 +355,8 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             end: y.end,
                             number: x.number,
                             address:  x.address.address,
-                            time:x.time
+                            time:x.time,
+                            postpone:x.changes.some(x=>x.type == "顺延").length>0?true:false,
                         });
                 });
             });
@@ -367,7 +367,6 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             if(req.query.end){
                 ret = ret.filter(x=>(x.time<=Date.parse(req.query.end)));
             }
-
             return db.addresses
                 .aggregate()
                 .group({
@@ -381,7 +380,6 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                     else
                         res.render('order/renewRaw', { layout: false,report: ret });
                 })
-
         })
         .then(null, next);
 });
@@ -661,6 +659,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                 for(var i =0;i<ordersTemp.length;i++){
                     if(req.body.lsLengthenOreders==ordersTemp[i]._id){
                         ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.lengthenCount);
+                        ordersTemp[i].end = getEndDistributeDate(ordersTemp[i],order.changes);
                         var temp = ordersTemp[i].milkType;
                     }
                 }
