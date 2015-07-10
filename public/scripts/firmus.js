@@ -717,6 +717,13 @@ $(document).ready(function () {
             }
             var single = price/sum;
             $('.single').val(single);
+
+            $.each($('.trOrderDetail'), function (i,item) {
+               var count = $(item).children('td:eq(1)').children('.count').val();
+               if(count=='' || count =='0'){
+                   $(item).children('td:eq(7)').children('.single').val('0');
+               }
+            })
         });
 
         $('.single').change(function () {
