@@ -1505,6 +1505,7 @@ router.get('/getOneOrderById/:id',auth.checkRole('order','query'), function (req
         .exec()
         .then(function (order) {
              let tmp = order.orders.filter(x=>x._id==oid);
+             tmp[0].leftCount  =getLeftCount(tmp[0], order.changes, new Date()),
              res.send(tmp);
         })
         .then(null,next);

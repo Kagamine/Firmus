@@ -401,7 +401,7 @@ $(document).ready(function () {
                        var data= data[0];
                        var str=' <table><thead><tr><td>品相</td><td>总瓶数</td><td>起送时间</td><td>配送方式</td><td>每次配送瓶数</td>'+
                            '</tr></thead><tbody class="lstOrder"><tr><td><input name="oid" type="hidden" value="'+data._id+'"  /><span>'+data.milkType+'</span></td>'+
-                           '<td><span>'+data.count+'</span></td><td>'+moment(data.begin).format('YYYY-MM-DD')+'</td>'+
+                           '<td><span>'+data.leftCount+'</span></td><td>'+moment(data.begin).format('YYYY-MM-DD')+'</td>'+
                            '<td>'+data.distributeMethod+'</td><td><span>'+data.distributeCount+'</span></td>'+
                            '</tr></tbody></table>';
 
