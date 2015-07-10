@@ -17,6 +17,10 @@ var orderSchema = new Schema({
             type: Number,
             index: true
         },
+        presentCount:{
+            type: Number,
+            index: true
+         },
         time: {
             type: Date,
             index: true
