@@ -200,7 +200,8 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     }else{
         order.orders.push({
             milkType: req.body.milkType,
-            count:parseInt(req.body.count) + parseInt(req.body.presentCount),
+            count:req.body.count,
+            presentCount:req.body.presentCount,
             distributeCount:req.body.distributeCount,
             distributeMethod:req.body.distributeMethod,
             single:req.body.single,
@@ -386,6 +387,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
 
 // 查看订单详情
 router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    var sum  = 0;
     db.orders.findById(req.params.id)
         .populate('address')
         .populate('order user')
@@ -395,7 +397,10 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
             for(var i=0;i<order.orders.length;i++){
                var leftCount = getLeftCount(order.orders[i],order.changes,new Date());
                order.orders[i].leftCount= leftCount;
+                sum = parseInt(sum) + parseInt(order.orders[i].count)*parseInt(order.orders[i].single);
             }
+            res.locals.leftMoney = sum;
+            console.log(sum);
             res.render('order/orderDetail', { title: '订单详情', order: order });
         })
         .then(null, next);
