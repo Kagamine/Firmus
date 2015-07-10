@@ -354,7 +354,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             leftCount: getLeftCount(y, x.changes, new Date()),
                             end: y.end,
                             number: x.number,
-                            address: x.address.city + x.address.district + x.address.address,
+                            address:  x.address.address,
                             time:x.time
                         });
                 });
