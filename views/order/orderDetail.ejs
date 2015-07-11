@@ -89,7 +89,7 @@
       <% order.orders.forEach(x => { %>
       <tr>
           <td><%= x.milkType %></td>
-          <td><%= x.count%></td>
+          <td><%= (x.count+x.presentCount)%></td>
           <td><%= moment(x.begin).format('YYYY-MM-DD')%></td>
           <td><%= x.distributeMethod %></td>
           <td><%= x.distributeCount %></td>

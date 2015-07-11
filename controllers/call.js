@@ -53,6 +53,7 @@ router.get('/create', auth.checkRole('call', 'modify'), function (req, res, next
     res.render('call/callCreate', { title: '增加来电信息' });
 });
 
+
 // 创建来电信息 by nele
 router.post('/create', auth.checkRole('call', 'modify'), function (req, res, next) {
     let call = new db.calls();
@@ -71,6 +72,7 @@ router.post('/create', auth.checkRole('call', 'modify'), function (req, res, nex
                     call.hint = req.body.hint;
                     call.content = req.body.content;
                     call.type = req.body.type;
+                    call.result = req.body.result;
                     call.save(function (err, calls) {
                         res.redirect('/call');
                     });

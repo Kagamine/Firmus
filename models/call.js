@@ -25,7 +25,8 @@ var callSchema = new Schema({
         type: Number,
         index: true,
         default: 0
-    }
+    },
+    result:String
 });
 
 var call = mongodb.mongoose.model('calls', callSchema);

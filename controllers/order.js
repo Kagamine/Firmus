@@ -228,7 +228,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
                 time:Date.now(),
-                begin:req.body.begin[0]
+                begin:req.body.begin[i]
             });
             if(req.body.presentCount[i]>0){
                 order.logs.push({
@@ -737,10 +737,12 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                  $push: {
                      orders: {
                          milkType:req.body.omilkType,
-                         count:req.body.ocount,
+                         count:0,
                          begin:req.body.obegin,
+                         presentCount:req.body.ocount,
                          distributeMethod:req.body.distributeMethod,
-                         distributeCount:req.body.distributeCount
+                         distributeCount:req.body.distributeCount,
+                         single:0
                      }
                  }
              })
@@ -770,7 +772,8 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                      ordersTemp = order.orders;
                      for(var i =0;i<ordersTemp.length;i++){
                          if(req.body.lsGiftOreders==ordersTemp[i]._id){
-                             ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.giftCount);
+                             ordersTemp[i].count = parseInt(ordersTemp[i].count);
+                             ordersTemp[i].presentCount = parseInt(ordersTemp[i].presentCount)+parseInt(req.body.giftCount);
                              temp = ordersTemp[i].milkType;
                          }
                      }
