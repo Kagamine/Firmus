@@ -110,7 +110,11 @@
         <% } else if (x.type == '加送') { %>
         <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 每次停送<%= x.count %>瓶的加送服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
         <% } else if(x.type == '整单停送') { %>
-        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 顺延的变更服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
+        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %> 至 <%= moment(x.end).format('YYYY-MM-DD') %> 整单停送的变更服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
+        <% } else if(x.type == '停止送奶') { %>
+        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %>  停止送奶的变更服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
+        <% } else if(x.type == '恢复送奶') { %>
+        <li id="<%= x._id %>"><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %> <%= x.user.name %> (<%= x.user.jobNumber %>) 办理了从 <%= moment(x.begin).format('YYYY-MM-DD') %>  恢复送奶的变更服务。 <% if (permission.order.modify) { %><a href="javascript:deleteDialog('/order/change/delete/<%= order._id %>?cid=<%= x._id %>', '<%= x._id %>');">删除变更</a><% } %></li>
         <% } %>
         <% }) %>
     </ul>
