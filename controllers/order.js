@@ -975,11 +975,11 @@ function getDistributeCount (order, changes, time) {
     {
         if (i + 1 < unknownChangesRaw.length)
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: unknownChangesRaw[i].end });
         }
         else
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: new Date(2099, 0, 1) });
         }
     }
     if (order.distributeMethod == '天天送')
@@ -1222,11 +1222,11 @@ function _getDistributeDetail (order, changes, time)
     {
         if (i + 1 < unknownChangesRaw.length)
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: unknownChangesRaw[i].end });
         }
         else
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: new Date(2099, 0, 1) });
         }
     }
     if (dbeg > tmp) return count;
@@ -2035,5 +2035,22 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
        })
       .then(null,next);
 });
+
+
+// 点单配送详情 by nele
+router.get('/orderDistribute/:id',auth.checkRole('order','query'), function (req,res,next) {
+    db.orders.findById(req.params.id)
+    .exec()
+    .then(function (order) {
+            console.log(order);
+            res.locals.distributes = getDistributeDetail(order);
+
+            res.render('order/orderDistribute', { title: '订单配送详情' });
+        })
+    .then(null,next);
+
+});
+
+
 
 module.exports = router;

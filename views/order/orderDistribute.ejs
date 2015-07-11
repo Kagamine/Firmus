@@ -1,0 +1,22 @@
+<% include orderMenu %>
+<div class="block">
+    <h3><%=title%></h3>
+    <table class="detail-table">
+       <thead>
+        <th>时间</th>
+        <th>品相</th>
+        <th>剩余瓶数</th>
+        <th>配送瓶数</th>
+       </thead>
+        <tbody>
+        <% distributes.forEach(x => { %>
+        <tr>
+            <td><%= moment(x.time).format('YYYY-MM-DD HH:mm:ss') %></td>
+            <td><%=x.milkType%></td>
+            <td><%=x.left%></td>
+            <td><%=x.count%></td>
+        </tr>
+        <% }) %>
+        </tbody>
+    </table>
+</div>
