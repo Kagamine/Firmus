@@ -798,6 +798,50 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                  .then(null, next);
          }
     }
+    else if(req.body.type=='停止送奶'){
+        db.orders.findById(req.params.id)
+            .exec()
+            .then(function (order) {
+                _order = order;
+                return db.orders.update({ _id: req.params.id }, {
+                    $push: {
+                        changes: {
+                            user: req.session.uid,
+                            time: Date.now(),
+                            type: req.body.type,
+                            begin: req.body.stopbegin,
+                        }
+                    }
+                })
+                    .exec()
+                    .then(function () {
+                        res.redirect('/order/show/' + req.params.id);
+                    });
+            })
+            .then(null, next);
+    }
+    else if(req.body.type=='恢复送奶'){
+        db.orders.findById(req.params.id)
+            .exec()
+            .then(function (order) {
+                _order = order;
+                return db.orders.update({ _id: req.params.id }, {
+                    $push: {
+                        changes: {
+                            user: req.session.uid,
+                            time: Date.now(),
+                            type: req.body.type,
+                            end: req.body.stopend,
+                        }
+                    }
+                })
+                    .exec()
+                    .then(function () {
+                        res.redirect('/order/show/' + req.params.id);
+                    });
+            })
+            .then(null, next);
+    }
     else{
         db.orders.findById(req.params.id)
             .exec()
@@ -1056,11 +1100,11 @@ function getLeftCount (order, changes, time) {
     {
         if (i + 1 < unknownChangesRaw.length)
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: unknownChanges[i+1].end});
         }
         else
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: new Date(2099, 0, 1) });
         }
     }
     if (dbeg > tmp) return count;

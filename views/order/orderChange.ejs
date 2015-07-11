@@ -14,6 +14,8 @@
                     <option>赠饮</option>
                     <option>顺延</option>
                     <option>退单</option>
+                    <option>停止送奶</option>
+                    <option>恢复送奶</option>
                 </select>
             </td>
         </tr>
@@ -25,6 +27,16 @@
                 <select name="lsChangeOreders" id="lsChangeOreders">
                 </select>
             </td>
+        </tr>
+
+        <tr style="display: none;" id="trStopOrderBegin">
+           <td class="row-title">停止开始时间</td>
+            <td><input type="text" name="stopbegin" class="textbox w-3 datetime nullable" value="<%=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')%>"/></td>
+        </tr>
+
+        <tr style="display: none;" id="trStopOrderEnd">
+            <td class="row-title">恢复时间订单</td>
+            <td><input type="text" name="stopend" class="textbox w-3 datetime nullable" value="<%=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')%>"/></td>
         </tr>
 
         <tr style="display: none;" id="trGiftOrders">
@@ -80,11 +92,11 @@
         </tr>
         <tr id="trOrderChangeBegin">
             <td class="row-title">变更起始时间</td>
-            <td><input type="text" name="begin" class="textbox w-3 datetime" value="<%=moment(Date.now()).format('YYYY-mm-DD HH:mm:ss')%>"/></td>
+            <td><input type="text" name="begin" class="textbox w-3 datetime" value="<%=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')%>"/></td>
         </tr>
         <tr id="trOrderChangeEnd">
             <td class="row-title">变更结束时间</td>
-            <td><input type="text" name="end" class="textbox w-3 datetime" value="<%=moment(Date.now()).format('YYYY-mm-DD HH:mm:ss')%>" /></td>
+            <td><input type="text" name="end" class="textbox w-3 datetime" value="<%=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')%>" /></td>
         </tr>
         <tr id="trOrderChangeMilkType">
             <td class="row-title" >品相</td>
