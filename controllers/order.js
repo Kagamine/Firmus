@@ -845,40 +845,56 @@ router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (r
 // 计算订单结束日期
 function getEndDistributeDate (order, changes)
 {
-    console.log(order);
     let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
     let ret;
     let count = order.count;
+    let unknownChangesRaw = changes.filter(x => x.type == '停止送奶' || x.type == '恢复送奶');
+    let unknownChanges = [];
+    for (let i = 0; i < unknownChangesRaw.length; i += 2)
+    {
+        if (i + 1 < unknownChangesRaw.length)
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+        }
+        else
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+        }
+    }
     if (order.distributeMethod == '天天送')
     {
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
         {
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
                     count -= x.count;
                 else if (x.type == '停送')
                     count += x.count;
-                else
+                else if (x.type == '整单停送')
                     count += order.distributeCount;
             });
+            if (unknownChanges.some(x => x.begin <= ret && x.end > ret))
+                count += order.distributeCount;
         }
     }
     else if (order.distributeMethod == '隔日送')
     {
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 2))
         {
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
                     count -= x.count;
                 else if (x.type == '停送')
                     count += x.count;
-                else
+                else if (x.type == '整单停送')
                     count += order.distributeCount;
             });
+            if (unknownChanges.some(x => x.begin <= ret && x.end > ret))
+                count += order.distributeCount;
         }
     }
     else
@@ -886,16 +902,18 @@ function getEndDistributeDate (order, changes)
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
         {
             if (ret.getDay() == 6 || ret.getDay() == 7) continue;
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
                     count -= x.count;
                 else if (x.type == '整单停送')
                     count += x.count;
-                else
+                else if (x.type == '整单停送')
                     count += order.distributeCount;
             });
+            if (unknownChanges.some(x => x.begin <= ret && x.end > ret))
+            count += order.distributeCount;
         }
     }
     return ret;
@@ -908,11 +926,24 @@ function getDistributeCount (order, changes, time) {
     time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
     let ret, cnt = 0;
     let count = order.count;
+    let unknownChangesRaw = changes.filter(x => x.type == '停止送奶' || x.type == '恢复送奶');
+    let unknownChanges = [];
+    for (let i = 0; i < unknownChangesRaw.length; i += 2)
+    {
+        if (i + 1 < unknownChangesRaw.length)
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+        }
+        else
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+        }
+    }
     if (order.distributeMethod == '天天送')
     {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
         {
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -926,12 +957,17 @@ function getDistributeCount (order, changes, time) {
                     count += x.count;
                     cnt -= x.count;
                 }
-                else
+                else if (x.type == '停送')
                 {
                     cnt = 0;
                     count += order.distributeCount;
                 }
             });
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
+            {
+                cnt = 0;
+                count += order.distributeCount;
+            }
             if (i.getTime() === time.getTime()) return cnt;
         }
     }
@@ -939,7 +975,7 @@ function getDistributeCount (order, changes, time) {
     {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 2))
         {
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -953,12 +989,19 @@ function getDistributeCount (order, changes, time) {
                     count += x.count;
                     cnt -= x.count;
                 }
-                else
+                else if (x.type == '停送')
                 {
                     cnt = 0;
                     count += order.distributeCount;
                 }
             });
+
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
+            {
+                cnt = 0;
+                count += order.distributeCount;
+            }
+
             if (i.getTime() === time.getTime()) return cnt;
         }
     }
@@ -967,7 +1010,7 @@ function getDistributeCount (order, changes, time) {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
         {
             if (i.getDay() == 6 || i.getDay() == 7) continue;
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -981,12 +1024,19 @@ function getDistributeCount (order, changes, time) {
                     count += x.count;
                     cnt -= x.count;
                 }
-                else
+                else if (x.type == '停送')
                 {
                     cnt = 0;
                     count += order.distributeCount;
                 }
             });
+
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
+            {
+                cnt = 0;
+                count += order.distributeCount;
+            }
+
             if (i.getTime() === time.getTime()) return cnt;
         }
     }
@@ -1000,12 +1050,25 @@ function getLeftCount (order, changes, time) {
     time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
     let ret, cnt = 0;
     let count = order.count;
+    let unknownChangesRaw = changes.filter(x => x.type == '停止送奶' || x.type == '恢复送奶');
+    let unknownChanges = [];
+    for (let i = 0; i < unknownChangesRaw.length; i += 2)
+    {
+        if (i + 1 < unknownChangesRaw.length)
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+        }
+        else
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+        }
+    }
     if (dbeg > tmp) return count;
     if (order.distributeMethod == '天天送')
     {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
         {
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -1016,12 +1079,17 @@ function getLeftCount (order, changes, time) {
                 {
                     count += x.count;
                 }
-                else
+                else if (x.type == '整单停送')
                 {
                     count += order.distributeCount;
                 }
             });
-            console.log(i.getTime() === time.getTime(), count);
+
+            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            {
+                count += order.distributeCount;
+            }
+
             if (i.getTime() === time.getTime()) return count;
         }
     }
@@ -1029,7 +1097,7 @@ function getLeftCount (order, changes, time) {
     {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 2))
         {
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -1040,11 +1108,17 @@ function getLeftCount (order, changes, time) {
                 {
                     count += x.count;
                 }
-                else
+                else if (x.type == '整单停送')
                 {
                     count += order.distributeCount;
                 }
             });
+
+            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            {
+                count += order.distributeCount;
+            }
+
             let timetmp = time.getTime();
             if (i.getTime() === timetmp) return count;
             let tt = new Date(i);
@@ -1057,7 +1131,7 @@ function getLeftCount (order, changes, time) {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
         {
             if (i.getDay() == 6 || i.getDay() == 7) continue;
-            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i);
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -1071,16 +1145,167 @@ function getLeftCount (order, changes, time) {
                     count += x.count;
                     cnt -= x.count;
                 }
-                else
+                else if (x.type == '整单停送')
                 {
                     cnt = 0;
                     count += order.distributeCount;
                 }
             });
+
+            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            {
+                cnt = 0;
+                count += order.distributeCount;
+            }
+
             if (i.getTime() === time.getTime()) return cnt;
         }
     }
     return 0;
+}
+
+// 获取订单配送详情
+function _getDistributeDetail (order, changes, time)
+{
+    let detail = [];
+    let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
+    let tmp = new Date();
+    time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+    let ret, cnt = 0;
+    let count = order.count;
+    let unknownChangesRaw = changes.filter(x => x.type == '停止送奶' || x.type == '恢复送奶');
+    let unknownChanges = [];
+    for (let i = 0; i < unknownChangesRaw.length; i += 2)
+    {
+        if (i + 1 < unknownChangesRaw.length)
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+        }
+        else
+        {
+            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+        }
+    }
+    if (dbeg > tmp) return count;
+    if (order.distributeMethod == '天天送')
+    {
+        for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
+        {
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+            let prevCount = count;
+            count -= order.distributeCount;
+            tmp.forEach(x => {
+                if (x.type == '加送')
+                {
+                    count -= x.count;
+                }
+                else if (x.type == '停送')
+                {
+                    count += x.count;
+                }
+                else if (x.type == '整单停送')
+                {
+                    count += order.distributeCount;
+                }
+            });
+
+            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            {
+                count += order.distributeCount;
+            }
+            if (prevCount != count)
+                detail.push({ time: i, count: prevCount - count, left: count, milkType: order.milkType });
+            if (i.getTime() === time.getTime()) break;
+        }
+        return detail;
+    }
+    else if (order.distributeMethod == '隔日送')
+    {
+        for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 2))
+        {
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+            let prevCount = count;
+            count -= order.distributeCount;
+            tmp.forEach(x => {
+                if (x.type == '加送')
+                {
+                    count -= x.count;
+                }
+                else if (x.type == '停送')
+                {
+                    count += x.count;
+                }
+                else if (x.type == '整单停送')
+                {
+                    count += order.distributeCount;
+                }
+            });
+
+            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            {
+                count += order.distributeCount;
+            }
+
+            let timetmp = time.getTime();
+            if (prevCount != count)
+                detail.push({ time: i, count: prevCount - count, left: count, milkType: order.milkType });
+            if (i.getTime() === timetmp) break;
+            let tt = new Date(i);
+            let t2 = tt.setDate(i.getDate() - 1);
+            if (t2.toString() == timetmp) break;
+        }
+        return detail;
+    }
+    else
+    {
+        for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
+        {
+            if (i.getDay() == 6 || i.getDay() == 7) continue;
+            let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+            let prevCount = count;
+            count -= order.distributeCount;
+            cnt = order.distributeCount;
+            tmp.forEach(x => {
+                if (x.type == '加送')
+                {
+                    count -= x.count;
+                    cnt += x.count;
+                }
+                else if (x.type == '停送')
+                {
+                    count += x.count;
+                    cnt -= x.count;
+                }
+                else if (x.type == '整单停送')
+                {
+                    cnt = 0;
+                    count += order.distributeCount;
+                }
+            });
+
+            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            {
+                cnt = 0;
+                count += order.distributeCount;
+            }
+
+            if (prevCount != count)
+                detail.push({ time: i, count: prevCount - count, left: count, milkType: order.milkType });
+
+            if (i.getTime() === time.getTime()) break;
+        }
+        return detail;
+    }
+    return 0;
+}
+
+function getDistributeDetail(order)
+{
+    let tmp = [];
+    order.orders.forEach(x => {
+        tmp.push(_getDistributeDetail(x, order.changes, new Date()));
+    });
+    return _.union(tmp);
 }
 
 // 配送日报
