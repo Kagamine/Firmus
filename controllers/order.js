@@ -1100,7 +1100,7 @@ function getLeftCount (order, changes, time) {
     {
         if (i + 1 < unknownChangesRaw.length)
         {
-            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: unknownChanges[i+1].end});
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: unknownChangesRaw[i].end});
         }
         else
         {
