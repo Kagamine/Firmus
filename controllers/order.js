@@ -531,7 +531,8 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
         price:req.body.price,
         payMethod:req.body.payMethod,
         pos:req.body.pos,
-        orders:orders
+        orders:orders,
+        number:req.body.number,
     })
         .exec()
         .then(function () {

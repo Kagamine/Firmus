@@ -768,6 +768,13 @@ $(document).ready(function () {
         $('#frmEditOrder').submit(function () {
             var milkTypes = $('.milkType');
             var hash = {};
+            var reg = /^\d{7}$/;
+            if (!reg.test($('#txtNumber').val()))
+            {
+                $('#txtNumber').addClass('error');
+                popMsg("订单号有误！");
+                return false;
+            }
             for(var i=0;i< milkTypes.length; i++) {
                 if(hash[$(milkTypes[i]).val()]){
                     popMsg("您输入的品相有重复值！");
@@ -800,13 +807,11 @@ $(document).ready(function () {
             time = new Date(time.getFullYear(), time.getMonth(), time.getDate());
             time.setDate(time.getDate()+parseInt(day));
             $(this).parents('tr').children('td').children('.begin').val(moment(time).format('YYYY-MM-DD'));
-
         });
 
         $('.datetime').blur(function () {
             $(this).parents('tr').children('td').children('.dayAfter').val('');
         })
-
     });
 
 
@@ -886,33 +891,9 @@ $(document).ready(function () {
         return true;
     });
 
-    // 检查提交的订单是不是有重复品相 by nele
-    $('#frmEditOrder').submit(function () {
-        var milkTypes = $('.milkType');
-        var hash = {};
-        for(var i=0;i< milkTypes.length; i++) {
-            if(hash[$(milkTypes[i]).val()]){
-                popMsg("您输入的品相有重复值！");
-                return false;
-            }else{
-                hash[$(milkTypes[i]).val()] = true;
-            }
-        }
-        var now =new Date();
-        var begins = $('.begin');
-        var tmp;
-        for(var i=0;i<begins.length;i++){
-            tmp =new Date($(begins[i]).val());
-            now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            var tmp2 = now.setDate(now.getDate() + 1);
-            tmp = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
-            if(tmp <= tmp2 && $('#hdRole').val()!='系统管理员'){
-                popMsg("起配日期必须是当前日期的两天之后！");
-                return false;
-            }
-        }
-        return true;
-    });
+
+
+
 
     $('.cancelCount').change(function () {
         var cancelCount = $(this).val();
