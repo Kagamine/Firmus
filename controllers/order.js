@@ -440,7 +440,6 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
                 sum = parseInt(sum) + parseInt(order.orders[i].count)*parseInt(order.orders[i].single);
             }
             res.locals.leftMoney = sum;
-            console.log(sum);
             res.render('order/orderDetail', { title: '订单详情', order: order });
         })
         .then(null, next);
