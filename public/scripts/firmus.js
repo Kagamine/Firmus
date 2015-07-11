@@ -991,6 +991,13 @@ $(document).ready(function () {
             $('#lstAssDistributor').html(str);
         });
     });
+
+    $('#txtCallOrderNumber').blur(function () {
+        var number  = $('#txtCallOrderNumber').val();
+       $.getJSON('/order/getOrderByNumber/'+number, function (data) {
+           console.log(data);
+       })
+    });
 });
 
 function popMsg(txt) {

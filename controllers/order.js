@@ -1797,6 +1797,21 @@ router.get('/getById/:id', auth.checkRole('order', 'query'), function (req, res,
         .then(null, next);
 });
 
+// 查看订单详情 通过订单号查询
+router.get('/getOrderByNumber/:id', auth.checkRole('order', 'query'), function (req, res, next) {
+    db.orders.findOne({
+        'number':req.params.id
+    })
+        .populate('address user')
+        .exec()
+        .then(function (order) {
+            for (let i = 0; i < order.orders.length; i ++)
+                order.orders[i].leftCount = getLeftCount(order.orders[i],order.changes,new Date());
+            res.json(order);
+        })
+        .then(null, next);
+});
+
 // 根据id获取orders by nele
 router.get('/getOrdersById/:id',auth.checkRole('order','query'), function (req, res, next) {
     var orders =[];
