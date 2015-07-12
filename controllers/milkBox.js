@@ -55,7 +55,7 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
 
 
 router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next) {
-    let query = db.deposits.find().where('address').ne(null);
+    let query = db.deposits.find();
     if(req.query.giveBackFlag)
         query =  query.where({'giveBackFlag':req.query.giveBackFlag});
     if(req.query.boxedFlag)
@@ -65,14 +65,31 @@ router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next
     if (req.query.end)
         query = query.where('time').lte(Date.parse(req.query.end));
     if (req.query.address) {
-        query = query.where({ 'address.address': new RegExp('.*' + req.query.address + '.*') });
+        db.addresses.find()
+            .where({ 'address': new RegExp('.*' + req.query.address + '.*') })
+            .select('_id')
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
     }
     if (req.query.phone) {
-        query = query.where({ 'address.phone': new RegExp('.*' + req.query.phone + '.*') });
+        db.addresses.find()
+            .where({ 'phone': req.query.phone  })
+            .select('_id')
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
     }
     if (req.query.name) {
-        console.log(req.query.name);
-        query = query.where({ 'address.name': new RegExp('.*' + req.query.name + '.*') });
+        db.addresses.find()
+            .where({ 'name': req.query.name  })
+            .select('_id')
+            .exec()
+            .then(function (data) {
+                query = query.where({ 'address':{ $in: data } });
+            })
     }
 
     _.clone(query)
@@ -95,10 +112,10 @@ router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next
         })
         .then(function (deposits) {
             res.locals.deposits = deposits.filter(x => x.number && x.address);
-            if (!req.query.raw)
-                res.render('milkBox/deposit',{title:'押金单管理'});
-            else
+            if (req.query.raw)
                 res.render('milkBox/depositRaw', { title: '押金单管理', layout: false });
+            else
+                res.render('milkBox/deposit',{title:'押金单管理'});
         })
         .then(null,next);
 

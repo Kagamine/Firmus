@@ -3,10 +3,10 @@
     <% if (permission.deposit.modify) { %>
     <a class="add" href="/milkBox/createDeposit">增加押金单</a>
     <% } %>
+    <a href="?raw=true" target="_blank" class="button green">打印预览</a>
 </h2>
 <form class="search">
     检索：
-    <input id="raw" type="hidden" name="raw" value="false" />
     <select name="giveBackFlag"  id="slDepositSearchGiveBackFlag">
         <option value="">是否需要拆箱</option>
         <option value="0">否</option>
@@ -23,7 +23,6 @@
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="起始日期" name="begin" value="<%= req.query.begin %>" />&nbsp;
     <input type="text" class="textbox w-0-8 datetime nullable" placeholder="截止日期" name="end" value="<%= req.query.end %>" />&nbsp;
     <input type="submit" value="过滤" class="button green" style="margin: 0" value="过滤" />
-    <a href="javascript:$('#raw').val(true);$('.search').submit();" class="button blue" target="_blank">打印</a>
 </form>
 
 <table class="table">
