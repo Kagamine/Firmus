@@ -995,7 +995,7 @@ $(document).ready(function () {
     $('#txtCallOrderNumber').blur(function () {
         var number  = $('#txtCallOrderNumber').val();
        $.getJSON('/order/getOrderByNumber/'+number, function (data) {
-           var str='';
+           var str='<div class="dialog"><h3 class="dialog-title">订单详情</h3>';
            str+='<span>订单号：'+data['number']+'</span><br/><span>价格：'+data['price']+'</span><br/><span>地址：' + data['address']['city']+data['address']['district']+data['address']['address']+'</span><br />';
            str+='<span>订单类型：' + data['orderType'] +'</span><br /><span>订单时间：'+ moment(data['time']).format('YYYY-MM-DD')+'</span><br />';
            str+='<span>业务员：'+data['user']['name']+'</span>';
@@ -1003,7 +1003,7 @@ $(document).ready(function () {
            for(var i=0;i<data.orders.length;i++){
                str+='<tbody><tr><td>'+data.orders[i].milkType+'</td><td>'+data.orders[i].count+'</td><td>'+moment(data.orders[i].begin).format('YYYY-MM-DD')+'</td><td>'+data.orders[i].distributeMethod+'</td><td>'+data.orders[i].distributeCount+'</td><td>'+data.orders[i].leftCount+'</td></tr>'
            }
-           str+='</tbody></table>';
+           str+='</tbody></table><div class="dialog-buttons"><a href="javascript:closeDialog()" class="button">取消</a></div></div>';
            console.log(str);
            var dom = $(str);
            dom.css('margin-left', -(dom.outerWidth() / 2));
