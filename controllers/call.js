@@ -88,7 +88,10 @@ router.get('/show/:id',auth.checkRole('call','query'), function ( req, res, next
         .populate('order')
         .exec()
         .then(function (call) {
-            res.render('call/callDetail', { title: '来电信息详情', call: call });
+            if (!req.query.raw)
+                res.render('call/callDetail', { title: '来电信息详情', call: call });
+            else
+                res.render('call/callDetailRaw', { layout: false,call: call  });
         })
         .then(null, next);
 });

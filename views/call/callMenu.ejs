@@ -4,4 +4,5 @@
     <% if (permission.order.modify) { %>
     <a href="/call/edit/<%= call._id || req.params.id %>" class="submenu-item">修改来电</a>
     <% } %>
+    <a href="?raw=true" target="_blank" class="button green">打印预览</a>
 </div>

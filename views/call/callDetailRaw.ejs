@@ -1,0 +1,93 @@
+<style>
+    td, th {
+        padding: 3px;
+    }
+    table {
+        font-size: 9px;
+        text-align: left;
+    }
+</style>
+<button onClick="window.print()">打印</button>
+<div class="block">
+    <table class="detail-table">
+        <tr>
+            <td class="row-title">热线员</td>
+            <td>
+                <% if (call.user) { %>
+                <a href="/general/employee/<%= call.user._id %>"><%= call.user.name %> (<%= call.user.jobNumber %>)</a>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">订单号</td>
+            <td>
+                <% if (call.order) { %>
+                <a href="/order/show/<%= call.order._id %>"><%= call.order.number %></a>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">是否需要回访</td>
+            <td>
+                <% if(call.needFeedback){
+                %>
+                <span>是</span>
+                <%
+                }else{
+                %>
+                <span>否</span>
+                <%
+                }%>
+            </td>
+        </tr>
+
+        <%
+        if(call.needFeedback){
+        %>
+        <tr id="trCallIsFeedbacked">
+            <td class="row-title">是否已经回访</td>
+            <td>
+                <% if(call.isFeedbacked){
+                %>
+                <span>是</span>
+                <%
+                }else{
+                %>
+                <span>否</span>
+                <%
+                }%>
+            </td>
+        </tr>
+        <%
+        if(call.isFeedbacked){
+        %>
+        <tr id="trCallFeedbackResult">
+            <td class="row-title">回访结果</td>
+            <td><%=call.feedbackResult%></td>
+        </tr>
+        <%
+        }}
+        %>
+
+        <tr>
+            <td class="row-title">备注</td>
+            <td>
+                <%-call.hint%>
+            </td>
+        </tr>
+        <tr>
+            <td class="row-title">内容</td>
+            <td><%-call.content%></td>
+        </tr>
+        <tr>
+            <td class="row-title">处理结果</td>
+            <td><%-call.result%></td>
+        </tr>
+        <tr>
+            <td class="row-title">热线类型编码</td>
+            <td>
+                <%=call.type%>
+            </td>
+        </tr>
+    </table>
+</div>
