@@ -130,7 +130,8 @@ router.post('/edit/:id', auth.checkRole('call','modify'), function (req, res, ne
                         feedbackResult: req.body.feedbackResult,
                         hint: req.body.hint,
                         content: req.body.content,
-                        type: req.body.type
+                        type: req.body.type,
+                        result: req.body.result,
                 })
                  .exec()
                         .then(function () {

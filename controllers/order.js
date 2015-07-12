@@ -1360,7 +1360,7 @@ function getDistributeDetail(order)
 {
     let tmp = [];
     order.orders.forEach(x => {
-        let t = _getDistributeDetail(x, order.changes, new Date())
+        let t = _getDistributeDetail(x, order.changes, new Date());
         t.forEach(x => tmp.push(x));
     });
     return tmp;
