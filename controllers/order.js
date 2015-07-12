@@ -4,7 +4,6 @@ var router = express.Router();
 
 let dayreport = null;
 let refreshTime = null;
-
 router.use(function (req, res, next) {
     res.locals.order = true;
     next();
@@ -222,7 +221,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         for(var i =0;i<req.body.milkType.length;i++){
             order.orders.push({
                 milkType: req.body.milkType[i],
-                count:parseInt(req.body.count[i]) ,
+                count:parseInt(req.body.count[i]) +parseInt(req.body.presentCount[i]),
                 presentCount:parseInt(req.body.presentCount[i]),
                 distributeCount:req.body.distributeCount[i],
                 distributeMethod:req.body.distributeMethod[i],
@@ -240,7 +239,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     }else{
         order.orders.push({
             milkType: req.body.milkType,
-            count:req.body.count,
+            count:parseInt(req.body.count)+parseInt(req.body.presentCount),
             presentCount:req.body.presentCount,
             distributeCount:req.body.distributeCount,
             distributeMethod:req.body.distributeMethod,
@@ -437,7 +436,9 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
             for(var i=0;i<order.orders.length;i++){
                var leftCount = getLeftCount(order.orders[i],order.changes,new Date());
                order.orders[i].leftCount= leftCount;
-                sum = parseInt(sum) + parseInt(order.orders[i].count)*parseInt(order.orders[i].single);
+                if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))>10){
+                    sum = parseInt(sum) + (parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))*parseInt(order.orders[i].single);
+                }
             }
             res.locals.leftMoney = sum;
             res.render('order/orderDetail', { title: '订单详情', order: order });
@@ -505,8 +506,9 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
         for(var i =0;i<req.body.milkType.length;i++){
             orders.push({
                 milkType: req.body.milkType[i],
-                count:req.body.count[i],
+                count:parseInt(req.body.count[i])+parseInt(req.body.presentCount[i]),
                 distributeCount:req.body.distributeCount[i],
+                presentCount:parseInt(req.body.presentCount[i]),
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
                 time:Date.now(),
@@ -516,8 +518,9 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
     }else{
         orders.push({
             milkType: req.body.milkType,
-            count:req.body.count,
+            count:parseInt(req.body.count)+parseInt(req.body.presentCount),
             distributeCount:req.body.distributeCount,
+            presentCount:parseInt(req.body.presentCount),
             distributeMethod:req.body.distributeMethod,
             single:req.body.single,
             time:Date.now(),
@@ -737,7 +740,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                  $push: {
                      orders: {
                          milkType:req.body.omilkType,
-                         count:0,
+                         count:0 + parseInt(req.body.ocount),
                          begin:req.body.obegin,
                          presentCount:req.body.ocount,
                          distributeMethod:req.body.distributeMethod,
@@ -772,7 +775,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                      ordersTemp = order.orders;
                      for(var i =0;i<ordersTemp.length;i++){
                          if(req.body.lsGiftOreders==ordersTemp[i]._id){
-                             ordersTemp[i].count = parseInt(ordersTemp[i].count);
+                             ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.giftCount);
                              ordersTemp[i].presentCount = parseInt(ordersTemp[i].presentCount)+parseInt(req.body.giftCount);
                              temp = ordersTemp[i].milkType;
                          }
