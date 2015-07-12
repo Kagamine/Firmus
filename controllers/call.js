@@ -241,7 +241,7 @@ router.post('/orderChange',auth.checkRole('order','modify'), function (req,res,n
     .exec()
     .then(function (order) {
               if(order==null)
-                  res.redirect("/message?msg=你输入的订单好不存在")
+                  res.redirect("/message?msg="+encodeURIComponent('你输入的订单好不存在'))
               else{
                   res.redirect('/order/change/'+order._id);
               }
