@@ -1132,7 +1132,7 @@ router.post('/modifypwd',function(req,res,next){
                 })
      }
     else{
-         res.redirect("/message?msg=原密码错误")
+         res.redirect("/message?msg=原密码错误");
      }
 });
 

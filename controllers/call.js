@@ -231,5 +231,21 @@ router.post('/createPostpone',auth.checkRole('call','query') , function (req ,re
          .then(null,next);
 });
 
+router.get('/orderChange',auth.checkRole('order','modify'), function (req,res,next) {
+       res.render('call/orderChange',{ title: '订单变更' });
+});
 
+router.post('/orderChange',auth.checkRole('order','modify'), function (req,res,next) {
+       var number = req.body.number;
+      db.orders.findOne({'number':number})
+    .exec()
+    .then(function (order) {
+              if(order==null)
+                  res.redirect("/message?msg=你输入的订单好不存在")
+              else{
+                  res.redirect('/order/change/'+order._id);
+              }
+          })
+    .then(null,next);
+});
 module.exports = router;

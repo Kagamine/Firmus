@@ -17,9 +17,9 @@ router.get('/',auth.checkRole('milkBox','query'), function ( req, res, next) {
         .count()
         .exec()
         .then(function (count) {
-            var page = res.locals.page = req.query.p || 1;
-            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
-            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
                 .skip(50 * (page - 1))
@@ -100,9 +100,9 @@ router.get('/deposit',auth.checkRole('deposit','query'), function (req, res,next
                 return query
                     .populate('address')
                     .exec();
-            var page = res.locals.page = req.params.page == null ? 1 : req.query.p;
-            var pageCount = res.locals.pageCount = parseInt((count + 5 - 1) / 5);
-            var start = res.locals.start = (page - 5) < 1 ? 1 : (page - 5);
+            var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
+            var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+            var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
             var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
             return query
                 .populate('address')
