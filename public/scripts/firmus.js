@@ -635,7 +635,6 @@ $(document).ready(function () {
             $('#trStopOrderBegin').hide();
             $('#trStopOrderEnd').hide();
             $('#trOrderCancelOrders').show();
-            $('.cancelCount').val('');
             $('#trLengthenOrders').hide();
             $('#trLengthenCount').hide();
             $('#trOrders').hide();

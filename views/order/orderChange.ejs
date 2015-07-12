@@ -114,7 +114,7 @@
             </td>
         </tr>
         <tr id="trOrderCancelOrders" style="display:none;">
-            <td>
+            <td class="row-title">
                 订单详情
             </td>
             <td>
@@ -129,11 +129,12 @@
                      <tr>
                         <td><%= x.milkType %></td>
                         <td class="tdLeftCount"><%= x.leftCount %></td>
-                        <td><input name="cancelCount" class="textbox cancelCount" value="cancelCount"  /></td>
+                        <td><input name="cancelCount" class="textbox cancelCount" value="<%= x.leftCount%>"  /></td>
                      </tr>
                     <% }) %>
                     </tbody>
                 </table>
+                剩余总钱数：<%=sum%>
             </td>
         </tr>
     </table>

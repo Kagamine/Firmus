@@ -432,7 +432,8 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
             for(var i=0;i<order.orders.length;i++){
                var leftCount = getLeftCount(order.orders[i],order.changes,new Date());
                order.orders[i].leftCount= leftCount;
-                if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))>10){
+                console.log(parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount));
+                if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))>parseInt(order.orders[i].presentCount)){
                     sum = parseInt(sum) + (parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))*parseInt(order.orders[i].single);
                 }
             }
@@ -561,14 +562,24 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
 
 // 添加订单变更
 router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
+   var sum = 0;
     res.locals.orderId = req.params.id;
     db.orders.findById(req.params.id)
         .exec()
         .then(function (order) {
             for(var i=0;i<order.orders.length;i++){
+                var leftCount = getLeftCount(order.orders[i],order.changes,new Date());
+                order.orders[i].leftCount= leftCount;
+                console.log(parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount));
+                if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))>parseInt(order.orders[i].presentCount)){
+                    sum = parseInt(sum) + (parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))*parseInt(order.orders[i].single);
+                }
+            }
+            for(var i=0;i<order.orders.length;i++){
                 var leftCount = getLeftCount(order.orders[i],order.changes,order.orders[i].begin);
                 order.orders[i].leftCount= leftCount;
             }
+            res.locals.sum = sum;
             res.render('order/orderChange', { title: '订单变更', order: order });
         })
         .then(null, next);
