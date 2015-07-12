@@ -439,7 +439,6 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
             }
             res.locals.leftMoney = sum;
             res.render('order/orderDetail', { title: '订单详情', order: order });
-
         })
         .then(null, next);
 });
@@ -578,17 +577,13 @@ router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res,
                 }
             }
             res.locals.sum = sum;
-            for(var i=0;i<order.orders.length;i++){
-                var leftCount = getLeftCount(order.orders[i],order.changes,order.orders[i].begin);
-                order.orders[i].leftCount= leftCount;
-            }
             res.locals.order = order;
             db.giftDelivers.findOne({'order':ObjectID(req.params.id)})
                 .populate('gift')
                 .exec()
                 .then(function (data) {
-                   // res.locals.leftMoney = sum;
-                    res.locals.gift = data.gift;
+                    console.log(data);
+                    res.locals.gift = data ==null?null:data.gift;
                     res.render('order/orderChange', { title: '订单详情' });
                 })
         })
