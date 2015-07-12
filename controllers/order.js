@@ -423,7 +423,6 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
 // 查看订单详情
 router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
     var sum  = 0;
-    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     db.orders.findById(req.params.id)
         .populate('address')
         .populate('order user')
@@ -438,14 +437,9 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
                     sum = parseInt(sum) + (parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))*parseInt(order.orders[i].single);
                 }
             }
-            db.giftDelivers.findOne({'order':ObjectID(req.params.id)})
-                .populate('gift')
-            .exec()
-            .then(function (data) {
-                    res.locals.leftMoney = sum;
-                    res.locals.gift = data.gift;
-                    res.render('order/orderDetail', { title: '订单详情', order: order });
-                })
+            res.locals.leftMoney = sum;
+            res.render('order/orderDetail', { title: '订单详情', order: order });
+
         })
         .then(null, next);
 });
@@ -570,6 +564,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
 // 添加订单变更
 router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res, next) {
    var sum = 0;
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     res.locals.orderId = req.params.id;
     db.orders.findById(req.params.id)
         .exec()
@@ -582,12 +577,20 @@ router.get('/change/:id', auth.checkRole('order', 'modify'), function (req, res,
                     sum = parseInt(sum) + (parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))*parseInt(order.orders[i].single);
                 }
             }
+            res.locals.sum = sum;
             for(var i=0;i<order.orders.length;i++){
                 var leftCount = getLeftCount(order.orders[i],order.changes,order.orders[i].begin);
                 order.orders[i].leftCount= leftCount;
             }
-            res.locals.sum = sum;
-            res.render('order/orderChange', { title: '订单变更', order: order });
+            res.locals.order = order;
+            db.giftDelivers.findOne({'order':ObjectID(req.params.id)})
+                .populate('gift')
+                .exec()
+                .then(function (data) {
+                   // res.locals.leftMoney = sum;
+                    res.locals.gift = data.gift;
+                    res.render('order/orderChange', { title: '订单详情' });
+                })
         })
         .then(null, next);
 
