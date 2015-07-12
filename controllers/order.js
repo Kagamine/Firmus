@@ -423,6 +423,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
 // 查看订单详情
 router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, next) {
     var sum  = 0;
+    let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
     db.orders.findById(req.params.id)
         .populate('address')
         .populate('order user')
@@ -437,8 +438,14 @@ router.get('/show/:id', auth.checkRole('order', 'query'), function (req, res, ne
                     sum = parseInt(sum) + (parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))*parseInt(order.orders[i].single);
                 }
             }
-            res.locals.leftMoney = sum;
-            res.render('order/orderDetail', { title: '订单详情', order: order });
+            db.giftDelivers.findOne({'order':ObjectID(req.params.id)})
+                .populate('gift')
+            .exec()
+            .then(function (data) {
+                    res.locals.leftMoney = sum;
+                    res.locals.gift = data.gift;
+                    res.render('order/orderDetail', { title: '订单详情', order: order });
+                })
         })
         .then(null, next);
 });

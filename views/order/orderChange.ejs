@@ -135,6 +135,8 @@
                     </tbody>
                 </table>
                 剩余总钱数：<%=sum%>
+                赠品价值:<%=gift==null?'0':gift.price%>
+                应退钱数:<%=parseInt(sum)-parseInt((gift==null)?'0':gift.price)%>
             </td>
         </tr>
     </table>

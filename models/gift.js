@@ -5,6 +5,7 @@ var giftSchema = new Schema({
     title: String,
     picture: Schema.Types.ObjectId,
     description: String,
+    price: Number,
     count: {
         type: Number,
         default: 0,
