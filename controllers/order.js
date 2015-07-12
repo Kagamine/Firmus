@@ -1240,7 +1240,7 @@ function _getDistributeDetail (order, changes, time)
             unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: new Date(2099, 0, 1) });
         }
     }
-    if (dbeg > tmp) return count;
+    if (dbeg > tmp) return [];
     if (order.distributeMethod == '天天送')
     {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
