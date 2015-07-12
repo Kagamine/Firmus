@@ -78,7 +78,6 @@ router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
         query=query.where({'orderType':req.query.orderType});
 
     if (req.query.department){
-        console.log(req.query.department);
         db.departments.find()
             .where({ 'title': new RegExp('.*' + req.query.department + '.*') })
             .select("_id")
@@ -331,11 +330,9 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
              .then(function (data) {
                order.save(function (err, order) {
                    if(user.role != '热线员'){
-                       console.log(req.body.serverNumber);
                        db.users.findOne({'jobNumber':req.body.serverNumber})
                            .exec()
                            .then(function (xxxuser) {
-                               console.log(xxxuser);
                                order.user = xxxuser._id;
                                order.save();
                            })
@@ -358,7 +355,6 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
         .deepPopulate('address.milkStation')
         .exec()
         .then(function (orders) {
-            console.log(orders);
             let ret = [];
             if(req.query.number){
                 orders = orders.filter(x=>x.number==req.query.number);
@@ -993,6 +989,7 @@ function getDistributeCount (order, changes, time) {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -1025,6 +1022,7 @@ function getDistributeCount (order, changes, time) {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 2))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -1060,6 +1058,7 @@ function getDistributeCount (order, changes, time) {
         {
             if (i.getDay() == 6 || i.getDay() == 7) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -1118,6 +1117,8 @@ function getLeftCount (order, changes, time) {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -1134,7 +1135,7 @@ function getLeftCount (order, changes, time) {
                 }
             });
 
-            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
             {
                 count += order.distributeCount;
             }
@@ -1147,6 +1148,8 @@ function getLeftCount (order, changes, time) {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 2))
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -1163,7 +1166,7 @@ function getLeftCount (order, changes, time) {
                 }
             });
 
-            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
             {
                 count += order.distributeCount;
             }
@@ -1181,6 +1184,8 @@ function getLeftCount (order, changes, time) {
         {
             if (i.getDay() == 6 || i.getDay() == 7) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
+
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -1201,7 +1206,7 @@ function getLeftCount (order, changes, time) {
                 }
             });
 
-            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
             {
                 cnt = 0;
                 count += order.distributeCount;
@@ -1242,6 +1247,7 @@ function _getDistributeDetail (order, changes, time)
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             let prevCount = count;
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -1258,12 +1264,12 @@ function _getDistributeDetail (order, changes, time)
                 }
             });
 
-            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
             {
                 count += order.distributeCount;
             }
             if (prevCount != count)
-                detail.push({ time: i, count: prevCount - count, left: count, milkType: order.milkType });
+                detail.push({ time: i.getTime(), count: prevCount - count, left: count, milkType: order.milkType });
             if (i.getTime() === time.getTime()) break;
         }
         return detail;
@@ -1274,6 +1280,7 @@ function _getDistributeDetail (order, changes, time)
         {
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             let prevCount = count;
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             tmp.forEach(x => {
                 if (x.type == '加送')
@@ -1290,14 +1297,14 @@ function _getDistributeDetail (order, changes, time)
                 }
             });
 
-            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
             {
                 count += order.distributeCount;
             }
 
             let timetmp = time.getTime();
             if (prevCount != count)
-                detail.push({ time: i, count: prevCount - count, left: count, milkType: order.milkType });
+                detail.push({ time: i.getTime(), count: prevCount - count, left: count, milkType: order.milkType });
             if (i.getTime() === timetmp) break;
             let tt = new Date(i);
             let t2 = tt.setDate(i.getDate() - 1);
@@ -1312,6 +1319,7 @@ function _getDistributeDetail (order, changes, time)
             if (i.getDay() == 6 || i.getDay() == 7) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             let prevCount = count;
+            if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
             cnt = order.distributeCount;
             tmp.forEach(x => {
@@ -1332,29 +1340,30 @@ function _getDistributeDetail (order, changes, time)
                 }
             });
 
-            if (unknownChanges.filter(x => x.begin <= i && i < x.end))
+            if (unknownChanges.some(x => x.begin <= i && i < x.end))
             {
                 cnt = 0;
                 count += order.distributeCount;
             }
 
             if (prevCount != count)
-                detail.push({ time: i, count: prevCount - count, left: count, milkType: order.milkType });
+                detail.push({ time: i.getTime(), count: prevCount - count, left: count, milkType: order.milkType });
 
             if (i.getTime() === time.getTime()) break;
         }
         return detail;
     }
-    return 0;
+    return detail;
 }
 
 function getDistributeDetail(order)
 {
     let tmp = [];
     order.orders.forEach(x => {
-        tmp.push(_getDistributeDetail(x, order.changes, new Date()));
+        let t = _getDistributeDetail(x, order.changes, new Date())
+        t.forEach(x => tmp.push(x));
     });
-    return _.union(tmp);
+    return tmp;
 }
 
 // 配送日报
@@ -1540,7 +1549,6 @@ router.get('/distribute/detail', function (req, res, next) {
                     });
                 }
             }
-            console.log(ret);
             res.locals.report2 = ret;
             if (!req.query.raw)
                 res.render('order/distributeDetail', { title: '配送详单' });
@@ -1652,7 +1660,6 @@ router.get('/finance',auth.checkRole('finance','query'), function (req, res, nex
                 .exec();
         })
         .then(function (finances) {
-            console.log(finances);
             res.locals.finances = finances;
             res.render('order/finance',{ title: '财务管理'});
         })
@@ -1774,14 +1781,12 @@ router.get('/getStatistics',auth.checkRole('finance','modify'), function (req , 
         let ObjectID = db.mongoose.mongo.BSONPure.ObjectID;
          var aggregate = db.finances.aggregate();
          if(req.query.department){
-                 console.log(req.query.department);
                 var pipeline= { $match: { 'user.department': ObjectID(req.query.department)}};
                 aggregate.append(pipeline);
          }
          aggregate.group({_id:{user:'$user'},count: { $sum: '$price' }})
         .exec()
         .then(function (data) {
-               console.log(data);
         })
         .then(null,next);
 });
@@ -1884,7 +1889,6 @@ router.get('/acceptCall',auth.checkRole('order','query'), function (req,res,next
                 for(let j=0;j<orders[i].orders.length;j++){
                     let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
                     orders[i].orders[j].leftCount=leftCount;
-                    console.log(orders[i].orders[j]);
                 }
             }
             res.locals.orders = orders;
@@ -1980,14 +1984,13 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
     order.pos = req.body.pos =='pos'?'': req.body.pos;
     order.price = req.body.price;
     order.orderType = 'undefine';
-    order.parentId = req.body.parentId
+    order.parentId = req.body.parentId;
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
    db.orders.findById(req.body.parentId)
     .exec()
     .then(function (data) {
-           console.log(data.orders.length);
            if(typeof(req.body.milkType)!='string'){
                for(var i =0;i<req.body.milkType.length;i++){
                    if(data.orders.length>=i+1){
@@ -2063,9 +2066,7 @@ router.get('/orderDistribute/:id',auth.checkRole('order','query'), function (req
     db.orders.findById(req.params.id)
     .exec()
     .then(function (order) {
-            console.log(order);
             res.locals.distributes = getDistributeDetail(order);
-
             res.render('order/orderDistribute', { title: '订单配送详情' });
         })
     .then(null,next);
