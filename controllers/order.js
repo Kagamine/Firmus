@@ -220,7 +220,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
                 time:Date.now(),
-                begin:req.body.begin[i],
+                begin:req.body.begin[i]==''?new Date():req.body.begin[i],
             });
             if(req.body.presentCount[i]>0){
                 order.logs.push({
@@ -251,7 +251,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         console.log(order);
         if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))==0 && (i!=0)){
            if(req.body.begin[i]=='' || req.body.begin[i] == null){
-               order.orders[i].begin.setDate(order.orders[0].end.getDate()+1);
+               order.orders[i].begin.setDate(order.orders[0].end.setDate(order.orders[0].end.getDate()+1));
            }
         }
         order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
