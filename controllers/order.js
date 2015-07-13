@@ -1569,7 +1569,6 @@ router.get('/distribute/detail', function (req, res, next) {
                     });
                 }
             }
-            console.log(ret);
             res.locals.report2 = ret;
             if (!req.query.raw)
                 res.render('order/distributeDetail', { title: '配送详单' });
