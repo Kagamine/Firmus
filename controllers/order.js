@@ -9,164 +9,158 @@ router.use(function (req, res, next) {
     next();
 });
 
+function cityFilter(city, query) {
+    if (!city)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return  db.addresses.find()
+           .where({ 'city': city })
+           .select("_id")
+           .exec()
+           .then(function (data) {
+            query = query.where({ 'address':{ $in: data } });
+        });
+}
+
+function districtFilter(district, query) {
+    if (!district)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return  db.addresses.find()
+        .where({ 'district': district })
+        .select("_id")
+        .exec()
+        .then(function (data) {
+            query = query.where({ 'address':{ $in: data } });
+        })
+}
+
+function addressFilter(address, query) {
+    if (!address)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return    db.addresses.find()
+        .where({ 'address': new RegExp('.*' + address + '.*') })
+        .select("_id")
+        .exec()
+        .then(function (data) {
+            query = query.where({ 'address':{ $in: data } });
+        });
+}
+
+function userFilter(user, query) {
+    if (!user)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return    db.users.find()
+        .where({ 'username': new RegExp('.*' + user + '.*') })
+        .select('_id')
+        .exec()
+        .then(function (data) {
+            query = query.where({ 'user':{ $in: data } });
+        })
+}
+
+function usernameFilter(username, query) {
+    if (!username)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return   db.addresses.find()
+        .where({ 'name':  username })
+        .select("_id")
+        .exec()
+        .then(function (data) {
+            query = query.where({ 'address':{ $in: data } });
+        })
+}
+
+function phoneFilter(phone, query) {
+    console.log(phone);
+    if (!phone)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return     db.addresses.find()
+        .where({ 'phone': new RegExp('.*' + phone + '.*') })
+        .select("_id")
+        .exec()
+        .then(function (data) {
+            query = query.where({ 'address':{ $in: data } });
+        })
+}
+
+function departmentFilter(department, query) {
+    if (!department)
+        return new Promise(function(resolve, reject) { resolve(); });
+    return     db.departments.find()
+        .where({ 'title': new RegExp('.*' + department + '.*') })
+        .select("_id")
+        .exec()
+        .then(function (data) {
+            return db.addresses.find()
+                .where({'milkStation': {$in: data}})
+                .select("_id")
+                .exec()
+        })
+        .then(function (_data) {
+            query = query.where({'address': {$in: _data}});
+            return new Promise(function(resolve, reject) { resolve(); });
+        })
+}
+
 // 订单列表
 router.get('/', auth.checkRole('order', 'query'), function (req, res, next) {
     let query = db.orders.find();
     let orders;
     if (req.query.number)
         query = query.where({ number: req.query.number });
-    if (req.query.city){
-        db.addresses.find()
-            .where({ 'city': req.query.city })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                query = query.where({ 'address':{ $in: data } });
-            })
-    }
-    if (req.query.district){
-        db.addresses.find()
-            .where({ 'district': req.query.district })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                query = query.where({ 'address':{ $in: data } });
-            })
-    }
 
-    if (req.query.address) {
-        db.addresses.find()
-            .where({ 'address': new RegExp('.*' + req.query.address + '.*') })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                query = query.where({ 'address':{ $in: data } });
-            })
-    }
     if (req.query.begin)
-        query = query.where('begin').gte(Date.parse(req.query.begin));
+        query = query.where('orders.time').gte(Date.parse(req.query.begin));
     if (req.query.end)
-        query = query.where('end').lte(Date.parse(req.query.end));
-    if (req.query.user){
-        db.users.find()
-            .where({ 'username': new RegExp('.*' + req.query.user + '.*') })
-            .select('_id')
-            .exec()
-            .then(function (data) {
-                query = query.where({ 'user':{ $in: data } });
-            })
-    }
-    if(req.query.username){
-        db.addresses.find()
-            .where({ 'name':   req.query.username })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                query = query.where({ 'address':{ $in: data } });
-            })
-    }
-    if (req.query.phone) {
-        db.addresses.find()
-            .where({ 'phone': new RegExp('.*' + req.query.phone + '.*') })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                query = query.where({ 'address':{ $in: data } });
-            })
-    }
+        query = query.where('orders.time').lte(Date.parse(req.query.end));
+
     if(req.query.orderType)
         query=query.where({'orderType':req.query.orderType});
 
-    if (req.query.department){
-        db.departments.find()
-            .where({ 'title': new RegExp('.*' + req.query.department + '.*') })
-            .select("_id")
-            .exec()
-            .then(function (data) {
-                db.addresses.find()
-                    .where({ 'milkStation': { $in: data } })
-                    .select("_id")
-                    .exec()
-                    .then(function (_data) {
-                        query = query.where({ 'address':{ $in: _data } });
-                        _.clone(query)
-                            .count()
-                            .exec()
-                            .then(function (count) {
-                                var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
-                                var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-                                var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
-                                var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-                                return query
-                                    .populate('address milkStation user')
-                                    .deepPopulate('address.milkStation')
-                                    .skip(50 * (page - 1))
-                                    .limit(50)
-                                    .exec();
-                            })
-                            .then(function (_orders) {
-                                orders = _orders;
-                                for(let i= 0;i<orders.length;i++){
-                                    for(let j=0;j<orders[i].orders.length;j++){
-                                        let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
-                                        orders[i].orders[j].leftCount=leftCount;
-                                    }
-                                }
-                                res.locals.orders = orders;
-                                return db.addresses
-                                    .aggregate()
-                                    .group({
-                                        _id: '$city'
-                                    })
-                                    .exec()
-                            })
-                            .then(function (cities) {
-                                res.locals.cities = cities.map(x => x._id);
-                                res.render('order/index', { title: '订单管理' });
-                            })
-                            .then(null, next);
-                    })
-            })
-    }
-    else{
-        _.clone(query)
-            .count()
-            .exec()
-            .then(function (count) {
-                var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
-                var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
-                var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
-                var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
-                return query
-                    .populate('address milkStation user')
-                    .deepPopulate('address.milkStation')
-                    .skip(50 * (page - 1))
-                    .limit(50)
-                    .exec();
-            })
-            .then(function (_orders) {
-                orders = _orders;
-                for(let i= 0;i<orders.length;i++){
-                    for(let j=0;j<orders[i].orders.length;j++){
-                        let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
-                        orders[i].orders[j].leftCount=leftCount;
-                    }
-                }
-                res.locals.orders = orders;
-                return db.addresses
-                    .aggregate()
-                    .group({
-                        _id: '$city'
-                    })
-                    .exec()
-            })
-            .then(function (cities) {
-                res.locals.cities = cities.map(x => x._id);
-                res.render('order/index', { title: '订单管理' });
-            })
-            .then(null, next);
-    }
-
+      cityFilter(req.query.city,query)
+    .then(function(){return districtFilter(req.query.district,query);})
+    .then(function(){return addressFilter(req.query.address,query);})
+          .then(function(){return userFilter(req.query.user,query);})
+          .then(function(){return usernameFilter(req.query.username,query);})
+          .then(function(){return phoneFilter(req.query.phone,query);})
+          .then(function(){return departmentFilter(req.query.department,query);})
+          .then(function(){
+              return _.clone(query).count()
+              .exec();
+          })
+          .then(function (count) {
+              res.locals.count = count;
+              var page = res.locals.page = req.query.p == null ? 1 : req.query.p;
+              var pageCount = res.locals.pageCount = parseInt((count + 50 - 1) / 50);
+              var start = res.locals.start = (page - 50) < 1 ? 1 : (page - 50);
+              var end = res.locals.end = (start + 10) > pageCount ? pageCount : (start + 10);
+              return query
+                  .populate('address milkStation user')
+                  .deepPopulate('address.milkStation')
+                  .skip(50 * (page - 1))
+                  .limit(50)
+                  .exec();
+          })
+          .then(function (_orders) {
+              orders = _orders;
+              for(let i= 0;i<orders.length;i++){
+                  for(let j=0;j<orders[i].orders.length;j++){
+                      let leftCount = getLeftCount(orders[i].orders[j],orders[i].changes,new Date());
+                      orders[i].orders[j].leftCount=leftCount;
+                  }
+              }
+              res.locals.orders = orders;
+              return db.addresses
+                  .aggregate()
+                  .group({
+                      _id: '$city'
+                  })
+                  .exec()
+          })
+          .then(function (cities) {
+              res.locals.cities = cities.map(x => x._id);
+              res.render('order/index', { title: '订单管理' });
+          })
+          .then(null, next);
 });
 
 // 创建订单

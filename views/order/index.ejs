@@ -64,6 +64,7 @@
 <div id="divInfo">
 </div>
 <div class="pager">
+    <span class="pager-item">共：<%=count%> 条数据</span>
     <a class="pager-item" href="/order/?p=1&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>">«</a>
     <% for(var i = start; i <= end; i++) { %>
     <a class="pager-item <%= page == i ? 'active' : '' %>" href="/order/?p=<%= i %>&user=<%= req.query.user %>&number=<%= req.query.number %>&city=<%= req.query.city %>&district=<%= req.query.district %>&address=<%= req.query.address %>&milkStation=<%= req.query.milkStation %>&begin=<%= req.query.begin %>&end=<%= req.query.end %>"><%= i %></a>
