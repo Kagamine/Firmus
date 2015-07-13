@@ -397,6 +397,16 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
             if(req.query.end){
                 ret = ret.filter(x=>(x.time<=Date.parse(req.query.end)));
             }
+            ret = ret.sort(function(a,b){
+                if (a.end > b.end) {
+                    return 1;
+                }
+                if (a.end < b.end) {
+                    return -1;
+                }
+                return 0;
+            });
+
             return db.addresses
                 .aggregate()
                 .group({

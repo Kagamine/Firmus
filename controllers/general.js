@@ -1063,6 +1063,7 @@ router.get('/address/:id', auth.checkRole('address', 'query'), function (req, re
     db.addresses.findById(req.params.id)
         .populate({ path: 'milkStation', select: '_id title' })
         .populate({path:'service',select:'_id username jobNumber'})
+        .populate({path:'distributor',select:'_id username jobNumber'})
         .exec()
         .then(function (address) {
             db.orders

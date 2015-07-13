@@ -34,7 +34,15 @@
         <tr>
             <td class="row-title">服务人员</td>
             <% if (address.service) { %>
-            <td><a href="/general/employee/<%= address.service._id %>" target="_blank"><%= uaddress.service.username %></a></td>
+            <td><a href="/general/employee/<%= address.service._id %>" target="_blank"><%= address.service.username %></a></td>
+            <% } else { %>
+            <td>未指派</td>
+            <% } %>
+        </tr>
+        <tr>
+            <td class="row-title">配送人员</td>
+            <% if (address.distributor) { %>
+            <td><a href="/general/employee/<%= address.distributor._id %>" target="_blank"><%= address.distributor.username %></a></td>
             <% } else { %>
             <td>未指派</td>
             <% } %>
