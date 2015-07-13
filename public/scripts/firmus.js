@@ -763,7 +763,7 @@ $(document).ready(function () {
        var str = '<tr class="trOrderDetail"><td><input type="text" class="textbox w-0-6 milkType" name="milkType" /></td><td><input type="text" class="textbox w-0-6 count"  name="count" /></td>' +
            '<td><input type="text" class="textbox w-0-6" value="0"  name="presentCount" /></td>' +
            '<td><input type="text" class="textbox w-0-6 dayAfter nullable" value="2"/></td>'+
-        '<td><input type="text" class="textbox datetime w-0-6 begin new" name="begin" /></td>'+
+        '<td><input type="text" class="textbox datetime w-0-6 begin new nullable" name="begin" /></td>'+
         '<td><select name="distributeMethod"><option>天天送</option><option>隔日送</option><option>周末停送</option>'+
         '</select></td><td><input type="text" class="textbox w-0-6"  name="distributeCount" /></td> <td><input type="text" name="single"  class="textbox w-0-6 single"/></td>'+
         '<td><a href="javascript:void(0);" class="btnDeltr">删除</a></td></tr>';
