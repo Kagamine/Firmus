@@ -1552,7 +1552,7 @@ router.get('/distribute/detail', function (req, res, next) {
             let ret = {};
             for (let x in tmp) {
                 ret[x] = {};
-                let tmp2 = _.groupBy(tmp[x], a => a.address.milkStation.title + ' ' + (a.address.milkStation.distributor == null ? "未指派" : a.address.milkStation.distributor.name));
+                let tmp2 = _.groupBy(tmp[x], a => a.address.milkStation.title + ' ' + (a.address.distributor && a.address.distributor.name ? a.address.distributor.name : "未指派"));
                 for(let b in tmp2)
                 {
                     ret[x][b] = {};
@@ -1569,6 +1569,7 @@ router.get('/distribute/detail', function (req, res, next) {
                     });
                 }
             }
+            console.log(ret);
             res.locals.report2 = ret;
             if (!req.query.raw)
                 res.render('order/distributeDetail', { title: '配送详单' });
