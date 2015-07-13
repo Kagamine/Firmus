@@ -395,7 +395,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             number: x.number,
                             address:  x.address.address,
                             time:x.time,
-                            postpone:x.logs.filter(x=>(new RegExp('.*' + "顺延"+ '.*')).test(x.content)).length>0?true:false,
+                            postpone:x.logs.filter(x=>(new RegExp('.*' + "顺延"+y.milkType+"品相"+ '.*')).test(x.content)).length>0?true:false,
                         });
                 });
             });
