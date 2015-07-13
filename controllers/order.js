@@ -1,4 +1,4 @@
-'use strict'
+﻿'use strict'
 var express = require('express');
 var router = express.Router();
 
@@ -251,7 +251,9 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         console.log(order);
         if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))==0 && (i!=0)){
            if(req.body.begin[i]=='' || req.body.begin[i] == null){
-               order.orders[i].begin.setDate(order.orders[0].end.setDate(order.orders[0].end.getDate()+1));
+               var time =order.orders[0].end;
+                time.setDate(order.orders[0].end.getDate()+1);
+                order.orders[i].begin = time;
            }
         }
         order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
@@ -393,7 +395,7 @@ router.get('/renew', auth.checkRole('order', 'query'), function (req, res, next)
                             number: x.number,
                             address:  x.address.address,
                             time:x.time,
-                            postpone:x.logs.filter(x=>(new RegExp('.*' + "顺延"+ '.*')).test(x.content)).length>0?true:false,
+                            postpone:x.logs.filter(x=>(new RegExp('.*' + "顺延"+y.milkType+"品相"+ '.*')).test(x.content)).length>0?true:false,
                         });
                 });
             });
