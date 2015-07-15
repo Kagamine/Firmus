@@ -243,7 +243,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         if(req.body.presentCount>0){
             order.logs.push({
                 user: req.session.uid,
-                content:'赠送'+ req.body.milkType[i]+'品相'+req.body.presentCount[i]+'瓶'
+                content:'赠送'+ req.body.milkType+'品相'+req.body.presentCount+'瓶'
             })
         }
     }
