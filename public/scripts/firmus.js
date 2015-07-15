@@ -957,6 +957,10 @@ $(document).ready(function () {
             $(this).parents('tr').children('td').children('.dayAfter').val('');
     })
 
+    $('.btnDeltr').click(function () {
+        $(this).parents('.trOrderDetail').remove();
+    });
+
     $('#frmModifyPwd').submit(function () {
         var newpassword = $('#new').val();
         var oldpassword = $('#old').val();
