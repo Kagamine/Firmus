@@ -804,7 +804,7 @@ $(document).ready(function () {
 
         // 检查提交的订单是不是有重复品相 by nele
         $('#frmCreateOrder').submit(function () {
-            var milkTypes = $('.milkType');
+            /*var milkTypes = $('.milkType');
             var hash = {};
             for(var i=0;i< milkTypes.length; i++) {
                 if(hash[$(milkTypes[i]).val()]){
@@ -813,7 +813,7 @@ $(document).ready(function () {
                 }else{
                     hash[$(milkTypes[i]).val()] = true;
                 }
-            }
+            }*/
             var now =new Date();
             var begins = $('.begin');
             var tmp;
@@ -888,7 +888,7 @@ $(document).ready(function () {
 
     // 检查提交的订单是不是有重复品相 by nele
     $('#frmCreateOrder').submit(function () {
-        var milkTypes = $('.milkType');
+        /*var milkTypes = $('.milkType');
         var hash = {};
         for(var i=0;i< milkTypes.length; i++) {
             if(hash[$(milkTypes[i]).val()]){
@@ -897,7 +897,8 @@ $(document).ready(function () {
             }else{
                 hash[$(milkTypes[i]).val()] = true;
             }
-        }
+        }*/
+
         var reg = /^\d{7}$/;
         if (!reg.test($('#txtNumber').val()))
         {
@@ -1108,7 +1109,7 @@ function saveCarStation(id) {
 }
 
 function saveOrder(id) {
-    var milkTypes = $('.milkType');
+    /*var milkTypes = $('.milkType');
     var hash = {};
     for(var i=0;i< milkTypes.length; i++) {
         if(hash[$(milkTypes[i]).val()]){
@@ -1118,9 +1119,8 @@ function saveOrder(id) {
             hash[$(milkTypes[i]).val()] = true;
         }
     }
-
         var milkTypes = $('.milkType');
-        var hash = {};
+        var hash = {};*/
         var reg = /^\d{7}$/;
         if (!reg.test($('#txtNumber').val()))
         {
@@ -1128,14 +1128,7 @@ function saveOrder(id) {
             popMsg("订单号有误！");
             return false;
         }
-        for(var i=0;i< milkTypes.length; i++) {
-            if(hash[$(milkTypes[i]).val()]){
-                popMsg("您输入的品相有重复值！");
-                return false;
-            }else{
-                hash[$(milkTypes[i]).val()] = true;
-            }
-        }
+
         var now =new Date();
         var begins = $('.begin');
         var tmp;

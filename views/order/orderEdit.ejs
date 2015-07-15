@@ -84,7 +84,7 @@
                          %>
                         <tr class="trOrderDetail">
                             <td><input type="text" class="textbox w-0-6 milkType" name="milkType" value="<%=order.orders[i].milkType%>" /></td>
-                            <td><input type="text" class="textbox w-0-6 count"  name="count" value="<%=order.orders[i].count%>" /></td>
+                            <td><input type="text" class="textbox w-0-6 count"  name="count" value="<%=parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount)%>" /></td>
                             <td><input type="text" class="textbox w-0-6 count"  name="presentCount" value="<%=order.orders[i].presentCount%>" /></td>
                             <td><input type="text" class="textbox w-0-6 dayAfter nullable" value="2"/></td>
                             <td><input type="text" class="textbox datetime w-0-6 begin" name="begin" value="<%= moment(order.orders[i].begin).format('YYYY-MM-DD')%>" /></td>
