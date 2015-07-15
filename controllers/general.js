@@ -853,7 +853,8 @@ router.get('/address/getDistrictsByName',auth.checkRole('address','query'),funct
         .group({_id:{district:'$district'}})
         .exec()
         .then(function(data){
-            res.json(data.map(x=>x._id.district));
+            //res.json(data.map(x=>x._id.district));
+            res.json(['龙沙区','建华区','铁锋区']);
         })
         .then(null, next);
 });
