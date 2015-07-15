@@ -1005,7 +1005,7 @@
 					.on('close.xdsoft', function( event ) {
 						var onClose = true;
 						if( options.onClose&&options.onClose.call ) {
-							onClose=options.onClose.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
+							onClose=options.onClose.call(datetimepicker,'',datetimepicker.data('input'));
 						}
 						if( onClose!==false&&!options.opened&&!options.inline ) {
 							datetimepicker.hide();

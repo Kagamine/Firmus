@@ -522,7 +522,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                 distributeMethod:req.body.distributeMethod[i],
                 single:req.body.single[i],
                 time:Date.now(),
-                begin:req.body.begin[i]
+                begin:req.body.begin[i]==''?Date.now():new Date(req.body.begin[i]),
             });
         }
     }else{
@@ -534,19 +534,38 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
             distributeMethod:req.body.distributeMethod,
             single:req.body.single,
             time:Date.now(),
-            begin:req.body.begin
+            begin:new Date(req.body.begin)
         });
     }
-    db.orders.update({ _id: req.params.id }, {
-        orderType: req.body.orderType,
-        address: req.body.address,
-        price:req.body.price,
-        payMethod:req.body.payMethod,
-        pos:req.body.pos,
-        orders:orders,
-        number:req.body.number,
-    })
+    db.orders.findById(req.params.id)
         .exec()
+        .then(function (order) {
+            _order = order;
+            for (let i = 0; i < orders.length; i++) {
+                if((parseInt(orders[i].count)-parseInt(orders[i].presentCount))==0 && (i!=0)){
+                    if(req.body.begin[i]=='' || req.body.begin[i] == null){
+                        var time =orders[0].end;
+                        time.setDate(orders[0].end.getDate()+1);
+                        orders[i].begin = time;
+                    }
+                }
+                console.log(orders[i]);
+                orders[i].end = getEndDistributeDate(orders[i], _order.changes);
+            }
+            return orders;
+        })
+       .then(function (orders) {
+            db.orders.update({ _id: req.params.id }, {
+                orderType: req.body.orderType,
+                address: req.body.address,
+                price:req.body.price,
+                payMethod:req.body.payMethod,
+                pos:req.body.pos,
+                orders:orders,
+                number:req.body.number,
+            })
+                .exec()
+        })
         .then(function () {
                 db.orders.findById(req.params.id)
                 .exec()
