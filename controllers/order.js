@@ -550,6 +550,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                     }
                 }
                 orders[i].end = getEndDistributeDate(orders[i], _order.changes);
+                orders[i].time = _order.orders[i];
             }
             return orders;
         })
