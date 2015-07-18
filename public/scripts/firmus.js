@@ -907,6 +907,18 @@ $(document).ready(function () {
             return false;
         }
 
+        $.ajaxSettings.async = false;
+        $.getJSON('/order/getOrderByNumber/'+$('#txtNumber'), function (data) {
+            console.log(data);
+            if(data!=null){
+                popMsg("该订单号已经存在！");
+                return false;
+            }
+            else{
+                return fasle;
+            }
+        });
+        $.ajaxSettings.async = true;
         var now =new Date();
         var begins = $('.begin');
         var tmp;
@@ -1132,6 +1144,14 @@ function saveOrder(id) {
             popMsg("订单号有误！");
             return false;
         }
+
+      $.getJSON('/order/getOrderByNumber/'+$('#txtNumber'), function (data) {
+        console.log(data);
+        if(data!=null){
+            popMsg("该订单号已经存在！");
+            return false;
+        }
+      });
 
         var now =new Date();
         var begins = $('.begin');

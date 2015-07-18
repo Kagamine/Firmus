@@ -277,23 +277,27 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                         var empty = true;  //是否全部的订单都结束
                         var days = 0;
                         var isTodayHave = false; 　//是否今天下单
-                        for(var i=0;i<orders.length;i++){
-                            var  now = new Date();
-                            var date =   getEndDistributeDate(order.orders[i], order.changes);
-                            var orderTime  = orders[i].orders[0].time;
-                            if(orderTime.getDate() == now.getDate() ){
-                                isTodayHave = true;
-                            }
-                            if(date<now){
-                                if(days>parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24)){
-                                    days = parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24);
+                        for(var j=0;i<orders.length;i++){
+                            for(var i=0;i<orders.length;i++){
+                                var  now = new Date();
+                                var date =   getEndDistributeDate(orders[j].orders[i], order.changes);
+                                var orderTime  = orders[i].orders[0].time;
+                                if(orderTime.getDate() == now.getDate() ){
+                                    isTodayHave = true;
+                                    break;
                                 }
-                                flag = true;
-                            }
-                            else if(date > now){
-                                empty = false;
+                                if(date<now){
+                                    if(days>parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24)){
+                                        days = parseInt(Math.abs(now - date) / 1000 / 60 / 60 / 24);
+                                    }
+                                    flag = true;
+                                }
+                                else if(date > now){
+                                    empty = false;
+                                }
                             }
                         }
+
                         if(isTodayHave==true){
                             if(user.role=="热线员"){
                                 order.orderType =  'A04';
@@ -329,7 +333,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                             }
                         }
                     }
-        })
+        },next)
              .then(function (data) {
                order.save(function (err, order) {
                    if(user.role != '热线员'){
@@ -342,7 +346,8 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
                    }
                    res.redirect('/order/show/' + order._id);
                });
-      })
+      },next)
+             .then(null,next);
 });
 
 // 续单统计
