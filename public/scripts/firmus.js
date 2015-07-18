@@ -802,33 +802,6 @@ $(document).ready(function () {
             $('#price').val(sum);
         });
 
-        // 检查提交的订单是不是有重复品相 by nele
-        $('#frmCreateOrder').submit(function () {
-            /*var milkTypes = $('.milkType');
-            var hash = {};
-            for(var i=0;i< milkTypes.length; i++) {
-                if(hash[$(milkTypes[i]).val()]){
-                    popMsg("您输入的品相有重复值！");
-                    return false;
-                }else{
-                    hash[$(milkTypes[i]).val()] = true;
-                }
-            }*/
-            var now =new Date();
-            var begins = $('.begin');
-            var tmp;
-            for(var i=0;i<begins.length;i++){
-                tmp =new Date($(begins[i]).val());
-                now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                var tmp2 = now.setDate(now.getDate() + 1);
-                tmp = new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate());
-                if(tmp <= tmp2 && $('#hdRole').val()!='系统管理员'){
-                    popMsg("起配日期必须是当前日期的两天之后！");
-                    return false;
-                }
-            }
-            return true;
-        });
 
 
 
@@ -899,6 +872,7 @@ $(document).ready(function () {
             }
         }*/
 
+
         var reg = /^\d{7}$/;
         if (!reg.test($('#txtNumber').val()))
         {
@@ -906,19 +880,22 @@ $(document).ready(function () {
             popMsg("订单号有误！");
             return false;
         }
-
+        var flag =false;
         $.ajaxSettings.async = false;
-        $.getJSON('/order/getOrderByNumber/'+$('#txtNumber'), function (data) {
+        $.getJSON('/order/getOrderByNumber/'+$('#txtNumber').val(), function (data) {
             console.log(data);
             if(data!=null){
-                popMsg("该订单号已经存在！");
-                return false;
+                flag = true;
             }
             else{
-                return fasle;
+                flag =false;
             }
         });
-        $.ajaxSettings.async = true;
+       $.ajaxSettings.async = true;
+        if(flag){
+            popMsg("该订单号已经存在！");
+            return false;
+        }
         var now =new Date();
         var begins = $('.begin');
         var tmp;
