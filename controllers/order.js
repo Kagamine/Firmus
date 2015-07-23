@@ -1109,7 +1109,7 @@ function getDistributeCount (order, changes, time) {
     {
         for (let i = dbeg; count > 0; i.setDate(i.getDate() + 1))
         {
-            if (i.getDay() == 6 || i.getDay() == 7) continue;
+            if (i.getDay() == 6 || i.getDay() == 0) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             if (order.distributeCount > count) order.distributeCount = count;
             count -= order.distributeCount;
@@ -1235,7 +1235,7 @@ function getLeftCount (order, changes, time) {
     {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
         {
-            if (i.getDay() == 6 || i.getDay() == 7) continue;
+            if (i.getDay() == 6 || i.getDay() == 0) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
 
             if (order.distributeCount > count) order.distributeCount = count;
@@ -1369,7 +1369,7 @@ function _getDistributeDetail (order, changes, time)
     {
         for (let i = dbeg; count >= 0; i.setDate(i.getDate() + 1))
         {
-            if (i.getDay() == 6 || i.getDay() == 7) continue;
+            if (i.getDay() == 6 || i.getDay() == 0) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= i && x.end >= i || x.type == '整单停送' && x.begin <= i && x.end >= i);
             let prevCount = count;
             if (order.distributeCount > count) order.distributeCount = count;
