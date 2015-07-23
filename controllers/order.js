@@ -517,36 +517,120 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
             }
         });
 
-    if(typeof(req.body.milkType)!='string'){
-        for(var i =0;i<req.body.milkType.length;i++){
-            orders.push({
-                milkType: req.body.milkType[i],
-                count:parseInt(req.body.count[i])+parseInt(req.body.presentCount[i]),
-                distributeCount:req.body.distributeCount[i],
-                presentCount:parseInt(req.body.presentCount[i]),
-                distributeMethod:req.body.distributeMethod[i],
-                single:req.body.single[i],
-                time:Date.now(),
-                begin:req.body.begin[i]==''?Date.now():new Date(req.body.begin[i]),
-            });
-        }
-    }else{
-        orders.push({
-            milkType: req.body.milkType,
-            count:parseInt(req.body.count)+parseInt(req.body.presentCount),
-            distributeCount:req.body.distributeCount,
-            presentCount:parseInt(req.body.presentCount),
-            distributeMethod:req.body.distributeMethod,
-            single:req.body.single,
-            time:Date.now(),
-            begin:new Date(req.body.begin)
-        });
-    }
+
     db.orders.findById(req.params.id)
         .exec()
         .then(function (order) {
             _order = order;
+            let _now = new Date();
+            let _time =  new Date(_now.getFullYear(), _now.getMonth(), _now.getDate());
+            if(typeof(req.body.milkType)!='string'){
+                for(var i =0;i<req.body.milkType.length;i++){
+                        var tmp = order.orders.filter(x=>x._id==req.body.orderid[i]);
+                        if(tmp.length>0){
+                          if(tmp[0].distributeMethod == req.body.distributeMethod[i]){
+                              orders.push({
+                                  milkType: req.body.milkType[i],
+                                  count:parseInt(req.body.count[i])+parseInt(req.body.presentCount[i]),
+                                  distributeCount:req.body.distributeCount[i],
+                                  presentCount:parseInt(req.body.presentCount[i]),
+                                  distributeMethod:req.body.distributeMethod[i],
+                                  single:req.body.single[i],
+                                  time:new Date(),
+                                  begin:req.body.begin[i]==''?Date.now():new Date(req.body.begin[i]),
+                              });
+                          }
+                          else{
+                              orders.push({
+                                  milkType: tmp[0].milkType,
+                                  count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date()),
+                                  distributeCount:tmp[0].distributeCount,
+                                  presentCount:tmp[0].presentCount,
+                                  distributeMethod:tmp[0].distributeMethod,
+                                  single:tmp[0].single,
+                                  time:tmp[0].time,
+                                  begin:tmp[0].begin,
+                                  end:new Date(),
+                              });
+                              orders.push({
+                                  milkType: req.body.milkType[i],
+                                  count:getLeftCount(tmp[0],order.changes,new Date()),
+                                  distributeCount:req.body.distributeCount[i],
+                                  presentCount:parseInt(req.body.presentCount[i]),
+                                  distributeMethod:req.body.distributeMethod[i],
+                                  single:req.body.single[i],
+                                  time:new Date(),
+                                  begin:Date.now.setDate(Date.now.getDate()+1),
+                              });
+                          }
+                        }
+                        else{
+                            orders.push({
+                                milkType: req.body.milkType[i],
+                                count:parseInt(req.body.count[i])+parseInt(req.body.presentCount[i]),
+                                distributeCount:req.body.distributeCount[i],
+                                presentCount:parseInt(req.body.presentCount[i]),
+                                distributeMethod:req.body.distributeMethod[i],
+                                single:req.body.single[i],
+                                time:new Date(),
+                                begin:req.body.begin[i]==''?new Date():new Date(req.body.begin[i]),
+                            });
+                        }
+                }
+            }else{
+                var tmp = order.orders.filter(x=>x._id==req.body.orderid);
+                if(tmp.length>0){
+                    if(tmp[0].distributeMethod == req.body.distributeMethod){
+                        orders.push({
+                            milkType: req.body.milkType,
+                            count:parseInt(req.body.count)+parseInt(req.body.presentCount),
+                            distributeCount:req.body.distributeCount,
+                            presentCount:parseInt(req.body.presentCount),
+                            distributeMethod:req.body.distributeMethod,
+                            single:req.body.single,
+                            time:new Date(),
+                            begin:new Date(req.body.begin),
+                        });
+                    }
+                    else{
+                        orders.push({
+                            milkType: tmp[0].milkType,
+                            count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date()),
+                            distributeCount:tmp[0].distributeCount,
+                            presentCount:tmp[0].presentCount,
+                            distributeMethod:tmp[0].distributeMethod,
+                            single:tmp[0].single,
+                            time:tmp[0].time,
+                            begin:tmp[0].begin,
+                            end:new Date(),
+                        });
+                        orders.push({
+                            milkType: req.body.milkType,
+                            count:getLeftCount(tmp[0],order.changes,new Date()),
+                            distributeCount:req.body.distributeCount,
+                            presentCount:parseInt(req.body.presentCount),
+                            distributeMethod:req.body.distributeMethod,
+                            single:req.body.single,
+                            time:new Date(),
+                            begin:new Date(_now.setDate(_now.getDate()+1)),
+                        });
+                    }
+                }
+                else{
+                    orders.push({
+                        milkType: req.body.milkType,
+                        count:parseInt(req.body.count)+parseInt(req.body.presentCount),
+                        distributeCount:req.body.distributeCount,
+                        presentCount:parseInt(req.body.presentCount),
+                        distributeMethod:req.body.distributeMethod,
+                        single:req.body.single,
+                        time:new Date(),
+                        begin:new Date(req.body.begin)
+                    });
+                }
+            }
             for (let i = 0; i < orders.length; i++) {
+                console.log(orders)
                 if((parseInt(orders[i].count)-parseInt(orders[i].presentCount))==0 && (i!=0)){
                     if(req.body.begin[i]=='' || req.body.begin[i] == null){
                         var time =orders[0].end;
@@ -554,8 +638,10 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                         orders[i].begin = time;
                     }
                 }
-                orders[i].end = getEndDistributeDate(orders[i], _order.changes);
-                orders[i].time = _order.orders[i];
+                if(orders[i].end==null){
+                    console.log(orders[i]);
+                    orders[i].end = getEndDistributeDate(orders[i], _order.changes);
+                }
             }
             return orders;
         })

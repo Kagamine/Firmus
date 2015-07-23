@@ -83,6 +83,7 @@
                             for(var i = 0;i<order.orders.length;i++){
                          %>
                         <tr class="trOrderDetail">
+                            <input type="hidden" value="<%=order.orders[i]._id%>" name="orderid"/>
                             <td><input type="text" class="textbox w-0-6 milkType" name="milkType" value="<%=order.orders[i].milkType%>" /></td>
                             <td><input type="text" class="textbox w-0-6 count"  name="count" value="<%=parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount)%>" /></td>
                             <td><input type="text" class="textbox w-0-6"  name="presentCount" value="<%=order.orders[i].presentCount%>" /></td>
