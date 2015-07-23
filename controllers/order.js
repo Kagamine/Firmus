@@ -545,7 +545,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                                   milkType: tmp[0].milkType,
                                   count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date()),
                                   distributeCount:tmp[0].distributeCount,
-                                  presentCount:tmp[0].presentCount,
+                                  presentCount:0,
                                   distributeMethod:tmp[0].distributeMethod,
                                   single:tmp[0].single,
                                   time:tmp[0].time,
@@ -560,7 +560,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                                   distributeMethod:req.body.distributeMethod[i],
                                   single:req.body.single[i],
                                   time:new Date(),
-                                  begin:Date.now.setDate(Date.now.getDate()+1),
+                                  begin:new Date(_now.setDate(_now.getDate()+1)),
                               });
                           }
                         }
@@ -597,7 +597,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                             milkType: tmp[0].milkType,
                             count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date()),
                             distributeCount:tmp[0].distributeCount,
-                            presentCount:tmp[0].presentCount,
+                            presentCount:0,
                             distributeMethod:tmp[0].distributeMethod,
                             single:tmp[0].single,
                             time:tmp[0].time,
@@ -630,7 +630,6 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                 }
             }
             for (let i = 0; i < orders.length; i++) {
-                console.log(orders)
                 if((parseInt(orders[i].count)-parseInt(orders[i].presentCount))==0 && (i!=0)){
                     if(req.body.begin[i]=='' || req.body.begin[i] == null){
                         var time =orders[0].end;
@@ -639,7 +638,6 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                     }
                 }
                 if(orders[i].end==null){
-                    console.log(orders[i]);
                     orders[i].end = getEndDistributeDate(orders[i], _order.changes);
                 }
             }
