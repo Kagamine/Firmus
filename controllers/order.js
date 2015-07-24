@@ -772,25 +772,23 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                           ordersTemp[i] = tmp;
                      }
                 }
-                db.orders.update({ _id: req.params.id }, {
+                return db.orders.update({ _id: req.params.id }, {
                     orders:ordersTemp
-                })
-                    .exec()
-                    .then(function () {
-                           db.orders.findById(req.params.id)
-                           .exec()
-                           .then(function (order) {
-                                   _order = order;
-                                   db.addresses.update({_id:order.address},{
-                                       $inc: { balance: req.body.balance }
-                                   })
-                                       .exec()
-                                       .then(function () {
-                                           childrenContinue(req.params.id);
-                                           res.redirect('/order/show/' + req.params.id);
-                                       });
-                               })
-                    })
+                }).exec();
+
+            })
+            .then(function () {
+                return db.orders.findById(req.params.id).exec();
+            })
+            .then(function (order) {
+                _order = order;
+                return db.addresses.update({_id:order.address},{
+                    $inc: { balance: req.body.balance }
+                }).exec();
+            })
+            .then(function () {
+                childrenContinue(req.params.id);
+                res.redirect('/order/show/' + req.params.id);
             })
             .then(null, next);
     }
