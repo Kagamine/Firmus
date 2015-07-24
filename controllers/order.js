@@ -1083,7 +1083,7 @@ function getEndDistributeDate (order, changes)
     {
         for (ret = dbeg; count > 0; ret.setDate(ret.getDate() + 1))
         {
-            if (ret.getDay() == 6 || ret.getDay() == 7) continue;
+            if (ret.getDay() == 6 || ret.getDay() == 0) continue;
             let tmp = changes.filter(x => x.milkType == order.milkType && x.begin <= ret && x.end >= ret || x.type == '整单停送' && x.begin <= i && x.end >= i);
             count -= order.distributeCount;
             tmp.forEach(x => {
