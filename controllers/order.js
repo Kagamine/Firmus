@@ -811,23 +811,22 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         temp = temp+req.body.cancelCount* order.orders[0].single;
                     }
                 }
-                db.orders.update({ _id: req.params.id }, {
+               return  db.orders.update({ _id: req.params.id }, {
                     orders:order.orders
                 })
                 .exec()
-                .then(function () {
-                        db.addresses.update({_id:order.address},{
-                            $inc: { balance: temp }
-                        })
-                            .exec()
-                            .then(function () {
-                                childrenContinue(req.params.id);
-                                res.redirect('/order/show/' + req.params.id);
-                            });
-                    });
+            })
+            .then(function () {
+                return db.addresses.update({_id:order.address},{
+                    $inc: { balance: temp }
+                })
+                    .exec()
+            })
+            .then(function () {
+                childrenContinue(req.params.id);
+                res.redirect('/order/show/' + req.params.id);
             })
         .then(null,next);
-
     }
     else if(req.body.type=='顺延'){
         db.orders.findById(req.params.id)
@@ -842,25 +841,25 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         var temp = ordersTemp[i].milkType;
                     }
                 }
-                db.orders.update({ _id: req.params.id }, {
+                return db.orders.update({ _id: req.params.id }, {
                     orders:ordersTemp
                 })
                     .exec()
-                    .then(function () {
-                        db.orders.update({ _id: req.params.id }, {
-                            $push: {
-                                logs: {
-                                    user: req.session.uid,
-                                    content:'顺延了'+temp+'品相'+req.body.lengthenCount+'瓶'
-                                }
-                            }
-                        })
-                        .exec()
-                        .then(function () {
-                                childrenContinue(req.params.id);
-                                res.redirect('/order/show/' + req.params.id);
-                            })
-                    })
+            })
+            .then(function () {
+               return db.orders.update({ _id: req.params.id }, {
+                    $push: {
+                        logs: {
+                            user: req.session.uid,
+                            content:'顺延了'+temp+'品相'+req.body.lengthenCount+'瓶'
+                        }
+                    }
+                })
+                    .exec()
+            })
+            .then(function () {
+                childrenContinue(req.params.id);
+                res.redirect('/order/show/' + req.params.id);
             })
             .then(null, next);
     }
@@ -881,7 +880,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                  }
              })
              .exec(function () {
-                     db.orders.update({ _id: req.params.id }, {
+                    return db.orders.update({ _id: req.params.id }, {
                          $push: {
                              logs: {
                                  user: req.session.uid,
@@ -890,10 +889,10 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                          }
                      })
                          .exec()
-                         .then(function () {
-                             childrenContinue(req.params.id);
-                                     res.redirect('/order/show/' + req.params.id);
-                                 })
+                 })
+                 .then(function () {
+                     childrenContinue(req.params.id);
+                     res.redirect('/order/show/' + req.params.id);
                  })
              .then(null,next);
          }
@@ -911,25 +910,25 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                              temp = ordersTemp[i].milkType;
                          }
                      }
-                     db.orders.update({ _id: req.params.id }, {
+                     return db.orders.update({ _id: req.params.id }, {
                          orders:ordersTemp
                      })
                          .exec()
-                         .then(function () {
-                             db.orders.update({ _id: req.params.id }, {
-                                 $push: {
-                                     logs: {
-                                         user: req.session.uid,
-                                         content:'赠送了'+temp+'品相'+req.body.giftCount+'瓶'
-                                     }
-                                 }
-                             })
-                                 .exec()
-                                 .then(function () {
-                                     childrenContinue(req.params.id);
-                                     res.redirect('/order/show/' + req.params.id);
-                                 })
-                         })
+                 })
+                 .then(function () {
+                     return db.orders.update({ _id: req.params.id }, {
+                         $push: {
+                             logs: {
+                                 user: req.session.uid,
+                                 content:'赠送了'+temp+'品相'+req.body.giftCount+'瓶'
+                             }
+                         }
+                     })
+                         .exec()
+                 })
+                 .then(function () {
+                     childrenContinue(req.params.id);
+                     res.redirect('/order/show/' + req.params.id);
                  })
                  .then(null, next);
          }
@@ -950,10 +949,10 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     }
                 })
                     .exec()
-                    .then(function () {
-                        res.redirect('/order/show/' + req.params.id);
-                    });
             })
+            .then(function () {
+                res.redirect('/order/show/' + req.params.id);
+            });
             .then(null, next);
     }
     else if(req.body.type=='恢复送奶'){
@@ -972,9 +971,9 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     }
                 })
                     .exec()
-                    .then(function () {
-                        res.redirect('/order/show/' + req.params.id);
-                    });
+            })
+            .then(function () {
+                res.redirect('/order/show/' + req.params.id);
             })
             .then(null, next);
     }
@@ -998,9 +997,9 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     }
                 })
                     .exec()
-                    .then(function () {
-                        res.redirect('/order/show/' + req.params.id);
-                    });
+            })
+            .then(function () {
+                res.redirect('/order/show/' + req.params.id);
             })
             .then(null, next);
     }
