@@ -1354,7 +1354,7 @@ function getLeftCount (order, changes, time) {
                 count += order.distributeCount;
             }
 
-            if (i.getTime() === time.getTime()) return cnt;
+            if (i.getTime() === time.getTime()) return count;
         }
     }
     return 0;
