@@ -832,6 +832,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
         .then(null,next);
     }
     else if(req.body.type=='顺延'){
+        let milkTypeTmp;
         db.orders.findById(req.params.id)
             .exec()
             .then(function (order) {
@@ -841,7 +842,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     if(req.body.lsLengthenOreders==ordersTemp[i]._id){
                         ordersTemp[i].count = parseInt(ordersTemp[i].count)+parseInt(req.body.lengthenCount);
                         ordersTemp[i].end = getEndDistributeDate(ordersTemp[i],order.changes);
-                        var temp = ordersTemp[i].milkType;
+                        milkTypeTmp = ordersTemp[i].milkType;
                     }
                 }
                 return db.orders.update({ _id: req.params.id }, {
@@ -854,7 +855,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                     $push: {
                         logs: {
                             user: req.session.uid,
-                            content:'顺延了'+temp+'品相'+req.body.lengthenCount+'瓶'
+                            content:'顺延了'+milkTypeTmp+'品相'+req.body.lengthenCount+'瓶'
                         }
                     }
                 })
