@@ -543,7 +543,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                           else{
                               orders.push({
                                   milkType: tmp[0].milkType,
-                                  count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date()),
+                                  count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date(req.body.begin[i])),
                                   distributeCount:tmp[0].distributeCount,
                                   presentCount:0,
                                   distributeMethod:tmp[0].distributeMethod,
@@ -554,7 +554,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                               });
                               orders.push({
                                   milkType: req.body.milkType[i],
-                                  count:getLeftCount(tmp[0],order.changes,new Date()),
+                                  count:getLeftCount(tmp[0],order.changes,new Date(req.body.begin[i])),
                                   distributeCount:req.body.distributeCount[i],
                                   presentCount:parseInt(req.body.presentCount[i]),
                                   distributeMethod:req.body.distributeMethod[i],
@@ -595,7 +595,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                     else{
                         orders.push({
                             milkType: tmp[0].milkType,
-                            count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date()),
+                            count: tmp[0].count- getLeftCount(tmp[0],order.changes,new Date(req.body.begin)),
                             distributeCount:tmp[0].distributeCount,
                             presentCount:0,
                             distributeMethod:tmp[0].distributeMethod,
@@ -606,7 +606,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                         });
                         orders.push({
                             milkType: req.body.milkType,
-                            count:getLeftCount(tmp[0],order.changes,new Date()),
+                            count:getLeftCount(tmp[0],order.changes,new Date(req.body.begin)),
                             distributeCount:req.body.distributeCount,
                             presentCount:parseInt(req.body.presentCount),
                             distributeMethod:req.body.distributeMethod,
