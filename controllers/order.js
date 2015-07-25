@@ -550,7 +550,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                                   single:tmp[0].single,
                                   time:tmp[0].time,
                                   begin:tmp[0].begin,
-                                  end:new Date(),
+                                  end:new Date(_now.setDate(new Date(req.body.begin[i]).getDate()-1)),
                               });
                               orders.push({
                                   milkType: req.body.milkType[i],
@@ -560,7 +560,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                                   distributeMethod:req.body.distributeMethod[i],
                                   single:req.body.single[i],
                                   time:new Date(),
-                                  begin:new Date(_now.setDate(_now.getDate()+1)),
+                                  begin:req.body.begin[i]==''?Date.now():new Date(req.body.begin[i]),
                               });
                           }
                         }
@@ -602,7 +602,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                             single:tmp[0].single,
                             time:tmp[0].time,
                             begin:tmp[0].begin,
-                            end:new Date(),
+                            end:new Date(_now.setDate(new Date(req.body.begin).getDate()-1)),
                         });
                         orders.push({
                             milkType: req.body.milkType,
@@ -612,7 +612,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                             distributeMethod:req.body.distributeMethod,
                             single:req.body.single,
                             time:new Date(),
-                            begin:new Date(_now.setDate(_now.getDate()+1)),
+                            begin:req.body.begin==''?Date.now():new Date(req.body.begin),
                         });
                     }
                 }
@@ -629,7 +629,9 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                     });
                 }
             }
+
             for (let i = 0; i < orders.length; i++) {
+                console.log(orders[i])
                 if((parseInt(orders[i].count)-parseInt(orders[i].presentCount))==0 && (i!=0)){
                     if(req.body.begin[i]=='' || req.body.begin[i] == null){
                         var time =orders[0].end;
@@ -637,6 +639,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                         orders[i].begin = time;
                     }
                 }
+
                 if(orders[i].end==null){
                     orders[i].end = getEndDistributeDate(orders[i], _order.changes);
                 }
@@ -952,7 +955,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             })
             .then(function () {
                 res.redirect('/order/show/' + req.params.id);
-            });
+            })
             .then(null, next);
     }
     else if(req.body.type=='恢复送奶'){
@@ -1024,6 +1027,7 @@ router.post('/change/delete/:id', auth.checkRole('order', 'modify'), function (r
 // 计算订单结束日期
 function getEndDistributeDate (order, changes)
 {
+    console.log(order);
     let dbeg = new Date(order.begin.getFullYear(), order.begin.getMonth(), order.begin.getDate());
     let ret;
     let count = order.count;
@@ -1033,11 +1037,11 @@ function getEndDistributeDate (order, changes)
     {
         if (i + 1 < unknownChangesRaw.length)
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: unknownChanges[i].end });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: unknownChangesRaw[i].end });
         }
         else
         {
-            unknownChanges.push({ begin: unknownChanges[i].begin, end: new Date(2099, 0, 1) });
+            unknownChanges.push({ begin: unknownChangesRaw[i].begin, end: new Date(2099, 0, 1) });
         }
     }
     if (order.distributeMethod == '天天送')
