@@ -36,7 +36,7 @@
         <th>数量</th>
         <th>地址</th>
         <th>联系电话</th>
-        <th></th>
+        <th>时间</th>
     </tr>
     </thead>
     <tbody>
@@ -49,6 +49,7 @@
         <td><%= x.address %></td>
         <td><%= x.tel %></td>
         <td><%= x.hint %></td>
+        <td><%= moment(Date.now()).format('YYYY-MM-DD') %></td>
     </tr>
     <% }) %>
     </tbody>
