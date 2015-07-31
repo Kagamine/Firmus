@@ -1011,7 +1011,6 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                              orders[i].end = getEndDistributeDate(orders[i],order.changes);
                      }
                 }
-
                 db.orders.update({ _id: req.params.id }, {
                              orders:orders
                 })
