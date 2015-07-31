@@ -1621,6 +1621,8 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
         .deepPopulate('address.milkStation address.distributor')
         .exec()
         .then(function (orders) {
+            var _now = new Date();
+            _now.setDate(_now.getDate() + 3);
             let now = new Date();
             let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
             let ret = [];
@@ -1629,7 +1631,7 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
                 if (!ret[x]) ret[x] = {};
                 tmp[x].forEach(z => {
                     z.orders.forEach(y => {
-                        let cnt = getDistributeCount(y, z.changes, new Date());
+                        let cnt = getDistributeCount(y, z.changes, _now);
                         if (cnt > 0) {
                             ret.push({
                                 number: z.number,
@@ -2089,7 +2091,7 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
                    res.render('order/message', { title: '提示信息' });
                }
                else{
-                   var time = Date.now();
+                   /*var time = Date.now();
                    var flag = false;
                    for(var i=0;i<order.orders.length;i++){
                        var end = getEndDistributeDate(order.orders[i],order.changes);
@@ -2106,7 +2108,10 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
                        res.locals.order =order;
                        res.locals.address = order.address;
                        res.render('order/orderContinueInfo', { title: '受理热线订单' });
-                   }
+                   }*/
+                   res.locals.order =order;
+                   res.locals.address = order.address;
+                   res.render('order/orderContinueInfo', { title: '受理热线订单' });
                }
            })
          .then(null,next);
