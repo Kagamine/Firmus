@@ -814,12 +814,13 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                         temp = temp+req.body.cancelCount* order.orders[0].single;
                     }
                 }
-               return  db.orders.update({ _id: req.params.id }, {
+                db.orders.update({ _id: req.params.id }, {
                     orders:order.orders
                 })
                 .exec()
+                return order;
             })
-            .then(function () {
+            .then(function (order) {
                 return db.addresses.update({_id:order.address},{
                     $inc: { balance: temp }
                 })
@@ -986,7 +987,7 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
             .exec()
             .then(function (order) {
                 _order = order;
-                return db.orders.update({ _id: req.params.id }, {
+                db.orders.update({ _id: req.params.id }, {
                     $push: {
                         changes: {
                             user: req.session.uid,
@@ -999,6 +1000,20 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                             count: req.body.type == '整单停送'?'':req.body.count
                         }
                     }
+                })
+                    .exec()
+                return order;
+            })
+            .then(function (order) {
+                var orders = order.orders;
+                for(var i=0;i<orders.length;i++){
+                     if(orders[i].milkType ==req.body.milkType){
+                             orders[i].end = getEndDistributeDate(orders[i],order.changes);
+                     }
+                }
+
+                db.orders.update({ _id: req.params.id }, {
+                             orders:orders
                 })
                     .exec()
             })
