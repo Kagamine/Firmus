@@ -2201,7 +2201,6 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
                    })
                }
            }
-           console.log(order);
            for (let i = 0; i < order.orders.length; i++) {
                if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))==0 && (i!=0)){
                    if((req.body.begin[i]=='' || req.body.begin[i] == null)&& (parseInt(req.body.presentCount[i])>0)){
