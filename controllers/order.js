@@ -1636,7 +1636,7 @@ router.get('/distribute/detail', auth.checkRole('distribute', 'query'), function
         .exec()
         .then(function (orders) {
             var _now = new Date();
-            _now.setDate(_now.getDate() + 3);
+            _now.setDate(_now.getDate() + 2);
             let now = new Date();
             let time =  new Date(now.getFullYear(), now.getMonth(), now.getDate());
             let ret = [];
