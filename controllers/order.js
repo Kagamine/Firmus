@@ -248,7 +248,6 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
         }
     }
     for (let i = 0; i < order.orders.length; i++) {
-        console.log(order);
         if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))==0 && (i!=0)){
            if(req.body.begin[i]=='' || req.body.begin[i] == null){
                var time =order.orders[0].end;
@@ -2135,6 +2134,7 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
 router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (req,res,next) {
     let order = new db.orders();
     let user  = req.session.user;
+    var now =new Date();
     if(user.role == '热线员'){
         order.customCall =  req.session.uid;
     }
@@ -2150,35 +2150,32 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
     order.price = req.body.price;
     order.orderType = 'undefine';
     order.parentId = req.body.parentId;
+    order.orders = [];
     // TODO: 计算最后一天送奶日期（需要考虑周末停送时中间有一个周六周日）
     // order.end = ;
     order.hint = req.body.hint;
+
    db.orders.findById(req.body.parentId)
     .exec()
     .then(function (data) {
+           var end = new Date("1976-01-01");
+           for(var i=0;i<data.orders.length;i++){
+                 if(end<data.orders[i].end){
+                     end = data.orders[i].end;
+                 }
+           }
            if(typeof(req.body.milkType)!='string'){
                for(var i =0;i<req.body.milkType.length;i++){
-                   if(data.orders.length>=i+1){
                        order.orders.push({
                            milkType: req.body.milkType[i],
-                           count:req.body.count[i] + req.body.presentCount[i],
+                           count:parseInt(req.body.count[i]) +parseInt(req.body.presentCount[i]),
+                           presentCount:parseInt(req.body.presentCount[i]),
                            distributeCount:req.body.distributeCount[i],
                            distributeMethod:req.body.distributeMethod[i],
                            single:req.body.single[i],
                            time:Date.now(),
-                           begin:getEndDistributeDate(data.orders[i],data.changes).getDate()+1
+                           begin:req.body.begin[i]==""?now.setDate(end.getDate()+1):req.body.begin[i]
                        });
-                   }else{
-                       order.orders.push({
-                           milkType: req.body.milkType[i],
-                           count:req.body.count[i] + req.body.presentCount[i],
-                           distributeCount:req.body.distributeCount[i],
-                           distributeMethod:req.body.distributeMethod[i],
-                           single:req.body.single[i],
-                           time:Date.now(),
-                           begin:req.body.begin[i]
-                       });
-                   }
                    if(req.body.presentCount[i]>0){
                        order.logs.push({
                            user: req.session.uid,
@@ -2189,12 +2186,13 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
            }else{
                order.orders.push({
                    milkType: req.body.milkType,
-                   count:parseInt(req.body.count) + parseInt(req.body.presentCount),
+                   count:parseInt(req.body.count)+parseInt(req.body.presentCount),
+                   presentCount:req.body.presentCount,
                    distributeCount:req.body.distributeCount,
                    distributeMethod:req.body.distributeMethod,
                    single:req.body.single,
                    time:Date.now(),
-                   begin:getEndDistributeDate(data.orders[0],data.changes).getDate()+1
+                   begin:req.body.begin[i]==""?now.setDate(end.getDate()+1):req.body.begin[i]
                });
                if(req.body.presentCount>0){
                    order.logs.push({
@@ -2203,8 +2201,18 @@ router.post('/doOrderContinueInfo',auth.checkRole('order','modify'), function (r
                    })
                }
            }
-           for (let i = 0; i < order.orders.length; i++)
+           console.log(order);
+           for (let i = 0; i < order.orders.length; i++) {
+               if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))==0 && (i!=0)){
+                   if((req.body.begin[i]=='' || req.body.begin[i] == null)&& (parseInt(req.body.presentCount[i])>0)){
+                       var time =order.orders[0].end;
+                       time.setDate(order.orders[0].end.getDate()+1);
+                       order.orders[i].begin = time;
+                   }
+               }
                order.orders[i].end = getEndDistributeDate(order.orders[i], order.changes);
+           }
+           console.log(order);
 
            for(var i  =0 ;i<data.orders.length;i++){
                var time = new Date();
