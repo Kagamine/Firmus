@@ -2125,7 +2125,7 @@ router.post('/continue',auth.checkRole('order','modify'), function (req,res,next
                    }*/
                    res.locals.order =order;
                    res.locals.address = order.address;
-                   res.render('order/orderContinueInfo', { title: '受理热线订单' });
+                   res.render('order/orderContinueInfo', { title: '续单' });
                }
            })
          .then(null,next);
