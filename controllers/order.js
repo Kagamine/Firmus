@@ -535,7 +535,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
                                   presentCount:parseInt(req.body.presentCount[i]),
                                   distributeMethod:req.body.distributeMethod[i],
                                   single:req.body.single[i],
-                                  time:new Date(),
+                                  time:tmp[0].time,
                                   begin:req.body.begin[i]==''?Date.now():new Date(req.body.begin[i]),
                               });
                           }
@@ -646,6 +646,7 @@ router.post('/edit/:id', auth.checkRole('order', 'modify'), function (req, res, 
             return orders;
         })
        .then(function (orders) {
+
             db.orders.update({ _id: req.params.id }, {
                 orderType: req.body.orderType,
                 address: req.body.address,
@@ -879,7 +880,8 @@ router.post('/change/:id', auth.checkRole('order', 'modify'), function (req, res
                          presentCount:req.body.ocount,
                          distributeMethod:req.body.distributeMethod,
                          distributeCount:req.body.distributeCount,
-                         single:0
+                         single:0,
+                         time:new Date()
                      }
                  }
              })

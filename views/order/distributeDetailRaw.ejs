@@ -14,6 +14,10 @@
 <table class="detail-table">
     <thead>
     <tr>
+        <td class="row-title">配送时间</td>
+        <td><td><%= moment(new Date().setDate((new Date().getDate())+2)).format('YYYY-MM-DD') %></td></td>
+    </tr>
+    <tr>
         <td class="row-title">奶品品相</td>
         <td>数量(瓶)</td>
     </tr>
@@ -36,7 +40,6 @@
         <th>数量</th>
         <th>地址</th>
         <th>联系电话</th>
-        <th>时间</th>
     </tr>
     </thead>
     <tbody>
@@ -49,7 +52,7 @@
         <td><%= x.address %></td>
         <td><%= x.tel %></td>
         <td><%= x.hint %></td>
-        <td><%= moment(Date.now()).format('YYYY-MM-DD') %></td>
+
     </tr>
     <% }) %>
     </tbody>
