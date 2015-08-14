@@ -250,8 +250,7 @@ router.post('/create', auth.checkRole('order', 'modify'), function (req, res, ne
     for (let i = 0; i < order.orders.length; i++) {
         if((parseInt(order.orders[i].count)-parseInt(order.orders[i].presentCount))==0 && (i!=0)){
            if(req.body.begin[i]=='' || req.body.begin[i] == null){
-               var time =order.orders[0].end;
-                time.setDate(order.orders[0].end.getDate()+1);
+               var time = new Date(order.orders[0].end.getFullYear(), order.orders[0].end.getMonth(), order.orders[0].end.getDate());
                 order.orders[i].begin = time;
            }
         }
